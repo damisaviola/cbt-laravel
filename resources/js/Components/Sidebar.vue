@@ -12,7 +12,8 @@ import {
     Award, 
     Layers,
     Clock,
-    School,
+    Settings,
+    HelpCircle,
     X,
     ChevronRight
 } from 'lucide-vue-next';
@@ -31,46 +32,92 @@ const auth = computed(() => page.props.auth?.user);
 const school = computed(() => page.props.school);
 const currentUrl = computed(() => page.url);
 
-const navigation = computed(() => {
+// Grouped Navigation matching contoh.jpg (MENU & SYSTEM sections)
+const menuSections = computed(() => {
     const role = auth.value?.role;
+    
     if (role === 'admin') {
         return [
-            { name: 'Dashboard & Pengaturan', href: '/admin/dashboard', icon: LayoutDashboard, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/50', activeBg: 'bg-blue-50/90 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800/80' },
-            { name: 'Rombel / Kelas', href: '/admin/classes', icon: Layers, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-50 dark:bg-purple-950/50', activeBg: 'bg-purple-50/90 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800/80' },
-            { name: 'Mata Pelajaran', href: '/admin/subjects', icon: BookOpen, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-950/50', activeBg: 'bg-indigo-50/90 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800/80' },
-            { name: 'Guru & Pengawas', href: '/admin/staff', icon: Users, color: 'text-teal-600 dark:text-teal-400', bg: 'bg-teal-50 dark:bg-teal-950/50', activeBg: 'bg-teal-50/90 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 border-teal-200 dark:border-teal-800/80' },
-            { name: 'Data Siswa & Kartu', href: '/admin/students', icon: GraduationCap, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/50', activeBg: 'bg-emerald-50/90 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/80' },
-            { name: 'Jadwal & Sesi Ujian', href: '/admin/schedules', icon: Calendar, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/50', activeBg: 'bg-amber-50/90 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800/80' },
-            { name: 'Ruang Pengawas (Control Room)', href: '/proctor/dashboard', icon: ShieldCheck, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-950/50', activeBg: 'bg-rose-50/90 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800/80' },
-            { name: 'Pratinjau Ujian Siswa', href: '/student/dashboard', icon: Clock, color: 'text-cyan-600 dark:text-cyan-400', bg: 'bg-cyan-50 dark:bg-cyan-950/50', activeBg: 'bg-cyan-50/90 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border-cyan-200 dark:border-cyan-800/80' },
+            {
+                heading: 'MENU',
+                items: [
+                    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+                    { name: 'Users / Siswa', href: '/admin/students', icon: Users },
+                    { name: 'Mata Pelajaran', href: '/admin/subjects', icon: BookOpen },
+                    { name: 'Rombel Kelas', href: '/admin/classes', icon: Layers },
+                    { name: 'Tenaga Pendidik', href: '/admin/staff', icon: GraduationCap },
+                    { name: 'Jadwal Ujian', href: '/admin/schedules', icon: Calendar },
+                ],
+            },
+            {
+                heading: 'SYSTEM',
+                items: [
+                    { name: 'Ruang Pengawas', href: '/proctor/dashboard', icon: ShieldCheck },
+                    { name: 'Pratinjau Siswa', href: '/student/dashboard', icon: Clock },
+                    { name: 'Pengaturan', href: '/admin/settings', icon: Settings },
+                ],
+            },
         ];
     } else if (role === 'teacher') {
         return [
-            { name: 'Dashboard Guru', href: '/teacher/dashboard', icon: LayoutDashboard, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/50', activeBg: 'bg-blue-50/90 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800/80' },
-            { name: 'Soal Ujian', href: '/teacher/banks', icon: BookOpen, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-950/50', activeBg: 'bg-indigo-50/90 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800/80' },
-            { name: 'Ruang Pengawas (Control Room)', href: '/proctor/dashboard', icon: ShieldCheck, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-950/50', activeBg: 'bg-rose-50/90 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800/80' },
-            { name: 'Meja Koreksi & Leger', href: '/teacher/grading', icon: Award, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/50', activeBg: 'bg-amber-50/90 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800/80' },
+            {
+                heading: 'MENU',
+                items: [
+                    { name: 'Dashboard Guru', href: '/teacher/dashboard', icon: LayoutDashboard },
+                    { name: 'Bank Soal Ujian', href: '/teacher/banks', icon: BookOpen },
+                    { name: 'Meja Koreksi', href: '/teacher/grading', icon: Award },
+                ],
+            },
+            {
+                heading: 'SYSTEM',
+                items: [
+                    { name: 'Ruang Pengawas', href: '/proctor/dashboard', icon: ShieldCheck },
+                    { name: 'Bantuan Sistem', href: '#support', icon: HelpCircle },
+                ],
+            },
         ];
     } else if (role === 'proctor') {
         return [
-            { name: 'Ruang Pengawas (Control Room)', href: '/proctor/dashboard', icon: ShieldCheck, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/50', activeBg: 'bg-emerald-50/90 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/80' },
+            {
+                heading: 'MENU',
+                items: [
+                    { name: 'Ruang Pengawas', href: '/proctor/dashboard', icon: ShieldCheck },
+                ],
+            },
+            {
+                heading: 'SYSTEM',
+                items: [
+                    { name: 'Pusat Bantuan', href: '#support', icon: HelpCircle },
+                ],
+            },
         ];
     } else if (role === 'student') {
         return [
-            { name: 'Portal Ujian Siswa', href: '/student/dashboard', icon: Clock, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/50', activeBg: 'bg-blue-50/90 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800/80' },
+            {
+                heading: 'MENU',
+                items: [
+                    { name: 'Portal Ujian', href: '/student/dashboard', icon: Clock },
+                ],
+            },
+            {
+                heading: 'SYSTEM',
+                items: [
+                    { name: 'Bantuan Siswa', href: '#support', icon: HelpCircle },
+                ],
+            },
         ];
     }
     return [];
 });
 
-const roleBadge = computed(() => {
+const roleLabel = computed(() => {
     const role = auth.value?.role;
     switch (role) {
-        case 'admin': return { label: 'Administrator', class: 'bg-purple-100/80 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800', avatarBg: 'bg-gradient-to-tr from-purple-600 to-indigo-600' };
-        case 'teacher': return { label: 'Guru Mapel', class: 'bg-blue-100/80 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800', avatarBg: 'bg-gradient-to-tr from-blue-600 to-cyan-600' };
-        case 'proctor': return { label: 'Pengawas Ruang', class: 'bg-emerald-100/80 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800', avatarBg: 'bg-gradient-to-tr from-emerald-600 to-teal-600' };
-        case 'student': return { label: 'Peserta Ujian', class: 'bg-indigo-100/80 dark:bg-indigo-950/60 text-indigo-800 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800', avatarBg: 'bg-gradient-to-tr from-indigo-600 to-blue-600' };
-        default: return { label: 'Pengguna', class: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700', avatarBg: 'bg-slate-600' };
+        case 'admin': return 'Administrator';
+        case 'teacher': return 'Guru Pengajar';
+        case 'proctor': return 'Pengawas Ruang';
+        case 'student': return 'Peserta Siswa';
+        default: return 'Pengguna';
     }
 });
 
@@ -85,6 +132,7 @@ const userInitials = computed(() => {
 });
 
 const isNavActive = (href) => {
+    if (href.startsWith('#')) return false;
     if (href === '/admin/dashboard' || href === '/teacher/dashboard' || href === '/proctor/dashboard' || href === '/student/dashboard') {
         return currentUrl.value === href || currentUrl.value === '/admin' || currentUrl.value.startsWith(href + '?');
     }
@@ -102,117 +150,121 @@ const closeSidebar = () => {
 </script>
 
 <template>
-    <div class="sidebar-root shrink-0 lg:w-68 lg:sticky lg:top-0 lg:h-screen">
+    <div class="sidebar-root shrink-0 lg:w-64 lg:sticky lg:top-0 lg:h-screen">
         <!-- Mobile Sidebar Backdrop -->
         <div 
             v-if="isOpen" 
             @click="closeSidebar" 
-            class="fixed inset-0 bg-slate-900/50 dark:bg-black/70 z-40 lg:hidden transition-opacity"
+            class="fixed inset-0 bg-slate-900/40 dark:bg-black/60 z-40 lg:hidden backdrop-blur-xs transition-opacity"
         />
 
-        <!-- Modern Clean Sidebar with Rounded Cards -->
+        <!-- Modern Clean Sidebar matching contoh.jpg (EduPro aesthetic) -->
         <aside 
             :class="[
-                'fixed inset-y-0 left-0 z-50 w-68 bg-white dark:bg-slate-900 border-r border-slate-200/90 dark:border-slate-800 flex flex-col shrink-0 select-none shadow-[2px_0_12px_rgba(0,0,0,0.02)] transition-transform duration-200 lg:static lg:translate-x-0 h-full',
+                'fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 flex flex-col justify-between shrink-0 select-none shadow-[2px_0_15px_rgba(0,0,0,0.02)] transition-transform duration-200 lg:static lg:translate-x-0 h-full',
                 isOpen ? 'translate-x-0' : '-translate-x-full'
             ]"
         >
-            <!-- School Brand / Header -->
-            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 transition-colors duration-150">
-                <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0F52BA] to-blue-700 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-blue-600/25 shrink-0">
-                        <School class="w-4.5 h-4.5 text-white" />
-                    </div>
-                    <div class="min-w-0">
-                        <h1 class="text-sm font-bold text-slate-900 dark:text-white truncate uppercase tracking-wider">
-                            {{ school?.school_name || 'SmartCBT' }}
-                        </h1>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium truncate">
-                            TA {{ school?.active_academic_year || '2026/2027' }} &bull; {{ school?.active_semester || 'Ganjil' }}
-                        </p>
-                    </div>
-                </div>
-
-                <button 
-                    type="button"
-                    @click="closeSidebar" 
-                    class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
-                    aria-label="Tutup Menu"
-                >
-                    <X class="w-4 h-4" />
-                </button>
-            </div>
-
-            <!-- User Card (Vibrant & Friendly Rounded-2xl) -->
-            <div class="p-3.5 mx-3.5 my-3 rounded-2xl bg-gradient-to-br from-slate-50 via-blue-50/20 to-white dark:from-slate-800/80 dark:via-slate-800/40 dark:to-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs">
-                <div class="flex items-center gap-2.5">
-                    <div :class="['w-9 h-9 rounded-xl font-bold text-sm flex items-center justify-center text-white shadow-xs shrink-0', roleBadge.avatarBg]">
-                        {{ userInitials }}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <p class="text-sm font-bold text-slate-900 dark:text-white truncate leading-tight">{{ auth?.name }}</p>
-                        <div class="flex items-center gap-1.5 mt-0.5">
-                            <span :class="['px-2 py-0.5 rounded-md text-[11px] font-bold tracking-wide uppercase border', roleBadge.class]">
-                                {{ roleBadge.label }}
+            <!-- Top Section: Brand + Navigation -->
+            <div class="flex-1 flex flex-col min-h-0 overflow-y-auto">
+                <!-- Brand Logo & Header matching contoh.jpg (EduPro style) -->
+                <div class="h-20 flex items-center justify-between px-6 border-b border-transparent">
+                    <Link href="/" class="flex items-center gap-3 min-w-0 group">
+                        <!-- Blue square with graduation cap icon -->
+                        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm shadow-blue-500/30 shrink-0 group-hover:scale-105 transition-transform">
+                            <GraduationCap class="w-5 h-5 text-white" />
+                        </div>
+                        <div class="min-w-0">
+                            <span class="text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate block">
+                                {{ school?.school_name ? school.school_name : 'EduPro' }}
+                            </span>
+                            <span class="text-[11px] text-slate-400 font-medium tracking-wide truncate block">
+                                Smart CBT Platform
                             </span>
                         </div>
-                    </div>
+                    </Link>
+
+                    <!-- Mobile Close Button -->
+                    <button 
+                        type="button"
+                        @click="closeSidebar" 
+                        class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                        aria-label="Tutup Menu"
+                    >
+                        <X class="w-5 h-5" />
+                    </button>
                 </div>
-            </div>
 
-            <!-- Navigation Links -->
-            <div class="px-5 pt-2 pb-1">
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                    Menu Navigasi
-                </p>
-            </div>
-
-            <nav class="flex-1 px-3 py-1 space-y-1.5 overflow-y-auto">
-                <Link
-                    v-for="item in navigation"
-                    :key="item.name"
-                    :href="item.href"
-                    @click="closeSidebar"
-                    :class="[
-                        isNavActive(item.href)
-                            ? `${item.activeBg} font-bold shadow-2xs border`
-                            : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium',
-                        'group flex items-center justify-between px-3 py-2 text-sm rounded-xl transition-all duration-150'
-                    ]"
-                >
-                    <div class="flex items-center gap-2.5 min-w-0">
-                        <div :class="['w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105', item.bg, item.color]">
-                            <component :is="item.icon" class="w-4 h-4" />
+                <!-- Navigation Sections (MENU & SYSTEM) -->
+                <div class="px-4 py-2 space-y-6 flex-1">
+                    <div 
+                        v-for="(section, sIdx) in menuSections" 
+                        :key="sIdx"
+                        class="space-y-1.5"
+                    >
+                        <!-- Section Header (e.g. MENU, SYSTEM) -->
+                        <div class="px-3 pb-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                                {{ section.heading }}
+                            </span>
                         </div>
-                        <span class="truncate">{{ item.name }}</span>
+
+                        <!-- Menu Items -->
+                        <div class="space-y-1">
+                            <Link
+                                v-for="item in section.items"
+                                :key="item.name"
+                                :href="item.href"
+                                @click="closeSidebar"
+                                :class="[
+                                    isNavActive(item.href)
+                                        ? 'bg-blue-600 text-white font-medium shadow-sm shadow-blue-600/20'
+                                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium',
+                                    'flex items-center gap-3.5 px-3.5 py-2.5 text-sm rounded-xl transition-all duration-150 cursor-pointer'
+                                ]"
+                            >
+                                <component 
+                                    :is="item.icon" 
+                                    :class="[
+                                        'w-5 h-5 shrink-0 transition-colors',
+                                        isNavActive(item.href) ? 'text-white' : 'text-slate-400 group-hover:text-slate-600 dark:text-slate-400'
+                                    ]" 
+                                />
+                                <span class="truncate">{{ item.name }}</span>
+                            </Link>
+                        </div>
                     </div>
-                    <ChevronRight 
-                        v-if="isNavActive(item.href)" 
-                        :class="['w-3.5 h-3.5 shrink-0', item.color]" 
-                    />
-                </Link>
-            </nav>
-
-            <!-- Bottom System Status & Logout -->
-            <div class="p-3.5 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-2 transition-colors duration-150">
-                <div class="flex items-center justify-between px-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
-                    <span class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Server CBT</span>
-                    </span>
-                    <span class="font-mono text-xs text-emerald-700 dark:text-emerald-300 font-bold uppercase bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
-                        Online
-                    </span>
                 </div>
+            </div>
 
-                <button
-                    type="button"
-                    @click="handleLogout"
-                    class="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-rose-700 dark:hover:text-rose-300 bg-slate-50 dark:bg-slate-800/70 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-slate-200 dark:border-slate-700 hover:border-rose-200 dark:hover:border-rose-800 rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98]"
-                >
-                    <LogOut class="w-3.5 h-3.5 text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400" />
-                    <span>Keluar Sistem</span>
-                </button>
+            <!-- Bottom Section: User Profile Card matching contoh.jpg + Logout Option -->
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900">
+                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <!-- Round Avatar matching Alex Morgan avatar in contoh.jpg -->
+                        <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center justify-center shrink-0 border border-slate-300 dark:border-slate-600 shadow-2xs">
+                            {{ userInitials }}
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-slate-900 dark:text-white truncate leading-snug">
+                                {{ auth?.name || 'Pengguna' }}
+                            </p>
+                            <p class="text-xs text-slate-400 dark:text-slate-500 truncate">
+                                {{ roleLabel }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Logout Button Icon -->
+                    <button
+                        type="button"
+                        @click="handleLogout"
+                        title="Keluar dari sistem"
+                        class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors cursor-pointer"
+                    >
+                        <LogOut class="w-4 h-4" />
+                    </button>
+                </div>
             </div>
         </aside>
     </div>

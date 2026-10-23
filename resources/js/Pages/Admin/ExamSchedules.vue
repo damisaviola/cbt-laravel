@@ -398,41 +398,41 @@ const formatTimeRange = (start, end) => {
                         </div>
                     </div>
 
-                    <!-- VIEW 2: Table View (Sleek Dark Mode Table) -->
-                    <div v-else class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs">
+                    <!-- VIEW 2: Table View (Sleek EduPro Style Table) -->
+                    <div v-else class="overflow-x-auto rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
                         <table class="w-full text-left text-xs text-slate-700 dark:text-slate-200">
-                            <thead class="bg-slate-50/80 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-[11px] font-bold uppercase tracking-wider select-none">
+                            <thead class="bg-slate-50/60 dark:bg-slate-800/40 border-b border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider select-none">
                                 <tr>
-                                    <th class="px-4 py-3">Sesi & Ruangan</th>
-                                    <th class="px-4 py-3">Pengawas Ruang</th>
-                                    <th class="px-4 py-3">Waktu Sesi</th>
-                                    <th class="px-4 py-3 text-center">Token Ujian</th>
-                                    <th class="px-4 py-3 text-center">Status</th>
-                                    <th class="px-4 py-3 text-right">Aksi</th>
+                                    <th class="px-5 py-3.5">Sesi & Ruangan</th>
+                                    <th class="px-5 py-3.5">Pengawas Ruang</th>
+                                    <th class="px-5 py-3.5">Waktu Sesi</th>
+                                    <th class="px-5 py-3.5 text-center">Token Ujian</th>
+                                    <th class="px-5 py-3.5 text-center">Status</th>
+                                    <th class="px-5 py-3.5 text-right">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800/70">
                                 <tr
                                     v-for="sess in sch.sessions"
                                     :key="sess.id"
                                     class="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors"
                                 >
-                                    <td class="px-4 py-3">
+                                    <td class="px-5 py-3.5">
                                         <div class="font-bold text-slate-900 dark:text-white">{{ sess.session_name }}</div>
-                                        <div class="text-[11px] text-slate-500 dark:text-slate-400">{{ sess.room_name }}</div>
+                                        <div class="text-[11px] text-slate-400 dark:text-slate-500">{{ sess.room_name }}</div>
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-5 py-3.5">
                                         <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
                                             <UserCheck class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-                                            <span>{{ sess.proctor?.name || '-' }}</span>
+                                            <span class="font-medium">{{ sess.proctor?.name || '-' }}</span>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 font-mono text-[11px] text-slate-600 dark:text-slate-400">
+                                    <td class="px-5 py-3.5 font-mono text-[11px] text-slate-500 dark:text-slate-400">
                                         {{ formatTimeRange(sess.start_time, sess.end_time) }}
                                     </td>
-                                    <td class="px-4 py-3 text-center">
-                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/50 border border-blue-200/70 dark:border-blue-800/60">
-                                            <span class="font-mono font-black tracking-wider text-xs text-[#0F52BA] dark:text-blue-400 select-all">
+                                    <td class="px-5 py-3.5 text-center">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200/70 dark:border-blue-800/60">
+                                            <span class="font-mono font-bold tracking-wider text-xs text-blue-600 dark:text-blue-400 select-all">
                                                 {{ sess.access_token }}
                                             </span>
                                             <button
@@ -446,8 +446,8 @@ const formatTimeRange = (start, end) => {
                                             </button>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 text-center">
-                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase font-mono bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                                    <td class="px-5 py-3.5 text-center">
+                                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase font-mono bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                                             {{ sess.status }}
                                         </span>
                                     </td>

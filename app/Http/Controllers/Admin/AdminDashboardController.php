@@ -48,6 +48,20 @@ class AdminDashboardController extends Controller
         ]);
     }
 
+    public function settings(): Response
+    {
+        $school = SchoolSetting::current();
+
+        return Inertia::render('Admin/Settings', [
+            'school' => $school,
+            'serverInfo' => [
+                'php_version' => PHP_VERSION,
+                'os' => PHP_OS,
+                'laravel_version' => app()->version(),
+            ],
+        ]);
+    }
+
     public function updateSettings(Request $request)
     {
         $validated = $request->validate([

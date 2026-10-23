@@ -1,36 +1,34 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { usePage, Link } from '@inertiajs/vue3';
 import { 
     CheckCircle2, 
-    Clock,
     Menu,
-    AlertCircle
+    AlertCircle,
+    Search,
+    Bell,
+    ChevronRight
 } from 'lucide-vue-next';
 import Sidebar from '@/Components/Sidebar.vue';
 import ConfirmModal from '@/Components/ConfirmModal.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 
+const props = defineProps({
+    breadcrumbs: {
+        type: Array,
+        default: () => [
+            { label: 'Home', href: '/' },
+            { label: 'Dashboard', href: null }
+        ]
+    }
+});
+
 const page = usePage();
 const auth = computed(() => page.props.auth?.user);
 
 const mobileMenuOpen = ref(false);
-const currentTime = ref('');
-
-let clockInterval = null;
-const updateClock = () => {
-    const now = new Date();
-    currentTime.value = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
-};
-
-onMounted(() => {
-    updateClock();
-    clockInterval = setInterval(updateClock, 1000);
-});
-
-onUnmounted(() => {
-    if (clockInterval) clearInterval(clockInterval);
-});
+const showSearchModal = ref(false);
+const searchQuery = ref('');
 
 const userInitials = computed(() => {
     if (!auth.value?.name) return 'U';
@@ -44,77 +42,130 @@ const userInitials = computed(() => {
 </script>
 
 <template>
-    <div class="min-h-screen flex bg-[#F8FAFC] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-150">
-        <!-- Dedicated Modular Sidebar Component -->
+    <div class="min-h-screen flex bg-[#F4F6FA] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-150">
+        <!-- Sidebar Navigation matching contoh.jpg -->
         <Sidebar :is-open="mobileMenuOpen" @close="mobileMenuOpen = false" />
 
         <!-- Main Workspace Canvas -->
-        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#F8FAFC] dark:bg-slate-950">
-            <!-- Clean Header Topbar -->
-            <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between shrink-0 shadow-2xs transition-colors duration-150">
-                <div class="flex items-center gap-3.5 min-w-0">
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#F4F6FA] dark:bg-slate-950">
+            <!-- Clean Header Topbar matching contoh.jpg -->
+            <header class="h-20 bg-transparent px-6 sm:px-8 flex items-center justify-between shrink-0">
+                <!-- Left: Mobile Menu Toggle & Breadcrumbs -->
+                <div class="flex items-center gap-3 min-w-0">
                     <button
                         @click="mobileMenuOpen = true"
-                        class="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                        class="lg:hidden p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 shadow-2xs"
                         aria-label="Buka Menu"
                     >
-                        <Menu class="w-4.5 h-4.5" />
+                        <Menu class="w-5 h-5" />
                     </button>
 
-                    <slot name="header">
-                        <div>
-                            <h2 class="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
-                                SmartCBT School Edition
-                            </h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Sistem Ujian Berbasis Komputer & Evaluasi Terpadu</p>
-                        </div>
+                    <!-- Breadcrumbs matching 'Home > Dashboard' in contoh.jpg -->
+                    <slot name="breadcrumbs">
+                        <nav class="flex items-center gap-2 text-sm text-slate-400 dark:text-slate-500 font-medium select-none">
+                            <span class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Home</span>
+                            <ChevronRight class="w-3.5 h-3.5 text-slate-400" />
+                            <span class="text-slate-900 dark:text-white font-semibold">Dashboard</span>
+                        </nav>
                     </slot>
                 </div>
 
+                <!-- Right Action Icons: Search, ThemeToggle, Notifications, User Avatar -->
                 <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                    <!-- Live Clock Widget (Rounded) -->
-                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-sm font-mono text-slate-700 dark:text-slate-300">
-                        <Clock class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                        <span>{{ currentTime }}</span>
+                    <!-- Search Icon Button -->
+                    <button
+                        type="button"
+                        @click="showSearchModal = true"
+                        title="Pencarian Cepat"
+                        class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
+                    >
+                        <Search class="w-4 h-4" />
+                    </button>
+
+                    <!-- Theme Switcher (Rounded) -->
+                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center shadow-2xs">
+                        <ThemeToggle compact />
                     </div>
 
-                    <!-- Theme Switcher -->
-                    <ThemeToggle />
+                    <!-- Notification Bell with Active Indicator Dot -->
+                    <button
+                        type="button"
+                        title="Pemberitahuan"
+                        class="relative w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
+                    >
+                        <Bell class="w-4 h-4" />
+                        <!-- Red active dot indicator -->
+                        <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900"></span>
+                    </button>
 
-                    <!-- User Identity Badge (Rounded) -->
-                    <div class="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
-                        <div class="hidden md:block text-right">
-                            <p class="text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth?.name }}</p>
-                            <p class="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ auth?.username }}</p>
-                        </div>
-                        <div class="w-8 h-8 rounded-xl bg-blue-600 text-white font-bold text-sm flex items-center justify-center shadow-xs">
-                            {{ userInitials }}
-                        </div>
+                    <!-- User Profile Avatar Circle matching Alex Morgan in contoh.jpg -->
+                    <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center font-bold text-xs text-slate-700 dark:text-slate-200 shadow-2xs ml-1">
+                        {{ userInitials }}
                     </div>
                 </div>
             </header>
 
-            <!-- Flash Alerts (Rounded) -->
-            <div v-if="$page.props.flash?.success" class="mx-6 mt-4 p-3.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 rounded-xl text-emerald-900 dark:text-emerald-200 text-sm font-medium flex items-center gap-2.5 shadow-2xs">
-                <CheckCircle2 class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <!-- Flash Alerts -->
+            <div v-if="$page.props.flash?.success" class="mx-6 sm:mx-8 mb-4 p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl text-emerald-900 dark:text-emerald-200 text-sm font-medium flex items-center gap-3 shadow-2xs">
+                <CheckCircle2 class="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span class="flex-1">{{ $page.props.flash.success }}</span>
             </div>
 
-            <div v-if="$page.props.flash?.error" class="mx-6 mt-4 p-3.5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/80 rounded-xl text-red-900 dark:text-red-200 text-xs font-medium flex items-center gap-2.5 shadow-2xs">
-                <AlertCircle class="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
+            <div v-if="$page.props.flash?.error" class="mx-6 sm:mx-8 mb-4 p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/80 rounded-2xl text-red-900 dark:text-red-200 text-xs font-medium flex items-center gap-3 shadow-2xs">
+                <AlertCircle class="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
                 <span class="flex-1">{{ $page.props.flash.error }}</span>
             </div>
 
-            <div v-if="$page.props.flash?.warning" class="mx-6 mt-4 p-3.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/80 rounded-xl text-amber-900 dark:text-amber-200 text-xs font-medium flex items-center gap-2.5 shadow-2xs">
-                <AlertCircle class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            <div v-if="$page.props.flash?.warning" class="mx-6 sm:mx-8 mb-4 p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/80 rounded-2xl text-amber-900 dark:text-amber-200 text-xs font-medium flex items-center gap-3 shadow-2xs">
+                <AlertCircle class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
                 <span class="flex-1">{{ $page.props.flash.warning }}</span>
             </div>
 
-            <!-- Page Content -->
-            <div class="p-6 md:p-8 flex-1">
+            <!-- Page Content Slot -->
+            <div class="px-6 sm:px-8 pb-10 flex-1">
                 <slot />
             </div>
         </main>
+
+        <!-- Quick Search Modal (Lightweight) -->
+        <div 
+            v-if="showSearchModal" 
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs"
+            @click.self="showSearchModal = false"
+        >
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-100 dark:border-slate-800 shadow-xl max-w-lg w-full space-y-4">
+                <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <Search class="w-5 h-5 text-slate-400" />
+                    <input 
+                        v-model="searchQuery" 
+                        type="text" 
+                        placeholder="Cari siswa, jadwal, soal ujian, atau menu..." 
+                        class="w-full text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-white"
+                        autofocus
+                    />
+                    <button @click="showSearchModal = false" class="text-xs text-slate-400 hover:text-slate-600 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                        ESC
+                    </button>
+                </div>
+                <div class="text-xs text-slate-400 space-y-2">
+                    <p class="font-semibold text-slate-500 uppercase tracking-wider text-[10px]">Pintas Navigasi</p>
+                    <div class="grid grid-cols-2 gap-2 text-slate-700 dark:text-slate-300">
+                        <Link href="/admin/students" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                            <span>Siswa & Kartu</span>
+                        </Link>
+                        <Link href="/admin/schedules" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                            <span>Jadwal Ujian</span>
+                        </Link>
+                        <Link href="/proctor/dashboard" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                            <span>Ruang Pengawas</span>
+                        </Link>
+                        <Link href="/teacher/banks" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                            <span>Bank Soal</span>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Global Action Confirmation Modal -->
         <ConfirmModal />

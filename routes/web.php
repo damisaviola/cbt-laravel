@@ -34,6 +34,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('index');
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/settings', [AdminDashboardController::class, 'settings'])->name('settings.index');
     Route::post('/settings', [AdminDashboardController::class, 'updateSettings'])->name('settings.update');
 
     // Rombel / Kelas
