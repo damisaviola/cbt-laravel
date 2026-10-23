@@ -472,47 +472,47 @@ const openPrintAttendance = () => {
         </div>
 
         <!-- Unified Student Management Modal (Automatic, Excel & Manual) -->
-        <div v-if="showModal" class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70 flex items-center justify-center p-3 sm:p-4 z-50 overflow-y-auto">
-            <div :class="[activeTab === 'paste' ? 'max-w-4xl' : 'max-w-2xl', 'bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 w-full shadow-xl flex flex-col max-h-[90vh] overflow-hidden']">
+        <div v-if="showModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 z-50 overflow-y-auto">
+            <div :class="[activeTab === 'paste' ? 'max-w-4xl' : 'max-w-2xl', 'bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 w-full shadow-2xl flex flex-col max-h-[90vh] overflow-hidden my-auto']">
                 
                 <!-- Modal Header -->
-                <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+                <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
                     <div>
                         <div class="flex items-center gap-2">
-                            <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
                                 {{ editingStudent ? 'Edit Data Siswa' : 'Tambah Data Siswa Peserta Ujian' }}
                             </h3>
-                            <span v-if="!editingStudent" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-[#0F52BA] dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                            <span v-if="!editingStudent" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
                                 Otomatis & Manual
                             </span>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                             {{ editingStudent ? `Perbarui profil dan kata sandi akun ${editingStudent.name}.` : 'Pilih metode yang paling praktis: Salin dari Excel, Upload Template, Auto-Generate, atau Manual.' }}
                         </p>
                     </div>
                     <button
                         type="button"
                         @click="showModal = false"
-                        class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                        class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
                     >
                         <X class="w-4 h-4" />
                     </button>
                 </div>
 
                 <!-- Navigation Tabs (Only when creating new students) -->
-                <div v-if="!editingStudent" class="px-5 pt-3 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-850/40 shrink-0">
+                <div v-if="!editingStudent" class="px-6 pt-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850/40 shrink-0">
                     <div class="flex items-center gap-2 overflow-x-auto pb-2.5 scrollbar-none">
                         <button
                             type="button"
                             @click="activeTab = 'paste'"
                             :class="[
                                 activeTab === 'paste'
-                                    ? 'bg-white dark:bg-slate-800 text-[#0F52BA] dark:text-blue-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
+                                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 border-transparent',
-                                'px-3.5 py-2 rounded-xl text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
+                                'px-4 py-2 rounded-full text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
                             ]"
                         >
-                            <ClipboardPaste class="w-4 h-4 text-[#0F52BA] dark:text-blue-400" />
+                            <ClipboardPaste class="w-4 h-4 text-blue-600 dark:text-blue-400" />
                             <span>Salin dari Excel (Tabel Grid)</span>
                             <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400">
                                 Praktis
@@ -526,7 +526,7 @@ const openPrintAttendance = () => {
                                 activeTab === 'excel'
                                     ? 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 border-transparent',
-                                'px-3.5 py-2 rounded-xl text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
+                                'px-4 py-2 rounded-full text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
                             ]"
                         >
                             <FileSpreadsheet class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -540,7 +540,7 @@ const openPrintAttendance = () => {
                                 activeTab === 'generate'
                                     ? 'bg-white dark:bg-slate-800 text-amber-700 dark:text-amber-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 border-transparent',
-                                'px-3.5 py-2 rounded-xl text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
+                                'px-4 py-2 rounded-full text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
                             ]"
                         >
                             <Sparkles class="w-4 h-4 text-amber-500" />
@@ -555,13 +555,13 @@ const openPrintAttendance = () => {
                             @click="activeTab = 'manual'"
                             :class="[
                                 activeTab === 'manual'
-                                    ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
+                                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 border-transparent',
-                                'px-3.5 py-2 rounded-xl text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
+                                'px-4 py-2 rounded-full text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
                             ]"
                         >
                             <UserPlus class="w-4 h-4 text-slate-500" />
-                            <span>Input Manual (1 Siswa)</span>
+                            <span>Input Manual Form</span>
                         </button>
                     </div>
                 </div>
@@ -1075,18 +1075,18 @@ const openPrintAttendance = () => {
                                 </label>
                             </div>
 
-                            <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                            <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                                 <button
                                     type="button"
                                     @click="showModal = false"
-                                    class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                                    class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-full text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors cursor-pointer"
                                 >
                                     Batal
                                 </button>
                                 <button
                                     type="submit"
                                     :disabled="form.processing"
-                                    class="px-5 py-2 bg-[#0F52BA] hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-xl shadow-xs hover:shadow flex items-center gap-1.5 transition-all cursor-pointer"
+                                    class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 flex items-center gap-1.5 transition-all cursor-pointer"
                                 >
                                     <Check class="w-3.5 h-3.5" />
                                     <span>{{ form.processing ? 'Menyimpan...' : (editingStudent ? 'Simpan Perubahan' : 'Simpan Siswa') }}</span>

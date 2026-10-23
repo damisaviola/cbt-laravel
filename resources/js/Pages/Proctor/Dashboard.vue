@@ -692,78 +692,78 @@ const filteredStudents = computed(() => {
                 <div
                     v-if="showDetailModal && selectedStudent"
                     @click="closeStudentDetail"
-                    class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto"
+                    class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto"
                 >
                     <div
                         @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 max-w-lg w-full p-6 shadow-xl space-y-4 my-auto"
+                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-lg w-full p-6 sm:p-7 shadow-2xl space-y-4 my-auto relative"
                     >
-                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm shrink-0">
-                                    <Lock v-if="selectedStudent.is_locked" class="w-5 h-5 text-rose-500" />
-                                    <UserCheck v-else class="w-5 h-5" />
+                                <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs">
+                                    <Lock v-if="selectedStudent.is_locked" class="w-6 h-6 text-rose-500" />
+                                    <UserCheck v-else class="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ selectedStudent.name }}</h3>
-                                    <p class="text-xs text-slate-400 font-mono">NISN: {{ selectedStudent.username }} &bull; {{ selectedStudent.class_name }}</p>
+                                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">{{ selectedStudent.name }}</h3>
+                                    <p class="text-xs text-slate-400 font-mono mt-0.5">NISN: {{ selectedStudent.username }} &bull; {{ selectedStudent.class_name }}</p>
                                 </div>
                             </div>
                             <button
                                 @click="closeStudentDetail"
-                                class="p-1 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
+                                class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                             >
                                 <X class="w-4 h-4" />
                             </button>
                         </div>
 
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                            <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl">
-                                <span class="text-[10px] text-slate-400 block uppercase font-bold">Status Ujian</span>
+                            <div class="p-3 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-2xl">
+                                <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Status Ujian</span>
                                 <div class="mt-1">
-                                    <span v-if="selectedStudent.is_locked" class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500 text-white">
+                                    <span v-if="selectedStudent.is_locked" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white">
                                         TERKUNCI
                                     </span>
-                                    <span v-else-if="selectedStudent.status === 'ongoing'" class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-600">
+                                    <span v-else-if="selectedStudent.status === 'ongoing'" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
                                         Mengerjakan
                                     </span>
-                                    <span v-else-if="selectedStudent.status === 'submitted' || selectedStudent.status === 'graded'" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-600">
+                                    <span v-else-if="selectedStudent.status === 'submitted' || selectedStudent.status === 'graded'" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
                                         Selesai
                                     </span>
-                                    <span v-else class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-200 text-slate-600">
+                                    <span v-else class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
                                         Belum Mulai
                                     </span>
                                 </div>
                             </div>
 
-                            <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl">
-                                <span class="text-[10px] text-slate-400 block uppercase font-bold">Progres Jawaban</span>
-                                <p class="text-sm font-bold font-mono text-slate-900 dark:text-white mt-0.5">
+                            <div class="p-3 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-2xl">
+                                <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Progres Jawaban</span>
+                                <p class="text-sm font-bold font-mono text-slate-900 dark:text-white mt-1">
                                     {{ selectedStudent.answered_count || 0 }} / {{ selectedStudent.total_questions || 0 }}
                                 </p>
                             </div>
 
-                            <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl col-span-2 sm:col-span-1">
-                                <span class="text-[10px] text-slate-400 block uppercase font-bold">Teguran Curang</span>
-                                <p :class="selectedStudent.cheat_strikes > 0 ? 'text-rose-500 font-bold' : 'text-slate-700 dark:text-slate-300'" class="text-sm font-mono mt-0.5">
+                            <div class="p-3 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-2xl col-span-2 sm:col-span-1">
+                                <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Teguran Curang</span>
+                                <p :class="selectedStudent.cheat_strikes > 0 ? 'text-rose-500 font-bold' : 'text-slate-700 dark:text-slate-300'" class="text-sm font-mono mt-1">
                                     {{ selectedStudent.cheat_strikes || 0 }} / {{ selectedStudent.max_cheat_strikes || 3 }}x
                                 </p>
                             </div>
                         </div>
 
-                        <div v-if="selectedStudent.is_locked" class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs space-y-1">
-                            <p class="font-bold text-rose-700">Layar Terkunci Akibat Pelanggaran Sistem</p>
-                            <p class="text-[11px] text-rose-600 leading-relaxed">
+                        <div v-if="selectedStudent.is_locked" class="p-4 bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200/80 dark:border-rose-900/60 rounded-2xl text-xs space-y-1">
+                            <p class="font-bold text-rose-700 dark:text-rose-300">Layar Terkunci Akibat Pelanggaran Sistem</p>
+                            <p class="text-[11px] text-rose-600 dark:text-rose-400 leading-relaxed">
                                 Peserta telah keluar dari layar ujian atau berpindah tab. Tekan Buka Kunci agar siswa dapat kembali melanjutkan pengerjaan soal.
                             </p>
                         </div>
 
-                        <div class="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
                             <button
                                 v-if="selectedStudent.is_locked"
                                 type="button"
                                 @click="unlockStudent(selectedStudent.attempt_id)"
-                                class="flex-1 py-2 px-4 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs rounded-full shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                class="py-2.5 px-5 bg-rose-500 hover:bg-rose-600 text-white font-semibold text-xs rounded-full shadow-sm shadow-rose-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <Unlock class="w-4 h-4" />
                                 <span>Buka Kunci Layar</span>
@@ -771,7 +771,7 @@ const filteredStudents = computed(() => {
                             <button
                                 type="button"
                                 @click="resetLogin(selectedStudent.student_id)"
-                                class="py-2 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-full transition-all flex items-center gap-1.5 cursor-pointer"
+                                class="py-2.5 px-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-full transition-all flex items-center gap-1.5 cursor-pointer"
                             >
                                 <RotateCcw class="w-3.5 h-3.5 text-slate-400" />
                                 <span>Reset Sesi</span>
@@ -779,7 +779,7 @@ const filteredStudents = computed(() => {
                             <button
                                 type="button"
                                 @click="closeStudentDetail"
-                                class="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-full transition-all cursor-pointer"
+                                class="py-2.5 px-5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-full transition-all cursor-pointer"
                             >
                                 Tutup
                             </button>

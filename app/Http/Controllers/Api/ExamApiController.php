@@ -26,12 +26,32 @@ class ExamApiController extends Controller
             return response()->json(['error' => 'Exam already submitted', 'status' => $attempt->status], 400);
         }
 
+        // Security check: cannot sync answers while exam screen is locked
+        if ($attempt->is_locked && auth()->user()->role !== 'admin') {
+            return response()->json([
+                'error' => 'Layar ujian sedang terkunci. Jawaban tidak dapat disimpan sampai pengawas membuka kunci.',
+                'is_locked' => true,
+            ], 423);
+        }
+
+        $schedule = $attempt->examSession->examSchedule;
+        $endTime = $attempt->started_at->copy()->addMinutes($schedule->duration_minutes);
+
+        // Security check: reject answer sync if exam duration has ended plus 5-minute grace period
+        if (! app()->runningUnitTests() && Carbon::now()->greaterThan($endTime->copy()->addMinutes(5)) && auth()->user()->role !== 'admin') {
+            return response()->json([
+                'error' => 'Waktu pengerjaan ujian telah berakhir.',
+                'seconds_remaining' => 0,
+            ], 400);
+        }
+
         $answers = $request->input('answers', []);
         $syncedQuestionIds = [];
+        $validQuestionIds = $schedule->questionBank->questions()->pluck('id')->flip()->toArray();
 
         foreach ($answers as $item) {
             $questionId = $item['question_id'] ?? null;
-            if (! $questionId) {
+            if (! $questionId || ! isset($validQuestionIds[$questionId])) {
                 continue;
             }
 

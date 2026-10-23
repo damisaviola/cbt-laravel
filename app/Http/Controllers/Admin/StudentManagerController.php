@@ -75,6 +75,10 @@ class StudentManagerController extends Controller
 
     public function update(Request $request, User $user)
     {
+        if ($user->role !== 'student') {
+            abort(403, 'Hanya akun siswa yang dapat diubah melalui menu ini.');
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:50', 'unique:users,username,'.$user->id],
@@ -103,6 +107,10 @@ class StudentManagerController extends Controller
 
     public function destroy(User $user)
     {
+        if ($user->role !== 'student') {
+            abort(403, 'Hanya akun siswa yang dapat dihapus melalui menu ini.');
+        }
+
         $user->delete();
 
         return back()->with('success', 'Data siswa berhasil dihapus.');
@@ -238,6 +246,17 @@ class StudentManagerController extends Controller
      */
     public function apiSync(Request $request)
     {
+        // Security check: Validate SIS API Key or Admin Session
+        $expectedKey = env('SIS_API_TOKEN', config('app.sis_api_token', 'cbt-sis-sync-secret-key'));
+        $apiKey = $request->bearerToken() ?: $request->header('X-API-KEY') ?: $request->input('api_token');
+        $isAdmin = auth('web')->check() && auth('web')->user()->role === 'admin';
+
+        if (! $isAdmin && (! $apiKey || ! hash_equals($expectedKey, (string) $apiKey))) {
+            return response()->json([
+                'error' => 'Akses ditolak. Token autentikasi API SIS (Bearer atau X-API-KEY) tidak valid.',
+            ], 401);
+        }
+
         $validated = $request->validate([
             'students' => ['required', 'array', 'min:1'],
             'students.*.username' => ['required', 'string', 'max:50'],
@@ -336,7 +355,7 @@ class StudentManagerController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => ['required', 'file', 'mimes:xlsx,xls,csv'],
+            'file' => ['required', 'file', 'mimes:xlsx,xls,csv', 'max:10240'],
         ]);
 
         $file = $request->file('file');

@@ -16,32 +16,7 @@ const props = defineProps({
     },
     dataSets: {
         type: Object,
-        default: () => ({
-            'This Year': [
-                { label: 'Jan', value: 65 },
-                { label: 'Feb', value: 78 },
-                { label: 'Mar', value: 60 },
-                { label: 'Apr', value: 85 },
-                { label: 'May', value: 92 },
-                { label: 'Jun', value: 88 },
-                { label: 'Jul', value: 105 },
-                { label: 'Aug', value: 118 },
-            ],
-            'Last 6 Months': [
-                { label: 'Mar', value: 50 },
-                { label: 'Apr', value: 72 },
-                { label: 'May', value: 84 },
-                { label: 'Jun', value: 80 },
-                { label: 'Jul', value: 95 },
-                { label: 'Aug', value: 110 },
-            ],
-            'This Month': [
-                { label: 'W1', value: 20 },
-                { label: 'W2', value: 45 },
-                { label: 'W3', value: 68 },
-                { label: 'W4', value: 95 },
-            ],
-        }),
+        default: () => ({}),
     },
     chartId: {
         type: String,
@@ -58,6 +33,9 @@ const hoveredPoint = ref(null);
 const showDropdown = ref(false);
 
 const currentData = computed(() => {
+    if (!props.dataSets || typeof props.dataSets !== 'object') {
+        return [];
+    }
     return props.dataSets[selectedFilter.value] || props.dataSets[Object.keys(props.dataSets)[0]] || [];
 });
 
@@ -69,8 +47,27 @@ const padding = { top: 25, right: 30, bottom: 45, left: 45 };
 const width = viewBoxWidth - padding.left - padding.right;
 const height = viewBoxHeight - padding.top - padding.bottom;
 
-const yTicks = [0, 20, 40, 60, 80, 100, 120];
-const maxVal = 120;
+const maxVal = computed(() => {
+    const data = currentData.value;
+    if (!data.length) return 100;
+    const rawMax = Math.max(...data.map(d => Number(d.value) || 0));
+    if (rawMax <= 0) return 100;
+    if (rawMax <= 10) return 10;
+    if (rawMax <= 20) return 20;
+    if (rawMax <= 50) return 50;
+    if (rawMax <= 100) return 100;
+    if (rawMax <= 200) return 200;
+    if (rawMax <= 500) return 500;
+    if (rawMax <= 1000) return 1000;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)));
+    return Math.ceil(rawMax / magnitude) * magnitude;
+});
+
+const yTicks = computed(() => {
+    const max = maxVal.value;
+    const step = max / 5;
+    return [0, Math.round(step), Math.round(step * 2), Math.round(step * 3), Math.round(step * 4), Math.round(max)];
+});
 
 // Coordinate mapping
 const points = computed(() => {
@@ -78,14 +75,16 @@ const points = computed(() => {
     if (!data.length) return [];
     
     return data.map((d, index) => {
-        const x = padding.left + (index / (data.length - 1)) * width;
-        const normalizedVal = Math.min(Math.max(d.value, 0), maxVal);
-        const y = padding.top + height - (normalizedVal / maxVal) * height;
+        const x = data.length === 1 
+            ? padding.left + width / 2 
+            : padding.left + (index / (data.length - 1)) * width;
+        const normalizedVal = Math.min(Math.max(Number(d.value) || 0, 0), maxVal.value);
+        const y = padding.top + height - (normalizedVal / maxVal.value) * height;
         return {
             x,
             y,
             label: d.label,
-            value: d.value,
+            value: Number(d.value) || 0,
         };
     });
 });
@@ -176,7 +175,11 @@ const selectFilter = (opt) => {
 
         <!-- SVG Line Chart Canvas (Ultra-lightweight, 0 dependency, instant render) -->
         <div class="relative w-full aspect-[21/9] sm:aspect-[24/9] min-h-[190px]">
+            <div v-if="!points.length" class="absolute inset-0 flex items-center justify-center text-xs text-slate-400 dark:text-slate-500">
+                Belum ada data rekaman untuk periode ini.
+            </div>
             <svg 
+                v-else
                 class="w-full h-full overflow-visible select-none"
                 :viewBox="`0 0 ${viewBoxWidth} ${viewBoxHeight}`"
                 preserveAspectRatio="none"

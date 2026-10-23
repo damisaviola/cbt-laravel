@@ -30,6 +30,14 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    chartData: {
+        type: Object,
+        default: () => null,
+    },
+    categoryData: {
+        type: Array,
+        default: () => null,
+    },
 });
 
 const page = usePage();
@@ -188,7 +196,8 @@ const filteredExams = computed(() => {
                     <TrendChart 
                         title="Enrollment & Performance Trends"
                         subtitle="Grafik konsistensi pengerjaan dan skor rata-rata ujian"
-                        filter-options="['This Year', 'Last 6 Months', 'This Month']"
+                        :filter-options="['This Year', 'Last 6 Months', 'This Month']"
+                        :data-sets="chartData"
                     />
                 </div>
 
@@ -197,6 +206,7 @@ const filteredExams = computed(() => {
                     <CategoryProgressWidget 
                         title="Top Performing Categories"
                         subtitle="Capaian nilai menurut rumpun mata pelajaran"
+                        :categories="categoryData"
                     />
                 </div>
             </div>
@@ -378,32 +388,32 @@ const filteredExams = computed(() => {
                 <div
                     v-if="showTokenModal"
                     @click="closeTokenModal"
-                    class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto"
+                    class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto"
                 >
                     <div
                         @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 max-w-sm w-full p-6 shadow-xl text-center space-y-4 my-auto"
+                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-sm w-full p-6 sm:p-7 shadow-2xl text-center space-y-4 my-auto relative"
                     >
                         <div class="flex justify-end">
                             <button 
                                 type="button"
                                 @click="closeTokenModal" 
-                                class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer"
+                                class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                                 aria-label="Tutup"
                             >
                                 <X class="w-4 h-4" />
                             </button>
                         </div>
 
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
-                            <KeyRound class="w-6 h-6" />
+                        <div class="w-14 h-14 rounded-3xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto shadow-sm shadow-blue-500/10">
+                            <KeyRound class="w-7 h-7" />
                         </div>
 
                         <div>
-                            <h3 class="text-base font-bold text-slate-900 dark:text-white">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
                                 Konfirmasi Token Ujian
                             </h3>
-                            <p class="text-xs text-slate-400 mt-1 font-medium">
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
                                 {{ selectedExam?.schedule_title }} &bull; {{ selectedExam?.room_name }}
                             </p>
                         </div>
@@ -417,28 +427,28 @@ const filteredExams = computed(() => {
                                     maxlength="10"
                                     required
                                     autofocus
-                                    class="w-full text-center text-2xl font-black font-mono tracking-widest uppercase p-3 border border-slate-200 dark:border-slate-700 rounded-xl focus:border-blue-600 focus:outline-none text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 cursor-text transition-colors"
+                                    class="w-full text-center text-2xl font-black font-mono tracking-widest uppercase p-3 border border-slate-200 dark:border-slate-700 rounded-2xl focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none text-slate-900 dark:text-white bg-slate-50/80 dark:bg-slate-800/60 cursor-text transition-all"
                                 />
                                 <p v-if="tokenForm.errors.token" class="text-xs text-rose-500 font-semibold mt-1.5">
                                     {{ tokenForm.errors.token }}
                                 </p>
-                                <p class="text-[11px] text-slate-400 mt-1.5">
+                                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-1.5">
                                     Mintalah token ruangan kepada Pengawas Ruang Anda.
                                 </p>
                             </div>
 
-                            <div class="flex items-center gap-2 pt-1">
+                            <div class="flex items-center gap-3 pt-2">
                                 <button 
                                     type="button" 
                                     @click="closeTokenModal" 
-                                    class="flex-1 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-50 transition-all cursor-pointer"
+                                    class="flex-1 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-full text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-all cursor-pointer"
                                 >
                                     Batal
                                 </button>
                                 <button
                                     type="submit"
                                     :disabled="tokenForm.processing || !tokenForm.token"
-                                    class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm disabled:opacity-50 transition-all cursor-pointer"
+                                    class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 disabled:opacity-50 transition-all cursor-pointer"
                                 >
                                     {{ tokenForm.processing ? 'Memverifikasi...' : 'Masuk Ujian' }}
                                 </button>

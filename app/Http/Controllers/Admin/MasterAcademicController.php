@@ -175,6 +175,10 @@ class MasterAcademicController extends Controller
             return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
+        if ($user->role === 'student') {
+            return back()->with('error', 'Akun siswa tidak dapat dihapus melalui menu tenaga pendidik.');
+        }
+
         $user->delete();
 
         return back()->with('success', 'Akun berhasil dihapus.');

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useForm, Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DataTable from '@/Components/DataTable.vue';
+import Modal from '@/Components/Modal.vue';
 import { BookOpen, Plus, Pencil, Trash2 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -163,99 +164,89 @@ const deleteSubject = async (sub) => {
             </template>
         </DataTable>
 
-        <!-- Modern Rounded Modal (Lightweight & Smooth) -->
-        <Teleport to="body">
-            <Transition
-                enter-active-class="transition duration-150 ease-out"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="transition duration-100 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-            >
-                <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-                    <!-- Lightweight Backdrop (No blur) -->
-                    <div class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70" @click="showModal = false" />
+        <!-- Modal using EduPro Modal Component -->
+        <Modal
+            :show="showModal"
+            @close="showModal = false"
+            :title="editingSubject ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran'"
+            subtitle="Atur identitas mapel, kode kurikulum, tingkat kelas, dan standar KKM"
+            max-width="md"
+        >
+            <template #icon>
+                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <BookOpen class="w-5 h-5" />
+                </div>
+            </template>
 
-                    <!-- Dialog Container -->
-                    <div class="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-md w-full p-6 shadow-xl z-10 transform-gpu" @click.stop>
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-5">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                                {{ editingSubject ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran' }}
-                            </h3>
-                            <button @click="showModal = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg leading-none cursor-pointer">
-                                &times;
-                            </button>
-                        </div>
+            <form id="subjectForm" @submit.prevent="submit" class="space-y-4 pt-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Kode Mapel</label>
+                    <input
+                        v-model="form.code"
+                        type="text"
+                        placeholder="Contoh: MAT-10"
+                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                        required
+                    />
+                </div>
 
-                        <form @submit.prevent="submit" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Kode Mapel</label>
-                                <input
-                                    v-model="form.code"
-                                    type="text"
-                                    placeholder="Contoh: MAT-10"
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/50 dark:bg-slate-800/80 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                    required
-                                />
-                            </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Mata Pelajaran</label>
+                    <input
+                        v-model="form.name"
+                        type="text"
+                        placeholder="Contoh: Matematika Wajib"
+                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                        required
+                    />
+                </div>
 
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Mata Pelajaran</label>
-                                <input
-                                    v-model="form.name"
-                                    type="text"
-                                    placeholder="Contoh: Matematika Wajib"
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/50 dark:bg-slate-800/80 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                    required
-                                />
-                            </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tingkat Kelas</label>
+                        <select
+                            v-model="form.grade_level"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                        >
+                            <option :value="null">Semua Tingkat</option>
+                            <option v-for="g in [7,8,9,10,11,12]" :key="g" :value="g">Kelas {{ g }}</option>
+                        </select>
+                    </div>
 
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Tingkat Kelas</label>
-                                    <select
-                                        v-model="form.grade_level"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/50 dark:bg-slate-800/80 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                    >
-                                        <option :value="null">Semua Tingkat</option>
-                                        <option v-for="g in [7,8,9,10,11,12]" :key="g" :value="g">Kelas {{ g }}</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Nilai KKM (0-100)</label>
-                                    <input
-                                        v-model="form.kkm_score"
-                                        type="number"
-                                        step="0.5"
-                                        min="0"
-                                        max="100"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/50 dark:bg-slate-800/80 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
-                                <button
-                                    type="button"
-                                    @click="showModal = false"
-                                    class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
-                                >
-                                    Batal
-                                </button>
-                                <button
-                                    type="submit"
-                                    class="px-4 py-2 bg-[#0F52BA] hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer"
-                                >
-                                    Simpan Mapel
-                                </button>
-                            </div>
-                        </form>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nilai KKM (0-100)</label>
+                        <input
+                            v-model="form.kkm_score"
+                            type="number"
+                            step="0.5"
+                            min="0"
+                            max="100"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            required
+                        />
                     </div>
                 </div>
-            </Transition>
-        </Teleport>
+            </form>
+
+            <template #footer>
+                <div class="flex items-center justify-end gap-3">
+                    <button
+                        type="button"
+                        @click="showModal = false"
+                        class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors cursor-pointer"
+                    >
+                        Batal
+                    </button>
+                    <button
+                        type="submit"
+                        form="subjectForm"
+                        :disabled="form.processing"
+                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                    >
+                        {{ form.processing ? 'Menyimpan...' : 'Simpan Mapel' }}
+                    </button>
+                </div>
+            </template>
+        </Modal>
     </AppLayout>
 </template>

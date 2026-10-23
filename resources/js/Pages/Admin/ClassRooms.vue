@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useForm, Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DataTable from '@/Components/DataTable.vue';
+import Modal from '@/Components/Modal.vue';
 import { Layers, Plus, Pencil, Trash2 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -162,69 +163,57 @@ const deleteClass = async (cls) => {
             </template>
         </DataTable>
 
-        <!-- Modal (Lightweight & Smooth) -->
-        <Teleport to="body">
-            <Transition
-                enter-active-class="transition duration-150 ease-out"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="transition duration-100 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-            >
-                <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-                    <!-- Lightweight Backdrop (No blur) -->
-                    <div class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70" @click="showModal = false" />
-
-                    <!-- Dialog Container -->
-                    <div class="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-md w-full p-6 shadow-xl space-y-4 z-10 transform-gpu" @click.stop>
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-                                {{ editingClass ? 'Edit Rombongan Belajar' : 'Tambah Rombongan Belajar' }}
-                            </h3>
-                            <button @click="showModal = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg leading-none cursor-pointer">
-                                &times;
-                            </button>
-                        </div>
-
-                        <form @submit.prevent="submit" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tingkat Kelas</label>
-                                <select v-model="form.grade_level" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium" required>
-                                    <option v-for="g in [7,8,9,10,11,12]" :key="g" :value="g">Kelas {{ g }}</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Jurusan / Peminatan</label>
-                                <input v-model="form.major_code" type="text" placeholder="Contoh: MIPA, IPS, TKJ, Umum" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none" required />
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Rombel / Kelas</label>
-                                <input v-model="form.name" type="text" placeholder="Contoh: X-MIPA-1" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none" required />
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Wali Kelas (Opsional)</label>
-                                <select v-model="form.homeroom_teacher_id" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100">
-                                    <option value="">-- Pilih Guru Wali Kelas --</option>
-                                    <option v-for="t in teachers" :key="t.id" :value="t.id">{{ t.name }}</option>
-                                </select>
-                            </div>
-
-                            <div class="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                                <button type="button" @click="showModal = false" class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
-                                    Batal
-                                </button>
-                                <button type="submit" class="px-5 py-2 bg-[#0F52BA] text-white text-xs font-semibold rounded-xl hover:bg-blue-700 shadow-xs hover:shadow transition-all cursor-pointer">
-                                    Simpan Rombel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+        <!-- Modal using EduPro Modal Component -->
+        <Modal
+            :show="showModal"
+            @close="showModal = false"
+            :title="editingClass ? 'Edit Rombongan Belajar' : 'Tambah Rombongan Belajar'"
+            subtitle="Atur data rombel kelas, jurusan peminatan, dan wali kelas"
+            max-width="md"
+        >
+            <template #icon>
+                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <Layers class="w-5 h-5" />
                 </div>
-            </Transition>
-        </Teleport>
+            </template>
+
+            <form id="classRoomForm" @submit.prevent="submit" class="space-y-4 pt-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tingkat Kelas</label>
+                    <select v-model="form.grade_level" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none font-medium transition-all" required>
+                        <option v-for="g in [7,8,9,10,11,12]" :key="g" :value="g">Kelas {{ g }}</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Jurusan / Peminatan</label>
+                    <input v-model="form.major_code" type="text" placeholder="Contoh: MIPA, IPS, TKJ, Umum" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all" required />
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Rombel / Kelas</label>
+                    <input v-model="form.name" type="text" placeholder="Contoh: X-MIPA-1" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all" required />
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Wali Kelas (Opsional)</label>
+                    <select v-model="form.homeroom_teacher_id" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all">
+                        <option value="">-- Pilih Guru Wali Kelas --</option>
+                        <option v-for="t in teachers" :key="t.id" :value="t.id">{{ t.name }}</option>
+                    </select>
+                </div>
+            </form>
+
+            <template #footer>
+                <div class="flex items-center justify-end gap-3">
+                    <button type="button" @click="showModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-full text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors cursor-pointer">
+                        Batal
+                    </button>
+                    <button type="submit" form="classRoomForm" :disabled="form.processing" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer">
+                        {{ form.processing ? 'Menyimpan...' : 'Simpan Rombel' }}
+                    </button>
+                </div>
+            </template>
+        </Modal>
     </AppLayout>
 </template>

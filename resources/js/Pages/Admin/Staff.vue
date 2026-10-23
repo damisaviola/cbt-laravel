@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useForm, Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DataTable from '@/Components/DataTable.vue';
+import Modal from '@/Components/Modal.vue';
 import { Users, Plus, Pencil, Trash2, Key } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -170,106 +171,96 @@ const deleteStaff = async (user) => {
             </template>
         </DataTable>
 
-        <!-- Modern Rounded Modal (Lightweight & Smooth) -->
-        <Teleport to="body">
-            <Transition
-                enter-active-class="transition duration-150 ease-out"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="transition duration-100 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-            >
-                <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-                    <!-- Lightweight Backdrop (No blur) -->
-                    <div class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70" @click="showModal = false" />
-
-                    <!-- Dialog Container -->
-                    <div class="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-md w-full p-6 shadow-xl z-10 transform-gpu" @click.stop>
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-5">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">
-                                {{ editingStaff ? 'Edit Akun Staf' : 'Tambah Akun Guru / Pengawas' }}
-                            </h3>
-                            <button @click="showModal = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-lg leading-none cursor-pointer">
-                                &times;
-                            </button>
-                        </div>
-
-                        <form @submit.prevent="submit" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Lengkap & Gelar</label>
-                                <input
-                                    v-model="form.name"
-                                    type="text"
-                                    placeholder="Contoh: Budi Hartono, S.Pd."
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Username / NIP</label>
-                                <input
-                                    v-model="form.username"
-                                    type="text"
-                                    placeholder="Contoh: guru atau 19800101..."
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Peran Hak Akses</label>
-                                <select
-                                    v-model="form.role"
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                    required
-                                >
-                                    <option value="teacher">Guru Mata Pelajaran</option>
-                                    <option value="proctor">Pengawas Ruang Ujian</option>
-                                    <option value="admin">Administrator Sekolah</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                                    Kata Sandi {{ editingStaff ? '(Kosongkan jika tidak diubah)' : '' }}
-                                </label>
-                                <input
-                                    v-model="form.password"
-                                    type="password"
-                                    placeholder="Minimal 4 karakter"
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                    :required="!editingStaff"
-                                />
-                            </div>
-
-                            <div v-if="editingStaff" class="pt-1">
-                                <label class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer">
-                                    <input v-model="form.is_active" type="checkbox" class="rounded text-[#0F52BA] focus:ring-0" />
-                                    <span>Akun Aktif (Bisa Login)</span>
-                                </label>
-                            </div>
-
-                            <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
-                                <button
-                                    type="button"
-                                    @click="showModal = false"
-                                    class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer"
-                                >
-                                    Batal
-                                </button>
-                                <button
-                                    type="submit"
-                                    class="px-4 py-2 bg-[#0F52BA] hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer"
-                                >
-                                    Simpan Akun
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+        <!-- Modal using EduPro Modal Component -->
+        <Modal
+            :show="showModal"
+            @close="showModal = false"
+            :title="editingStaff ? 'Edit Akun Staf' : 'Tambah Akun Guru / Pengawas'"
+            subtitle="Atur identitas akun pendidik, hak akses pengawas atau guru mapel"
+            max-width="md"
+        >
+            <template #icon>
+                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <Users class="w-5 h-5" />
                 </div>
-            </Transition>
-        </Teleport>
+            </template>
+
+            <form id="staffForm" @submit.prevent="submit" class="space-y-4 pt-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Lengkap & Gelar</label>
+                    <input
+                        v-model="form.name"
+                        type="text"
+                        placeholder="Contoh: Budi Hartono, S.Pd."
+                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Username / NIP</label>
+                    <input
+                        v-model="form.username"
+                        type="text"
+                        placeholder="Contoh: guru atau 19800101..."
+                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Peran Hak Akses</label>
+                    <select
+                        v-model="form.role"
+                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none font-medium transition-all"
+                        required
+                    >
+                        <option value="teacher">Guru Mata Pelajaran</option>
+                        <option value="proctor">Pengawas Ruang Ujian</option>
+                        <option value="admin">Administrator Sekolah</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                        Kata Sandi {{ editingStaff ? '(Kosongkan jika tidak diubah)' : '' }}
+                    </label>
+                    <input
+                        v-model="form.password"
+                        type="password"
+                        placeholder="Minimal 4 karakter"
+                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                        :required="!editingStaff"
+                    />
+                </div>
+
+                <div v-if="editingStaff" class="pt-1">
+                    <label class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer">
+                        <input v-model="form.is_active" type="checkbox" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-0" />
+                        <span>Akun Aktif (Bisa Login)</span>
+                    </label>
+                </div>
+            </form>
+
+            <template #footer>
+                <div class="flex items-center justify-end gap-3">
+                    <button
+                        type="button"
+                        @click="showModal = false"
+                        class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors cursor-pointer"
+                    >
+                        Batal
+                    </button>
+                    <button
+                        type="submit"
+                        form="staffForm"
+                        :disabled="form.processing"
+                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                    >
+                        {{ form.processing ? 'Menyimpan...' : 'Simpan Akun' }}
+                    </button>
+                </div>
+            </template>
+        </Modal>
     </AppLayout>
 </template>

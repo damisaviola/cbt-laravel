@@ -765,11 +765,11 @@ onUnmounted(() => {
                                     <select
                                         :value="answersMap[currentQuestion.id]?.selectedOptions?.[opt.order_index] || ''"
                                         @change="(e) => setMatchingPair(opt.order_index, e.target.value)"
-                                        class="text-xs p-2.5 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white sm:w-1/2 font-medium focus:border-[#0F52BA] focus:outline-none transition-colors"
+                                        class="text-xs p-2.5 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 text-slate-900 dark:text-white sm:w-1/2 font-medium focus:border-blue-500 focus:outline-none transition-colors"
                                     >
                                         <option value="">-- Pilih Pasangan Jawaban --</option>
-                                        <option v-for="pair in currentQuestion.options" :key="pair.id" :value="pair.matching_pair_text">
-                                            {{ pair.matching_pair_text }}
+                                        <option v-for="(choice, cIdx) in (currentQuestion.matching_choices || currentQuestion.options?.map(o => o.matching_pair_text))" :key="cIdx" :value="choice">
+                                            {{ choice }}
                                         </option>
                                     </select>
                                 </div>
@@ -984,17 +984,17 @@ onUnmounted(() => {
         </div>
 
         <!-- ==================== ANTI-CHEAT WARNING STRIKE MODAL ==================== -->
-        <div v-if="showWarningStrike && !isScreenLocked" class="fixed inset-0 bg-slate-900/50 dark:bg-black/70 flex items-center justify-center p-4 z-50">
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border-2 border-amber-300 dark:border-amber-600 max-w-sm w-full p-6 shadow-xl text-center space-y-4 animate-in zoom-in-95 duration-150 transform-gpu">
-                <div class="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center mx-auto">
+        <div v-if="showWarningStrike && !isScreenLocked" class="fixed inset-0 bg-slate-900/40 dark:bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-amber-200 dark:border-amber-500/30 max-w-sm w-full p-6 sm:p-7 shadow-2xl text-center space-y-4 animate-in zoom-in-95 duration-150 transform-gpu my-auto">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto shadow-sm shadow-amber-600/10">
                     <AlertTriangle class="w-6 h-6" />
                 </div>
 
                 <div>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white">
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
                         Peringatan Pelanggaran #{{ strikes }}
                     </h3>
-                    <p class="text-xs text-amber-800 dark:text-amber-300 font-semibold mt-1">
+                    <p class="text-xs text-amber-600 dark:text-amber-400 font-semibold mt-1">
                         {{ strikeReason || 'Terdeteksi keluar dari layar ujian CBT' }}
                     </p>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
@@ -1005,7 +1005,7 @@ onUnmounted(() => {
                 <button
                     type="button"
                     @click="showWarningStrike = false"
-                    class="w-full py-2.5 bg-[#0F52BA] hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer"
+                    class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
                 >
                     Saya Mengerti & Lanjutkan Ujian
                 </button>
@@ -1013,14 +1013,14 @@ onUnmounted(() => {
         </div>
 
         <!-- ==================== SUBMIT CONFIRMATION MODAL ==================== -->
-        <div v-if="showSubmitModal" class="fixed inset-0 bg-slate-900/50 dark:bg-black/70 flex items-center justify-center p-4 z-50">
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-sm w-full p-6 shadow-xl text-center space-y-4 animate-in zoom-in-95 duration-150 transform-gpu">
-                <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border border-emerald-200/60 dark:border-emerald-800">
-                    <CheckCircle2 class="w-6 h-6" />
+        <div v-if="showSubmitModal" class="fixed inset-0 bg-slate-900/40 dark:bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-sm w-full p-6 sm:p-7 shadow-2xl text-center space-y-4 animate-in zoom-in-95 duration-150 transform-gpu my-auto">
+                <div class="w-14 h-14 rounded-3xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-sm shadow-emerald-600/10">
+                    <CheckCircle2 class="w-7 h-7" />
                 </div>
 
                 <div>
-                    <h3 class="text-base font-bold text-slate-900 dark:text-white">
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
                         Konfirmasi Selesai Ujian
                     </h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -1029,28 +1029,28 @@ onUnmounted(() => {
                 </div>
 
                 <!-- Summary Status Breakdown -->
-                <div class="grid grid-cols-3 gap-2 p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 rounded-xl text-xs font-mono">
+                <div class="grid grid-cols-3 gap-2 p-3.5 bg-slate-50/70 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-800 rounded-2xl text-xs font-mono">
                     <div>
                         <span class="text-[10px] text-slate-400 dark:text-slate-500 block uppercase">Terjawab</span>
-                        <strong class="text-emerald-700 dark:text-emerald-400 text-sm">{{ answeredCount }}</strong>
+                        <strong class="text-emerald-600 dark:text-emerald-400 text-sm">{{ answeredCount }}</strong>
                     </div>
                     <div>
                         <span class="text-[10px] text-slate-400 dark:text-slate-500 block uppercase">Ragu-ragu</span>
-                        <strong class="text-amber-600 dark:text-amber-400 text-sm">{{ doubtCount }}</strong>
+                        <strong class="text-amber-500 dark:text-amber-400 text-sm">{{ doubtCount }}</strong>
                     </div>
                     <div>
                         <span class="text-[10px] text-slate-400 dark:text-slate-500 block uppercase">Kosong</span>
-                        <strong :class="unansweredCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-700 dark:text-slate-300'" class="text-sm">{{ unansweredCount }}</strong>
+                        <strong :class="unansweredCount > 0 ? 'text-rose-500 dark:text-rose-400' : 'text-slate-700 dark:text-slate-300'" class="text-sm">{{ unansweredCount }}</strong>
                     </div>
                 </div>
 
-                <div v-if="unansweredCount > 0 || doubtCount > 0" class="p-2.5 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 rounded-xl text-left text-[11px] text-amber-900 dark:text-amber-200 flex items-start gap-2">
+                <div v-if="unansweredCount > 0 || doubtCount > 0" class="p-3 bg-amber-50/80 dark:bg-amber-950/50 border border-amber-200/80 dark:border-amber-800/60 rounded-2xl text-left text-[11px] text-amber-900 dark:text-amber-200 flex items-start gap-2">
                     <AlertCircle class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                     <span>Masih ada soal yang belum dijawab atau ditandai ragu-ragu. Anda disarankan memeriksa kembali.</span>
                 </div>
 
                 <!-- Early submission notice -->
-                <div v-if="minSubmitCountdown > 0" class="p-2.5 bg-blue-50/90 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 rounded-xl text-left text-[11px] text-blue-900 dark:text-blue-200 flex items-start gap-2">
+                <div v-if="minSubmitCountdown > 0" class="p-3 bg-blue-50/90 dark:bg-blue-950/60 border border-blue-200/80 dark:border-blue-800/60 rounded-2xl text-left text-[11px] text-blue-900 dark:text-blue-200 flex items-start gap-2">
                     <Clock class="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
                     <div>
                         <strong class="block text-blue-950 dark:text-blue-100 font-bold">Mengumpulkan Lebih Awal</strong>
@@ -1058,11 +1058,11 @@ onUnmounted(() => {
                     </div>
                 </div>
 
-                <div class="flex gap-2.5 pt-1">
+                <div class="flex gap-2.5 pt-2">
                     <button
                         @click="showSubmitModal = false"
                         type="button"
-                        class="flex-1 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer bg-white dark:bg-slate-800"
+                        class="flex-1 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-50 dark:hover:bg-slate-750 transition-all cursor-pointer bg-white dark:bg-slate-800"
                     >
                         Periksa Lagi
                     </button>
@@ -1070,7 +1070,7 @@ onUnmounted(() => {
                         @click="confirmSubmit"
                         type="button"
                         :disabled="isSubmitting"
-                        class="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                        class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-emerald-600/25 transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                     >
                         <Send class="w-3.5 h-3.5" />
                         <span>{{ isSubmitting ? 'Mengirimkan...' : 'Ya, Kumpulkan' }}</span>
@@ -1108,7 +1108,7 @@ onUnmounted(() => {
                         type="button"
                         @click="adminDirectUnlock"
                         :disabled="isUnlocking"
-                        class="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.98] text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        class="w-full py-2.5 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-[0.98] text-white font-bold text-xs rounded-full shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                         <Unlock class="w-4 h-4" />
                         <span>{{ isUnlocking ? 'Membuka Kunci...' : 'Buka Kunci Sekarang (Mode Admin/Guru)' }}</span>

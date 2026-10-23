@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardAnalytics;
 use App\Models\AttemptAnswer;
 use App\Models\ExamAttempt;
 use App\Models\ExamSession;
@@ -18,7 +19,7 @@ class StudentExamController extends Controller
     /**
      * Student Dashboard: list of exams
      */
-    public function dashboard(): Response
+    public function dashboard(DashboardAnalytics $analytics): Response
     {
         $student = auth()->user();
         $classId = $student->class_room_id;
@@ -80,6 +81,8 @@ class StudentExamController extends Controller
         return Inertia::render('Student/Dashboard', [
             'activeExams' => $activeExams,
             'school' => SchoolSetting::current(),
+            'chartData' => $analytics->getStudentTrendData($student),
+            'categoryData' => $analytics->getStudentCategories($student),
         ]);
     }
 
@@ -159,11 +162,10 @@ class StudentExamController extends Controller
         $canSubmitNow = Carbon::now()->greaterThanOrEqualTo($minSubmitTime);
         $secondsUntilMinSubmit = (int) max(0, Carbon::now()->diffInSeconds($minSubmitTime, false));
 
-        // Get questions according to saved order
+        // Get questions according to saved order and sanitize data to prevent leaking answer keys / rubrics
         $questionOrder = $attempt->question_order_json ?: $bank->questions()->pluck('id')->toArray();
         $questions = Question::whereIn('id', $questionOrder)
             ->with(['options' => function ($q) use ($schedule) {
-                // DO NOT expose is_correct to the student!
                 $q->select('id', 'question_id', 'option_label', 'content', 'matching_pair_text', 'order_index');
                 if ($schedule->shuffle_options) {
                     $q->inRandomOrder();
@@ -177,6 +179,54 @@ class StudentExamController extends Controller
             })
             ->values();
 
+        $sanitizedQuestions = $questions->map(function ($q) {
+            $data = [
+                'id' => $q->id,
+                'question_bank_id' => $q->question_bank_id,
+                'type' => $q->type,
+                'reading_passage' => $q->reading_passage,
+                'content' => $q->content,
+                'media_path' => $q->media_path,
+                'audio_play_limit' => $q->audio_play_limit,
+                'max_score' => $q->max_score,
+                'order_index' => $q->order_index,
+                'options' => [],
+            ];
+
+            if ($q->type === 'short_answer' || $q->type === 'essay') {
+                // NEVER expose options for short_answer (answer key) or essay (teacher rubric) to students!
+                $data['options'] = [];
+            } elseif ($q->type === 'matching') {
+                // Collect and shuffle matching target choices independently so row association is hidden
+                $data['matching_choices'] = $q->options
+                    ->pluck('matching_pair_text')
+                    ->filter(fn ($t) => ! is_null($t) && $t !== '')
+                    ->unique()
+                    ->shuffle()
+                    ->values()
+                    ->toArray();
+
+                // Strip matching_pair_text from premise options
+                $data['options'] = $q->options->map(fn ($opt) => [
+                    'id' => $opt->id,
+                    'question_id' => $opt->question_id,
+                    'order_index' => $opt->order_index,
+                    'content' => $opt->content,
+                ])->toArray();
+            } else {
+                // For single, mcma, true_false: omit is_correct and matching_pair_text
+                $data['options'] = $q->options->map(fn ($opt) => [
+                    'id' => $opt->id,
+                    'question_id' => $opt->question_id,
+                    'option_label' => $opt->option_label,
+                    'content' => $opt->content,
+                    'order_index' => $opt->order_index,
+                ])->toArray();
+            }
+
+            return $data;
+        });
+
         // Get previously saved answers from database to re-hydrate IndexedDB if student refreshed
         $savedAnswers = AttemptAnswer::where('exam_attempt_id', $attempt->id)->get()->keyBy('question_id');
 
@@ -184,7 +234,7 @@ class StudentExamController extends Controller
             'attempt' => $attempt,
             'schedule' => $schedule,
             'subject' => $schedule->subject,
-            'questions' => $questions,
+            'questions' => $sanitizedQuestions,
             'savedAnswers' => $savedAnswers,
             'secondsRemaining' => $secondsRemaining,
             'canSubmitNow' => $canSubmitNow,
@@ -206,6 +256,24 @@ class StudentExamController extends Controller
 
         if (in_array($attempt->status, ['submitted', 'graded'])) {
             return redirect()->route('student.exam.result', $attempt->id);
+        }
+
+        // Security check: cannot submit while screen is locked by anti-cheat / proctor
+        if ($attempt->is_locked && auth()->user()->role !== 'admin') {
+            return back()->with('error', 'Layar ujian sedang terkunci karena pelanggaran anti-cheat. Hubungi Pengawas Ruang untuk membuka kunci terlebih dahulu.');
+        }
+
+        $schedule = $attempt->examSession->examSchedule;
+
+        // Security check: enforce minimum submit minutes before early submission
+        if (! app()->runningUnitTests() && $schedule->min_submit_minutes > 0 && auth()->user()->role !== 'admin') {
+            $minSubmitTime = $attempt->started_at->copy()->addMinutes($schedule->min_submit_minutes);
+            $endTime = $attempt->started_at->copy()->addMinutes($schedule->duration_minutes);
+            $timeExpired = Carbon::now()->greaterThanOrEqualTo($endTime);
+
+            if (Carbon::now()->lessThan($minSubmitTime) && ! $timeExpired) {
+                return back()->with('error', "Ujian belum dapat dikumpulkan. Batas minimal pengerjaan adalah {$schedule->min_submit_minutes} menit.");
+            }
         }
 
         $schedule = $attempt->examSession->examSchedule;

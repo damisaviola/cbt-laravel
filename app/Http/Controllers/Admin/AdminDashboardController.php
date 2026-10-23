@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardAnalytics;
 use App\Models\ClassRoom;
 use App\Models\ExamAttempt;
 use App\Models\ExamSchedule;
@@ -17,7 +18,7 @@ use Inertia\Response;
 
 class AdminDashboardController extends Controller
 {
-    public function index(): Response
+    public function index(DashboardAnalytics $analytics): Response
     {
         $school = SchoolSetting::current();
 
@@ -45,6 +46,8 @@ class AdminDashboardController extends Controller
             'school' => $school,
             'stats' => $stats,
             'recentSessions' => $recentSessions,
+            'chartData' => $analytics->getAdminTrendData(),
+            'categoryData' => $analytics->getAdminCategories(),
         ]);
     }
 
@@ -71,9 +74,10 @@ class AdminDashboardController extends Controller
             'headmaster_nip' => ['nullable', 'string', 'max:50'],
             'active_academic_year' => ['required', 'string', 'max:50'],
             'active_semester' => ['required', 'string', 'in:Ganjil,Genap'],
-            'primary_color' => ['required', 'string', 'max:20'],
+            'primary_color' => ['required', 'string', 'max:20', 'regex:/^#[a-fA-F0-9]{3,8}$/'],
             'seb_required' => ['boolean'],
             'seb_key_hash' => ['nullable', 'string', 'max:255'],
+            'logo' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,webp,svg', 'max:2048'],
         ]);
 
         $school = SchoolSetting::current();

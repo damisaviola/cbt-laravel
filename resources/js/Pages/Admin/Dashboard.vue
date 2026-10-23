@@ -28,6 +28,8 @@ const props = defineProps({
     school: Object,
     stats: Object,
     recentSessions: Array,
+    chartData: Object,
+    categoryData: Array,
 });
 
 const copiedTokenId = ref(null);
@@ -147,9 +149,10 @@ const printOrExport = () => {
                 <!-- Left: Enrollment Trends Chart (approx 65% width) -->
                 <div class="lg:col-span-2">
                     <TrendChart 
-                        title="Enrollment Trends"
+                        title="Enrollment & Exam Trends"
                         subtitle="Aktivitas pertumbuhan siswa dan peserta ujian terdaftar"
-                        filter-options="['This Year', 'Last 6 Months', 'This Month']"
+                        :filter-options="['This Year', 'Last 6 Months', 'This Month']"
+                        :data-sets="chartData"
                     />
                 </div>
 
@@ -158,6 +161,7 @@ const printOrExport = () => {
                     <CategoryProgressWidget 
                         title="Top Performing Categories"
                         subtitle="Distribusi performa kelulusan berdasarkan bidang"
+                        :categories="categoryData"
                     />
                 </div>
             </div>

@@ -13,7 +13,8 @@ import {
     FileText, 
     CheckCircle2, 
     HelpCircle,
-    Eye
+    Eye,
+    X
 } from 'lucide-vue-next';
 import { useConfirm } from '@/Composables/useConfirm';
 
@@ -323,23 +324,28 @@ const formattedType = (type) => {
                 <div
                     v-if="showQuestionModal"
                     @click="showQuestionModal = false"
-                    class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70 flex items-center justify-center p-4 z-50 overflow-y-auto"
+                    class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto"
                 >
                     <div
                         @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-2xl w-full p-6 shadow-xl max-h-[90vh] overflow-y-auto my-auto transform-gpu"
+                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-2xl w-full p-6 sm:p-7 shadow-2xl max-h-[90vh] overflow-y-auto my-auto transform-gpu"
                     >
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                                Tambah Butir Soal Baru
-                            </h3>
+                        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-5">
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+                                    Tambah Butir Soal Baru
+                                </h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                    Pilih tipe stimulus soal, kunci jawaban, dan alokasi skor
+                                </p>
+                            </div>
                             <button
                                 type="button"
                                 @click="showQuestionModal = false"
-                                class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg cursor-pointer transition-colors"
+                                class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                                 aria-label="Tutup"
                             >
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                <X class="w-4 h-4" />
                             </button>
                         </div>
 
@@ -347,7 +353,7 @@ const formattedType = (type) => {
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Tipe Soal</label>
-                            <select v-model="questionForm.type" @change="changeQuestionType" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none" required>
+                            <select v-model="questionForm.type" @change="changeQuestionType" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all" required>
                                 <option value="single">Pilihan Ganda Biasa (1 Kunci)</option>
                                 <option value="mcma">Pilihan Ganda Kompleks (MCMA)</option>
                                 <option value="true_false">Benar / Salah (Pernyataan)</option>
@@ -358,7 +364,7 @@ const formattedType = (type) => {
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Bobot Poin Soal</label>
-                            <input v-model="questionForm.max_score" type="number" step="0.5" min="1" max="100" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none" required />
+                            <input v-model="questionForm.max_score" type="number" step="0.5" min="1" max="100" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all" required />
                         </div>
                     </div>
 
@@ -371,7 +377,7 @@ const formattedType = (type) => {
                             v-model="questionForm.reading_passage"
                             rows="3"
                             placeholder="Tuliskan cerita / narasi wacana panjang untuk split view di sini... (Mendukung rumus $formula$)"
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                         ></textarea>
                     </div>
 
@@ -384,7 +390,7 @@ const formattedType = (type) => {
                             v-model="questionForm.content"
                             rows="4"
                             placeholder="Ketikkan teks pertanyaan di sini... Contoh: Diketahui f(x) = $x^2 + 5x$..."
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                             required
                         ></textarea>
                     </div>
@@ -393,7 +399,7 @@ const formattedType = (type) => {
                     <div v-if="questionForm.type === 'single' || questionForm.type === 'mcma'" class="space-y-2">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Pilihan Jawaban</label>
-                            <button type="button" @click="addOptionRow" class="text-[11px] text-[#0F52BA] dark:text-blue-400 font-semibold hover:underline cursor-pointer">
+                            <button type="button" @click="addOptionRow" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer">
                                 + Tambah Opsi
                             </button>
                         </div>
@@ -414,7 +420,7 @@ const formattedType = (type) => {
                                 v-model="opt.content"
                                 type="text"
                                 :placeholder="'Teks Opsi ' + opt.option_label"
-                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                                 required
                             />
                             <button
@@ -431,7 +437,7 @@ const formattedType = (type) => {
                     <div v-else-if="questionForm.type === 'true_false'" class="space-y-2">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Tabel Pernyataan & Kunci</label>
-                            <button type="button" @click="addOptionRow" class="text-[11px] text-[#0F52BA] dark:text-blue-400 font-semibold hover:underline cursor-pointer">
+                            <button type="button" @click="addOptionRow" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer">
                                 + Tambah Baris Pernyataan
                             </button>
                         </div>
@@ -442,10 +448,10 @@ const formattedType = (type) => {
                                 v-model="opt.content"
                                 type="text"
                                 placeholder="Teks pernyataan..."
-                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                                 required
                             />
-                            <select v-model="opt.is_correct" class="text-xs px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl font-bold bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none">
+                            <select v-model="opt.is_correct" class="text-xs px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl font-bold bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all">
                                 <option :value="true">BENAR</option>
                                 <option :value="false">SALAH</option>
                             </select>
@@ -463,7 +469,7 @@ const formattedType = (type) => {
                     <div v-else-if="questionForm.type === 'matching'" class="space-y-2">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Pasangan Menjodohkan</label>
-                            <button type="button" @click="addOptionRow" class="text-[11px] text-[#0F52BA] dark:text-blue-400 font-semibold hover:underline cursor-pointer">
+                            <button type="button" @click="addOptionRow" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer">
                                 + Tambah Pasangan
                             </button>
                         </div>
@@ -473,14 +479,14 @@ const formattedType = (type) => {
                                 v-model="opt.content"
                                 type="text"
                                 :placeholder="'Premis ' + (idx + 1)"
-                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                                 required
                             />
                             <input
                                 v-model="opt.matching_pair_text"
                                 type="text"
                                 :placeholder="'Target Pasangan ' + (idx + 1)"
-                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                                 required
                             />
                         </div>
@@ -494,7 +500,7 @@ const formattedType = (type) => {
                             v-model="questionForm.short_answer_key"
                             type="text"
                             placeholder="Contoh: 36 atau Fotosintesis"
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                             required
                         />
                     </div>
@@ -507,16 +513,16 @@ const formattedType = (type) => {
                             v-model="questionForm.essay_rubric"
                             rows="3"
                             placeholder="Ketikkan poin-poin jawaban yang wajib ada agar siswa mendapat nilai penuh di meja koreksi..."
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
                             required
                         ></textarea>
                     </div>
 
                     <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
-                        <button type="button" @click="showQuestionModal = false" class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
+                        <button type="button" @click="showQuestionModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
                             Batal
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-[#0F52BA] hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer">
+                        <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer">
                             Simpan Butir Soal
                         </button>
                     </div>
@@ -539,30 +545,41 @@ const formattedType = (type) => {
                 <div
                     v-if="showExcelModal"
                     @click="showExcelModal = false"
-                    class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70 flex items-center justify-center p-4 z-50 overflow-y-auto"
+                    class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto"
                 >
                     <div
                         @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-md w-full p-6 shadow-xl my-auto transform-gpu"
+                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-md w-full p-6 sm:p-7 shadow-2xl my-auto transform-gpu"
                     >
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                                Import Soal dari File Excel (.xlsx)
-                            </h3>
+                        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                                    <FileSpreadsheet class="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+                                        Import Soal dari Excel
+                                    </h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        Format spreadsheet (.xlsx, .xls, .csv)
+                                    </p>
+                                </div>
+                            </div>
                             <button
                                 type="button"
                                 @click="showExcelModal = false"
-                                class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg cursor-pointer transition-colors"
+                                class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                                 aria-label="Tutup"
                             >
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                <X class="w-4 h-4" />
                             </button>
                         </div>
-                        <div class="mb-4 p-3.5 bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-between">
+
+                        <div class="mb-4 p-3.5 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-2xl flex items-center justify-between">
                             <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Format Template Soal:</span>
                             <a
                                 href="/teacher/template/excel"
-                                class="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-xs font-semibold text-[#0F52BA] dark:text-blue-400 rounded-lg flex items-center gap-1.5 shadow-2xs transition-colors"
+                                class="px-3.5 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-xs font-semibold text-blue-600 dark:text-blue-400 rounded-full flex items-center gap-1.5 shadow-2xs hover:bg-slate-50 dark:hover:bg-slate-700 transition-all"
                             >
                                 <Download class="w-3.5 h-3.5" />
                                 <span>Template (.xlsx)</span>
@@ -570,18 +587,21 @@ const formattedType = (type) => {
                         </div>
 
                         <form @submit.prevent="submitExcel" class="space-y-4">
-                            <input
-                                type="file"
-                                accept=".xlsx,.xls,.csv"
-                                @change="(e) => excelForm.file = e.target.files[0]"
-                                class="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-xl p-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none"
-                                required
-                            />
-                            <div class="flex justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-                                <button type="button" @click="showExcelModal = false" class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Pilih Berkas Excel</label>
+                                <input
+                                    type="file"
+                                    accept=".xlsx,.xls,.csv"
+                                    @change="(e) => excelForm.file = e.target.files[0]"
+                                    class="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 dark:file:bg-emerald-500/10 file:text-emerald-700 dark:file:text-emerald-400 hover:file:bg-emerald-100 focus:outline-none cursor-pointer"
+                                    required
+                                />
+                            </div>
+                            <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                <button type="button" @click="showExcelModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
                                     Batal
                                 </button>
-                                <button type="submit" :disabled="excelForm.processing" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 active:scale-[0.98] text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer">
+                                <button type="submit" :disabled="excelForm.processing" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-emerald-600/25 transition-all cursor-pointer">
                                     Import Soal
                                 </button>
                             </div>
@@ -604,42 +624,55 @@ const formattedType = (type) => {
                 <div
                     v-if="showWordModal"
                     @click="showWordModal = false"
-                    class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70 flex items-center justify-center p-4 z-50 overflow-y-auto"
+                    class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 overflow-y-auto"
                 >
                     <div
                         @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-md w-full p-6 shadow-xl my-auto transform-gpu"
+                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-md w-full p-6 sm:p-7 shadow-2xl my-auto transform-gpu"
                     >
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-2">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                                Import Naskah Soal Word (.docx)
-                            </h3>
+                        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                                    <FileText class="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+                                        Import Naskah Word
+                                    </h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                                        Mendukung naskah bernomor (.docx)
+                                    </p>
+                                </div>
+                            </div>
                             <button
                                 type="button"
                                 @click="showWordModal = false"
-                                class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg cursor-pointer transition-colors"
+                                class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                                 aria-label="Tutup"
                             >
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                <X class="w-4 h-4" />
                             </button>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
-                            Mendukung naskah bernomor standar (1. Soal, A. Opsi, B. Opsi ... KUNCI: A).
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4 bg-slate-50/70 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-100 dark:border-slate-800">
+                            Format naskah bernomor standar: <span class="font-mono text-slate-700 dark:text-slate-300">1. Soal, A. Opsi, B. Opsi ... KUNCI: A</span>.
                         </p>
 
                         <form @submit.prevent="submitWord" class="space-y-4">
-                            <input
-                                type="file"
-                                accept=".docx,.doc"
-                                @change="(e) => wordForm.file = e.target.files[0]"
-                                class="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-xl p-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none"
-                                required
-                            />
-                            <div class="flex justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-                                <button type="button" @click="showWordModal = false" class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Pilih Berkas Word (.docx)</label>
+                                <input
+                                    type="file"
+                                    accept=".docx,.doc"
+                                    @change="(e) => wordForm.file = e.target.files[0]"
+                                    class="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 dark:file:bg-blue-500/10 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 focus:outline-none cursor-pointer"
+                                    required
+                                />
+                            </div>
+                            <div class="flex justify-end gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                <button type="button" @click="showWordModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
                                     Batal
                                 </button>
-                                <button type="submit" :disabled="wordForm.processing" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 active:scale-[0.98] text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer">
+                                <button type="submit" :disabled="wordForm.processing" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer">
                                     Ekstrak Naskah Word
                                 </button>
                             </div>

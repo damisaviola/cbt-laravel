@@ -73,9 +73,11 @@ class GradingController extends Controller
      */
     public function saveEssayScore(Request $request, AttemptAnswer $answer)
     {
+        $maxScore = (float) ($answer->question?->max_score ?? 100);
+
         $validated = $request->validate([
-            'score_obtained' => ['required', 'numeric', 'min:0'],
-            'teacher_feedback' => ['nullable', 'string'],
+            'score_obtained' => ['required', 'numeric', 'min:0', "max:{$maxScore}"],
+            'teacher_feedback' => ['nullable', 'string', 'max:1000'],
         ]);
 
         $answer->update([

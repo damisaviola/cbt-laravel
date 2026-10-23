@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useForm, Link, Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Modal from '@/Components/Modal.vue';
 import { 
     BookOpen, 
     Plus, 
@@ -189,88 +190,69 @@ const filteredBanks = computed(() => {
             </div>
         </div>
 
-        <!-- Create Modal (Lightweight & Smooth) -->
-        <Teleport to="body">
-            <Transition
-                enter-active-class="transition duration-150 ease-out"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="transition duration-100 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-            >
-                <div
-                    v-if="showModal"
-                    @click="showModal = false"
-                    class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70 flex items-center justify-center p-4 z-50 overflow-y-auto"
-                >
-                    <div
-                        @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-md w-full p-6 shadow-xl space-y-4 my-auto transform-gpu"
-                    >
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                                Buat Soal Ujian Baru
-                            </h3>
-                            <button
-                                type="button"
-                                @click="showModal = false"
-                                class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg cursor-pointer transition-colors"
-                                aria-label="Tutup"
-                            >
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </button>
-                        </div>
-
-                        <form @submit.prevent="submit" class="space-y-3.5 text-xs">
-                            <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Mata Pelajaran</label>
-                                <select v-model="form.subject_id" class="w-full px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none font-medium" required>
-                                    <option v-for="s in subjects" :key="s.id" :value="s.id">{{ s.name }} ({{ s.code }})</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Judul Soal Ujian</label>
-                                <input
-                                    v-model="form.title"
-                                    type="text"
-                                    placeholder="Contoh: Soal Ujian SAS Ganjil Matematika Kelas X"
-                                    class="w-full px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 focus:outline-none transition-all"
-                                    required
-                                />
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3 p-3.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl">
-                                <div>
-                                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Bobot PG (%)</label>
-                                    <input v-model.number="form.pg_weight_percent" type="number" min="0" max="100" class="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg font-mono bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none" required />
-                                </div>
-                                <div>
-                                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Bobot Esai (%)</label>
-                                    <input v-model.number="form.essay_weight_percent" type="number" min="0" max="100" class="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg font-mono bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none" required />
-                                </div>
-                                <p class="col-span-2 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                                    Total bobot PG + Esai harus tepat 100%. Saat ini: <strong :class="form.pg_weight_percent + form.essay_weight_percent === 100 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'">{{ form.pg_weight_percent + form.essay_weight_percent }}%</strong>
-                                </p>
-                            </div>
-
-                            <div class="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                                <button type="button" @click="showModal = false" class="px-4 py-2 border border-slate-200 dark:border-slate-700 font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer">
-                                    Batal
-                                </button>
-                                <button
-                                    type="submit"
-                                    :disabled="form.processing || (form.pg_weight_percent + form.essay_weight_percent !== 100)"
-                                    class="px-5 py-2 bg-[#0F52BA] hover:bg-blue-700 text-white font-semibold rounded-xl shadow-xs hover:shadow disabled:opacity-50 transition-all cursor-pointer"
-                                >
-                                    {{ form.processing ? 'Menyimpan...' : 'Buat Soal Ujian' }}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+        <!-- Create Modal using EduPro Modal Component -->
+        <Modal
+            :show="showModal"
+            @close="showModal = false"
+            title="Buat Soal Ujian Baru"
+            subtitle="Tentukan mata pelajaran, judul bank soal, dan persentase bobot soal"
+            max-width="md"
+        >
+            <template #icon>
+                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <BookOpen class="w-5 h-5" />
                 </div>
-            </Transition>
-        </Teleport>
+            </template>
+
+            <form id="createBankModalForm" @submit.prevent="submit" class="space-y-4 pt-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Mata Pelajaran</label>
+                    <select v-model="form.subject_id" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none font-medium transition-all" required>
+                        <option v-for="s in subjects" :key="s.id" :value="s.id">{{ s.name }} ({{ s.code }})</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Judul Soal Ujian</label>
+                    <input
+                        v-model="form.title"
+                        type="text"
+                        placeholder="Contoh: Soal Ujian SAS Ganjil Matematika Kelas X"
+                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                        required
+                    />
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 p-4 bg-slate-50/70 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Bobot PG (%)</label>
+                        <input v-model.number="form.pg_weight_percent" type="number" min="0" max="100" class="w-full text-xs px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:outline-none" required />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Bobot Esai (%)</label>
+                        <input v-model.number="form.essay_weight_percent" type="number" min="0" max="100" class="w-full text-xs px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:outline-none" required />
+                    </div>
+                    <p class="col-span-2 text-[11px] text-slate-400 font-medium">
+                        Total bobot PG + Esai harus tepat 100%. Saat ini: <strong :class="form.pg_weight_percent + form.essay_weight_percent === 100 ? 'text-emerald-600' : 'text-rose-500'">{{ form.pg_weight_percent + form.essay_weight_percent }}%</strong>
+                    </p>
+                </div>
+            </form>
+
+            <template #footer>
+                <div class="flex items-center justify-end gap-3">
+                    <button type="button" @click="showModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 font-semibold rounded-full text-xs text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors cursor-pointer">
+                        Batal
+                    </button>
+                    <button
+                        type="submit"
+                        form="createBankModalForm"
+                        :disabled="form.processing || (form.pg_weight_percent + form.essay_weight_percent !== 100)"
+                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-full shadow-sm shadow-blue-600/25 disabled:opacity-50 transition-all cursor-pointer"
+                    >
+                        {{ form.processing ? 'Menyimpan...' : 'Buat Soal Ujian' }}
+                    </button>
+                </div>
+            </template>
+        </Modal>
     </AppLayout>
 </template>

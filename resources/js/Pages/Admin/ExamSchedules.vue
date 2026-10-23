@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useForm, router, Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Modal from '@/Components/Modal.vue';
 import { 
     Calendar, 
     Plus, 
@@ -478,38 +479,22 @@ const formatTimeRange = (start, end) => {
         </div>
 
         <!-- ======================================================== -->
-        <!-- CREATE SCHEDULE MODAL (Lightweight & Smooth)            -->
+        <!-- CREATE SCHEDULE MODAL (EduPro Design)                   -->
         <!-- ======================================================== -->
-        <Teleport to="body">
-            <Transition
-                enter-active-class="transition duration-150 ease-out"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="transition duration-100 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-            >
-                <div v-if="showScheduleModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-                    <!-- Lightweight Backdrop (No blur filter) -->
-                    <div class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70" @click="showScheduleModal = false" />
+        <Modal
+            :show="showScheduleModal"
+            @close="showScheduleModal = false"
+            :title="editingSchedule ? 'Edit Jadwal Ujian' : 'Buat Jadwal Ujian Baru'"
+            subtitle="Atur mata pelajaran, bank soal, durasi waktu, dan kelas peserta ujian"
+            max-width="lg"
+        >
+            <template #icon>
+                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <Calendar class="w-5 h-5" />
+                </div>
+            </template>
 
-                    <!-- Dialog Container -->
-                    <div class="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-lg w-full p-6 shadow-xl max-h-[90vh] overflow-y-auto space-y-4 z-10 transform-gpu" @click.stop>
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                                {{ editingSchedule ? 'Edit Jadwal Ujian' : 'Buat Jadwal Ujian Baru' }}
-                            </h3>
-                            <button
-                                type="button"
-                                @click="showScheduleModal = false"
-                                class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-                                title="Tutup"
-                            >
-                                <X class="w-4 h-4" />
-                            </button>
-                        </div>
-
-                        <form @submit.prevent="submitSchedule" class="space-y-4">
+            <form id="scheduleForm" @submit.prevent="submitSchedule" class="space-y-4 pt-3">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Judul / Nama Ujian</label>
                                 <input
@@ -712,146 +697,131 @@ const formatTimeRange = (start, end) => {
                                 </div>
                             </div>
 
-                            <div class="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
-                                <button
-                                    type="button"
-                                    @click="showScheduleModal = false"
-                                    class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                                >
-                                    Batal
-                                </button>
-                                <button
-                                    type="submit"
-                                    class="px-5 py-2 bg-[#0F52BA] text-white text-xs font-semibold rounded-xl hover:bg-blue-700 shadow-xs hover:shadow transition-all cursor-pointer"
-                                >
-                                    Simpan Jadwal
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+            </form>
+
+            <template #footer>
+                <div class="flex items-center justify-end gap-3">
+                    <button
+                        type="button"
+                        @click="showScheduleModal = false"
+                        class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-full text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors cursor-pointer"
+                    >
+                        Batal
+                    </button>
+                    <button
+                        type="submit"
+                        form="scheduleForm"
+                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                    >
+                        Simpan Jadwal
+                    </button>
                 </div>
-            </Transition>
-        </Teleport>
+            </template>
+        </Modal>
 
         <!-- ======================================================== -->
-        <!-- ADD SESSION MODAL (Lightweight & Smooth)                 -->
+        <!-- ADD SESSION MODAL (EduPro Design)                        -->
         <!-- ======================================================== -->
-        <Teleport to="body">
-            <Transition
-                enter-active-class="transition duration-150 ease-out"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="transition duration-100 ease-in"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-            >
-                <div v-if="showSessionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-                    <!-- Lightweight Backdrop (No blur filter) -->
-                    <div class="fixed inset-0 bg-slate-900/50 dark:bg-slate-950/70" @click="showSessionModal = false" />
+        <Modal
+            :show="showSessionModal"
+            @close="showSessionModal = false"
+            title="Tambah Ruang & Sesi"
+            :subtitle="selectedSchedule?.title"
+            max-width="md"
+        >
+            <template #icon>
+                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <Clock class="w-5 h-5" />
+                </div>
+            </template>
 
-                    <!-- Dialog Container -->
-                    <div class="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 max-w-md w-full p-6 shadow-xl space-y-4 z-10 transform-gpu" @click.stop>
-                        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white truncate pr-2">
-                                Tambah Ruang & Sesi: {{ selectedSchedule?.title }}
-                            </h3>
-                            <button
-                                type="button"
-                                @click="showSessionModal = false"
-                                class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer shrink-0"
-                                title="Tutup"
-                            >
-                                <X class="w-4 h-4" />
-                            </button>
-                        </div>
-
-                        <form @submit.prevent="submitSession" class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Sesi</label>
-                                    <input
-                                        v-model="sessionForm.session_name"
-                                        type="text"
-                                        placeholder="Sesi 1 (Pagi)"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Ruang</label>
-                                    <input
-                                        v-model="sessionForm.room_name"
-                                        type="text"
-                                        placeholder="Lab Komputer 1"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Waktu Mulai</label>
-                                    <input
-                                        v-model="sessionForm.start_time"
-                                        type="datetime-local"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Waktu Selesai</label>
-                                    <input
-                                        v-model="sessionForm.end_time"
-                                        type="datetime-local"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Pengawas Ruang</label>
-                                <select
-                                    v-model="sessionForm.proctor_id"
-                                    class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none font-medium"
-                                >
-                                    <option value="">-- Tanpa Pengawas Khusus --</option>
-                                    <option v-for="p in proctors" :key="p.id" :value="p.id">{{ p.name }}</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                                    Token Ruang (Opsional, kosongkan untuk buat otomatis)
-                                </label>
-                                <input
-                                    v-model="sessionForm.access_token"
-                                    type="text"
-                                    placeholder="Misal: SMART1"
-                                    class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono uppercase focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
-                                />
-                            </div>
-
-                            <div class="flex justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                                <button
-                                    type="button"
-                                    @click="showSessionModal = false"
-                                    class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                                >
-                                    Batal
-                                </button>
-                                <button
-                                    type="submit"
-                                    class="px-5 py-2 bg-[#0F52BA] text-white text-xs font-semibold rounded-xl hover:bg-blue-700 shadow-xs hover:shadow transition-all cursor-pointer"
-                                >
-                                    Rilis Sesi & Token
-                                </button>
-                            </div>
-                        </form>
+            <form id="sessionForm" @submit.prevent="submitSession" class="space-y-4 pt-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Sesi</label>
+                        <input
+                            v-model="sessionForm.session_name"
+                            type="text"
+                            placeholder="Sesi 1 (Pagi)"
+                            class="w-full text-xs px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Ruang</label>
+                        <input
+                            v-model="sessionForm.room_name"
+                            type="text"
+                            placeholder="Lab Komputer 1"
+                            class="w-full text-xs px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            required
+                        />
                     </div>
                 </div>
-            </Transition>
-        </Teleport>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Waktu Mulai</label>
+                        <input
+                            v-model="sessionForm.start_time"
+                            type="datetime-local"
+                            class="w-full text-xs px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Waktu Selesai</label>
+                        <input
+                            v-model="sessionForm.end_time"
+                            type="datetime-local"
+                            class="w-full text-xs px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Pengawas Ruang</label>
+                    <select
+                        v-model="sessionForm.proctor_id"
+                        class="w-full text-xs px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none font-medium transition-all"
+                    >
+                        <option value="">-- Tanpa Pengawas Khusus --</option>
+                        <option v-for="p in proctors" :key="p.id" :value="p.id">{{ p.name }}</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                        Token Ruang (Opsional, kosongkan untuk buat otomatis)
+                    </label>
+                    <input
+                        v-model="sessionForm.access_token"
+                        type="text"
+                        placeholder="Misal: SMART1"
+                        class="w-full text-xs px-3.5 py-2.5 bg-slate-50/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono uppercase focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                    />
+                </div>
+            </form>
+
+            <template #footer>
+                <div class="flex items-center justify-end gap-3">
+                    <button
+                        type="button"
+                        @click="showSessionModal = false"
+                        class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-full text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors cursor-pointer"
+                    >
+                        Batal
+                    </button>
+                    <button
+                        type="submit"
+                        form="sessionForm"
+                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                    >
+                        Rilis Sesi & Token
+                    </button>
+                </div>
+            </template>
+        </Modal>
     </AppLayout>
 </template>

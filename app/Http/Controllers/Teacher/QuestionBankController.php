@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardAnalytics;
 use App\Models\ExamAttempt;
 use App\Models\ExamSchedule;
 use App\Models\Question;
@@ -19,7 +20,7 @@ use PhpOffice\PhpWord\IOFactory as WordIOFactory;
 
 class QuestionBankController extends Controller
 {
-    public function dashboard(): Response
+    public function dashboard(DashboardAnalytics $analytics): Response
     {
         $teacher = auth()->user();
 
@@ -67,6 +68,8 @@ class QuestionBankController extends Controller
             'recentBanks' => $recentBanks,
             'recentSchedules' => $schedules,
             'subjects' => $subjects,
+            'chartData' => $analytics->getTeacherTrendData($teacher),
+            'categoryData' => $analytics->getTeacherCategories($teacher),
         ]);
     }
 
@@ -115,6 +118,8 @@ class QuestionBankController extends Controller
 
     public function show(QuestionBank $bank): Response
     {
+        $this->authorizeBankAccess($bank);
+
         $bank->load(['subject', 'questions.options']);
 
         return Inertia::render('Teacher/QuestionDetail', [
@@ -124,6 +129,8 @@ class QuestionBankController extends Controller
 
     public function update(Request $request, QuestionBank $bank)
     {
+        $this->authorizeBankAccess($bank);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'pg_weight_percent' => ['required', 'integer', 'min:0', 'max:100'],
@@ -141,6 +148,8 @@ class QuestionBankController extends Controller
 
     public function destroy(QuestionBank $bank)
     {
+        $this->authorizeBankAccess($bank);
+
         $bank->delete();
 
         return redirect()->route('teacher.banks.index')->with('success', 'Soal ujian berhasil dihapus.');
@@ -151,6 +160,8 @@ class QuestionBankController extends Controller
      */
     public function storeQuestion(Request $request, QuestionBank $bank)
     {
+        $this->authorizeBankAccess($bank);
+
         $validated = $request->validate([
             'type' => ['required', 'in:single,mcma,true_false,matching,short_answer,essay'],
             'reading_passage' => ['nullable', 'string'],
@@ -207,6 +218,8 @@ class QuestionBankController extends Controller
 
     public function destroyQuestion(Question $question)
     {
+        $this->authorizeBankAccess($question->questionBank);
+
         $question->delete();
 
         return back()->with('success', 'Butir soal berhasil dihapus.');
@@ -250,8 +263,10 @@ class QuestionBankController extends Controller
      */
     public function importExcel(Request $request, QuestionBank $bank)
     {
+        $this->authorizeBankAccess($bank);
+
         $request->validate([
-            'file' => ['required', 'file', 'mimes:xlsx,xls,csv'],
+            'file' => ['required', 'file', 'mimes:xlsx,xls,csv', 'max:10240'],
         ]);
 
         $file = $request->file('file');
@@ -331,8 +346,10 @@ class QuestionBankController extends Controller
      */
     public function importWord(Request $request, QuestionBank $bank)
     {
+        $this->authorizeBankAccess($bank);
+
         $request->validate([
-            'file' => ['required', 'file', 'mimes:docx,doc'],
+            'file' => ['required', 'file', 'mimes:docx,doc', 'max:10240'],
         ]);
 
         $file = $request->file('file');
@@ -385,5 +402,20 @@ class QuestionBankController extends Controller
         }
 
         return back()->with('success', "Berhasil mengekstrak {$imported} soal dari naskah Word (.docx).");
+    }
+
+    /**
+     * Verify that the authenticated user owns this question bank or is an admin.
+     */
+    protected function authorizeBankAccess(QuestionBank $bank): void
+    {
+        $user = auth()->user();
+        if ($user->role === 'admin') {
+            return;
+        }
+
+        if ($bank->teacher_id !== $user->id) {
+            abort(403, 'Akses ditolak. Anda tidak berhak mengubah naskah bank soal milik guru lain.');
+        }
     }
 }

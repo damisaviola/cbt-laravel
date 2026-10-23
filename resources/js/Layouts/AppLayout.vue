@@ -133,33 +133,33 @@ const userInitials = computed(() => {
             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs"
             @click.self="showSearchModal = false"
         >
-            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-100 dark:border-slate-800 shadow-xl max-w-lg w-full space-y-4">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-2xl max-w-lg w-full space-y-4">
                 <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
                     <Search class="w-5 h-5 text-slate-400" />
                     <input 
                         v-model="searchQuery" 
                         type="text" 
                         placeholder="Cari siswa, jadwal, soal ujian, atau menu..." 
-                        class="w-full text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-white"
+                        class="w-full text-sm bg-transparent border-none focus:outline-none text-slate-900 dark:text-white placeholder:text-slate-400"
                         autofocus
                     />
-                    <button @click="showSearchModal = false" class="text-xs text-slate-400 hover:text-slate-600 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                    <button @click="showSearchModal = false" class="text-[11px] font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg cursor-pointer">
                         ESC
                     </button>
                 </div>
-                <div class="text-xs text-slate-400 space-y-2">
-                    <p class="font-semibold text-slate-500 uppercase tracking-wider text-[10px]">Pintas Navigasi</p>
+                <div class="text-xs text-slate-400 space-y-2.5">
+                    <p class="font-bold text-slate-500 uppercase tracking-wider text-[10px]">Pintas Navigasi</p>
                     <div class="grid grid-cols-2 gap-2 text-slate-700 dark:text-slate-300">
-                        <Link href="/admin/students" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                        <Link href="/admin/students" @click="showSearchModal = false" class="p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/60 border border-transparent hover:border-slate-200/80 dark:hover:border-slate-700 flex items-center gap-2 transition-all">
                             <span>Siswa & Kartu</span>
                         </Link>
-                        <Link href="/admin/schedules" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                        <Link href="/admin/schedules" @click="showSearchModal = false" class="p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/60 border border-transparent hover:border-slate-200/80 dark:hover:border-slate-700 flex items-center gap-2 transition-all">
                             <span>Jadwal Ujian</span>
                         </Link>
-                        <Link href="/proctor/dashboard" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                        <Link href="/proctor/dashboard" @click="showSearchModal = false" class="p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/60 border border-transparent hover:border-slate-200/80 dark:hover:border-slate-700 flex items-center gap-2 transition-all">
                             <span>Ruang Pengawas</span>
                         </Link>
-                        <Link href="/teacher/banks" @click="showSearchModal = false" class="p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2">
+                        <Link href="/teacher/banks" @click="showSearchModal = false" class="p-2.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/60 border border-transparent hover:border-slate-200/80 dark:hover:border-slate-700 flex items-center gap-2 transition-all">
                             <span>Bank Soal</span>
                         </Link>
                     </div>

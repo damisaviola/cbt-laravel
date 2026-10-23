@@ -10,40 +10,7 @@ const props = defineProps({
     },
     categories: {
         type: Array,
-        default: () => [
-            {
-                name: 'Web Development',
-                percent: 45,
-                color: 'bg-blue-600',
-                iconBg: 'bg-blue-50 dark:bg-blue-950/60',
-                iconColor: 'text-blue-600 dark:text-blue-400',
-                iconType: 'code',
-            },
-            {
-                name: 'Design',
-                percent: 28,
-                color: 'bg-amber-400',
-                iconBg: 'bg-amber-50 dark:bg-amber-950/60',
-                iconColor: 'text-amber-600 dark:text-amber-400',
-                iconType: 'pen',
-            },
-            {
-                name: 'Business',
-                percent: 18,
-                color: 'bg-emerald-500',
-                iconBg: 'bg-emerald-50 dark:bg-emerald-950/60',
-                iconColor: 'text-emerald-600 dark:text-emerald-400',
-                iconType: 'briefcase',
-            },
-            {
-                name: 'Marketing',
-                percent: 9,
-                color: 'bg-rose-500',
-                iconBg: 'bg-rose-50 dark:bg-rose-950/60',
-                iconColor: 'text-rose-500 dark:text-rose-400',
-                iconType: 'megaphone',
-            },
-        ],
+        default: () => [],
     },
 });
 </script>
@@ -62,7 +29,11 @@ const props = defineProps({
             </div>
 
             <!-- Categories List -->
-            <div class="space-y-4">
+            <div v-if="!categories || categories.length === 0" class="py-8 text-center text-xs text-slate-400 dark:text-slate-500">
+                Belum ada data rekaman kategori.
+            </div>
+
+            <div v-else class="space-y-4">
                 <div 
                     v-for="(item, idx) in categories" 
                     :key="idx"

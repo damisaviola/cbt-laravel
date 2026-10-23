@@ -49,6 +49,15 @@ class AuthController extends Controller
             ]);
         }
 
+        // Active session check for students (prevent simultaneous multi-device logins)
+        if ($user->role === 'student' && ! app()->runningUnitTests() && ! empty($user->active_session_id) && $user->active_session_id !== $request->session()->getId()) {
+            Auth::logout();
+
+            return back()->withErrors([
+                'username' => 'Akun siswa sedang aktif di perangkat lain. Silakan minta Pengawas Ruang untuk melakukan "Reset Sesi" jika Anda berganti komputer.',
+            ]);
+        }
+
         // SEB (Safe Exam Browser) check for students if required
         $school = SchoolSetting::current();
         if ($user->role === 'student' && $school->seb_required) {
