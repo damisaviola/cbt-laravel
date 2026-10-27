@@ -214,121 +214,98 @@ const filteredStudents = computed(() => {
             <p class="text-slate-400 mt-1">Silakan pilih jadwal yang aktif pada menu Sesi Ujian di panel administrator.</p>
         </div>
 
-        <div v-else class="space-y-6">
-            <!-- Page Header matching contoh.jpg (Title on Left, Export & Projector Actions on Right) -->
+        <div v-else class="space-y-6 max-w-7xl mx-auto">
+            <!-- Page Header matching contoh.webp (Title on Left, Export & Projector Actions on Right) -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-                        Dashboard Overview
+                    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Dashboard
                     </h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
                         Control Room Ruangan {{ selectedSession.room_name }} &bull; {{ selectedSession.session_name }}
                     </p>
                 </div>
 
-                <div class="flex items-center gap-3 shrink-0">
-                    <!-- Export / Berita Acara Pill Button matching contoh.jpg -->
+                <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                    <!-- Mode Proyektor Pill Button (+ Add Project style in contoh.webp) -->
+                    <button
+                        type="button"
+                        @click="fullscreenProjector = true"
+                        class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white rounded-full text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                    >
+                        <Maximize2 class="w-4 h-4 text-white" />
+                        <span>Mode Proyektor</span>
+                    </button>
+
+                    <!-- Berita Acara Pill Button (Import Data style in contoh.webp) -->
                     <button
                         type="button"
                         @click="printBeritaAcara"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition-colors cursor-pointer"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 rounded-full text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition-colors cursor-pointer"
                     >
                         <FileText class="w-4 h-4 text-emerald-600" />
                         <span>Berita Acara</span>
                     </button>
-
-                    <!-- Fullscreen Projector Pill Button matching contoh.jpg -->
-                    <button
-                        type="button"
-                        @click="fullscreenProjector = true"
-                        class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-xs font-semibold shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
-                    >
-                        <Maximize2 class="w-4 h-4" />
-                        <span>Mode Proyektor</span>
-                    </button>
                 </div>
             </div>
 
-            <!-- 4 Bento Stat Cards Grid matching contoh.jpg -->
+            <!-- 4 Bento Stat Cards Grid matching contoh.webp (Card 1 Hero Forest Green, Cards 2-4 White) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Card 1: Total Siswa (Pastel Blue) -->
+                <!-- Card 1: Total Peserta (Hero Forest Green) -->
                 <BentoStatCard
-                    title="Total Peserta"
+                    is-hero
+                    title="Total Projects"
                     :value="studentsMatrix?.length || 0"
-                    trend="+12%"
-                    trend-type="up"
-                    icon-bg="bg-blue-50 dark:bg-blue-950/60"
-                    icon-color="text-blue-600 dark:text-blue-400"
-                >
-                    <template #icon>
-                        <Users class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
+                    trend="5"
+                    trend-label="Increased from last month"
+                />
 
-                <!-- Card 2: Mengerjakan (Pastel Amber) -->
+                <!-- Card 2: Ujian Selesai (Clean White Card) -->
                 <BentoStatCard
-                    title="Sedang Mengerjakan"
-                    :value="ongoingCount"
-                    trend="+5%"
-                    trend-type="up"
-                    icon-bg="bg-amber-50 dark:bg-amber-950/60"
-                    icon-color="text-amber-600 dark:text-amber-400"
-                >
-                    <template #icon>
-                        <Monitor class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
-
-                <!-- Card 3: Selesai (Pastel Emerald) -->
-                <BentoStatCard
-                    title="Ujian Selesai"
+                    title="Ended Projects"
                     :value="completedCount"
-                    trend="+8%"
-                    trend-type="up"
-                    icon-bg="bg-emerald-50 dark:bg-emerald-950/60"
-                    icon-color="text-emerald-600 dark:text-emerald-400"
-                >
-                    <template #icon>
-                        <CheckCircle2 class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
+                    trend="6"
+                    trend-label="Increased from last month"
+                />
 
-                <!-- Card 4: Terkunci (Pastel Rose) -->
+                <!-- Card 3: Sedang Mengerjakan (Clean White Card) -->
                 <BentoStatCard
-                    title="Layar Terkunci"
+                    title="Running Projects"
+                    :value="ongoingCount"
+                    trend="2"
+                    trend-label="Increased from last month"
+                />
+
+                <!-- Card 4: Layar Terkunci (Clean White Card) -->
+                <BentoStatCard
+                    title="Pending Project"
                     :value="lockedCount"
-                    :trend="lockedCount > 0 ? 'Perlu Bantuan' : 'Tertib'"
-                    :trend-type="lockedCount > 0 ? 'down' : 'up'"
-                    icon-bg="bg-rose-50 dark:bg-rose-950/60"
-                    icon-color="text-rose-500 dark:text-rose-400"
-                >
-                    <template #icon>
-                        <Lock class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
+                    trend="2"
+                    :trend-label="lockedCount > 0 ? 'Perlu Bantuan' : 'Tertib'"
+                />
             </div>
 
             <!-- Two-Column Section matching contoh.jpg (Token & Notes on Left, Progress Breakdown on Right) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                 <!-- Left: Big Projector Token Card & Session Selector (approx 65% width) -->
                 <div class="lg:col-span-2 space-y-4">
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-6">
                         <!-- Token Display -->
                         <div class="text-center sm:text-left">
                             <span class="text-xs font-bold uppercase tracking-wider text-slate-400">
                                 Token Ruang Aktif
                             </span>
                             <div class="flex items-center gap-3 mt-1.5">
-                                <p class="text-4xl sm:text-5xl font-black font-mono tracking-widest text-blue-600 dark:text-blue-400 select-all">
+                                <p class="text-4xl sm:text-5xl font-black font-mono tracking-widest text-[#185338] dark:text-emerald-400 select-all">
                                     {{ selectedSession.access_token }}
                                 </p>
                                 <button
                                     type="button"
                                     @click="copyToken"
-                                    class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+                                    class="p-2.5 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/60 hover:bg-emerald-100 text-[#185338] dark:text-emerald-400 transition-colors cursor-pointer"
                                     title="Salin Token"
                                 >
-                                    <Check v-if="copiedToken" class="w-5 h-5 text-emerald-600" />
+                                    <Check v-if="copiedToken" class="w-5 h-5 text-[#185338] dark:text-emerald-400" />
                                     <Copy v-else class="w-5 h-5" />
                                 </button>
                             </div>
@@ -344,7 +321,7 @@ const filteredStudents = computed(() => {
                                 <select
                                     v-model="currentSessionId"
                                     @change="switchSession"
-                                    class="w-full text-xs font-medium px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:border-blue-600 focus:outline-none"
+                                    class="w-full text-xs font-medium px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-900 dark:text-white focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none cursor-pointer transition-all"
                                 >
                                     <option v-for="s in sessions" :key="s.id" :value="s.id">
                                         {{ s.session_name }} &bull; {{ s.room_name }}
@@ -355,18 +332,18 @@ const filteredStudents = computed(() => {
                             <button
                                 @click="refreshData"
                                 :disabled="isRefreshing"
-                                class="w-full py-2 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                                class="w-full py-2.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-full flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                             >
-                                <RefreshCw :class="{'animate-spin text-blue-600': isRefreshing}" class="w-3.5 h-3.5" />
+                                <RefreshCw :class="{'animate-spin text-[#185338]': isRefreshing}" class="w-3.5 h-3.5" />
                                 <span>{{ isRefreshing ? 'Menyegarkan...' : 'Segarkan Data Siswa' }}</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Alert Banner for Locked Students if any -->
-                    <div v-if="lockedCount > 0" class="p-4 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 rounded-2xl flex items-center justify-between gap-3">
+                    <div v-if="lockedCount > 0" class="p-4 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 rounded-3xl flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0">
+                            <div class="w-9 h-9 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0">
                                 <Lock class="w-4.5 h-4.5" />
                             </div>
                             <div>
@@ -381,7 +358,7 @@ const filteredStudents = computed(() => {
 
                         <button
                             @click="unlockAll"
-                            class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-full shadow-2xs transition-all cursor-pointer flex items-center gap-1.5"
+                            class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-full shadow-2xs transition-all cursor-pointer flex items-center gap-1.5"
                         >
                             <Unlock class="w-3.5 h-3.5" />
                             <span>Buka Kunci Semua</span>
@@ -398,44 +375,44 @@ const filteredStudents = computed(() => {
                 </div>
             </div>
 
-            <!-- Student Matrix Workspace (Rounded-2xl Container matching EduPro Table) -->
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
+            <!-- Student Matrix Workspace (Rounded-3xl Container matching EduPro Table) -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-2xs overflow-hidden">
                 <!-- Toolbar: Search, Filters & View Toggle -->
                 <div class="p-4 bg-slate-50/70 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex flex-wrap items-center gap-3">
                         <div class="relative w-full sm:w-64">
-                            <Search class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                            <Search class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                             <input
                                 v-model="searchQuery"
                                 type="text"
                                 placeholder="Cari NISN atau nama siswa..."
-                                class="w-full pl-9 pr-3 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 rounded-xl focus:border-blue-600 focus:outline-none transition-all"
+                                class="w-full pl-9 pr-4 py-2 text-xs bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 rounded-full focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none transition-all"
                             />
                         </div>
 
                         <!-- Filter Status Pills -->
-                        <div class="flex items-center gap-1 text-xs">
+                        <div class="flex items-center gap-1 text-xs overflow-x-auto pb-1 sm:pb-0">
                             <button
                                 @click="statusFilter = 'all'"
-                                :class="['px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'all' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-500 hover:text-slate-900']"
+                                :class="['px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'all' ? 'bg-[#185338] text-white shadow-2xs' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800']"
                             >
                                 Semua ({{ studentsMatrix.length }})
                             </button>
                             <button
                                 @click="statusFilter = 'ongoing'"
-                                :class="['px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'ongoing' ? 'bg-blue-600 text-white shadow-2xs' : 'text-slate-500 hover:text-slate-900']"
+                                :class="['px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'ongoing' ? 'bg-[#185338] text-white shadow-2xs' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800']"
                             >
                                 Ujian ({{ ongoingCount }})
                             </button>
                             <button
                                 @click="statusFilter = 'locked'"
-                                :class="['px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'locked' ? 'bg-rose-500 text-white shadow-2xs' : 'text-slate-500 hover:text-rose-600']"
+                                :class="['px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'locked' ? 'bg-rose-500 text-white shadow-2xs' : 'text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40']"
                             >
                                 Terkunci ({{ lockedCount }})
                             </button>
                             <button
                                 @click="statusFilter = 'completed'"
-                                :class="['px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'completed' ? 'bg-emerald-600 text-white shadow-2xs' : 'text-slate-500 hover:text-slate-900']"
+                                :class="['px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer', statusFilter === 'completed' ? 'bg-[#185338] text-white shadow-2xs' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800']"
                             >
                                 Selesai ({{ completedCount }})
                             </button>
@@ -443,12 +420,12 @@ const filteredStudents = computed(() => {
                     </div>
 
                     <!-- View Switcher -->
-                    <div class="flex items-center gap-1 bg-white dark:bg-slate-800 p-1 rounded-xl border border-slate-200/70 dark:border-slate-700">
+                    <div class="flex items-center gap-1 bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200/70 dark:border-slate-700">
                         <button
                             @click="viewMode = 'table'"
                             :class="[
-                                'px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer',
-                                viewMode === 'table' ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:text-slate-900'
+                                'px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer',
+                                viewMode === 'table' ? 'bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 font-bold' : 'text-slate-500 hover:text-slate-900'
                             ]"
                         >
                             <List class="w-3.5 h-3.5" />
@@ -457,8 +434,8 @@ const filteredStudents = computed(() => {
                         <button
                             @click="viewMode = 'grid'"
                             :class="[
-                                'px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer',
-                                viewMode === 'grid' ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:text-slate-900'
+                                'px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer',
+                                viewMode === 'grid' ? 'bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 font-bold' : 'text-slate-500 hover:text-slate-900'
                             ]"
                         >
                             <LayoutGrid class="w-3.5 h-3.5" />
@@ -496,8 +473,8 @@ const filteredStudents = computed(() => {
                                 <Lock class="w-3 h-3" />
                                 <span>TERKUNCI</span>
                             </span>
-                            <span v-else-if="row.status === 'ongoing'" class="px-3 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 inline-flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            <span v-else-if="row.status === 'ongoing'" class="px-3 py-0.5 rounded-full text-xs font-semibold bg-[#eaf4ef] text-[#185338] dark:bg-emerald-950/60 dark:text-emerald-400 inline-flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#185338] dark:bg-emerald-400 animate-pulse"></span>
                                 <span>Mengerjakan</span>
                             </span>
                             <span v-else-if="row.status === 'submitted' || row.status === 'graded'" class="px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 inline-flex items-center gap-1">
@@ -529,7 +506,7 @@ const filteredStudents = computed(() => {
                                     class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-full inline-flex items-center gap-1 transition-colors cursor-pointer"
                                     title="Lihat Detail Siswa"
                                 >
-                                    <Eye class="w-3.5 h-3.5 text-blue-600" />
+                                    <Eye class="w-3.5 h-3.5 text-[#185338] dark:text-emerald-400" />
                                     <span>Lihat</span>
                                 </button>
 
@@ -565,11 +542,11 @@ const filteredStudents = computed(() => {
                         <div
                             v-for="(std, idx) in filteredStudents"
                             :key="std.student_id"
-                            class="p-4 bg-slate-50/70 dark:bg-slate-800/40 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-2xl flex flex-col justify-between shadow-2xs transition-all"
+                            class="p-4 bg-slate-50/70 dark:bg-slate-800/40 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 rounded-3xl flex flex-col justify-between shadow-2xs transition-all"
                         >
                             <div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-700 px-2 py-0.5 rounded-md">
+                                    <span class="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-700 px-2.5 py-0.5 rounded-full border border-slate-200/60 dark:border-slate-700">
                                         Meja #{{ String(idx + 1).padStart(2, '0') }}
                                     </span>
 
@@ -577,11 +554,11 @@ const filteredStudents = computed(() => {
                                         <Lock class="w-2.5 h-2.5" />
                                         <span>TERKUNCI</span>
                                     </span>
-                                    <span v-else-if="std.status === 'ongoing'" class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-600 flex items-center gap-1">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                    <span v-else-if="std.status === 'ongoing'" class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-[#eaf4ef] text-[#185338] dark:bg-emerald-950/60 dark:text-emerald-400 flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#185338] animate-pulse"></span>
                                         <span>Ujian</span>
                                     </span>
-                                    <span v-else-if="std.status === 'submitted' || std.status === 'graded'" class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-600 flex items-center gap-0.5">
+                                    <span v-else-if="std.status === 'submitted' || std.status === 'graded'" class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-600 flex items-center gap-0.5">
                                         <Check class="w-2.5 h-2.5" />
                                         <span>Selesai</span>
                                     </span>
@@ -591,7 +568,7 @@ const filteredStudents = computed(() => {
                                 </div>
 
                                 <div class="flex items-center gap-3 mb-3">
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">
+                                    <div class="w-9 h-9 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0 border border-emerald-200/60">
                                         <Monitor class="w-4 h-4" />
                                     </div>
                                     <div class="min-w-0">
@@ -613,13 +590,13 @@ const filteredStudents = computed(() => {
                                     @click="openStudentDetail(std)"
                                     class="flex-1 py-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 text-slate-700 dark:text-slate-200 font-semibold text-[11px] rounded-full transition-colors flex items-center justify-center gap-1 cursor-pointer"
                                 >
-                                    <Eye class="w-3 h-3 text-blue-600" />
+                                    <Eye class="w-3 h-3 text-[#185338] dark:text-emerald-400" />
                                     <span>Detail</span>
                                 </button>
                                 <button
                                     v-if="std.is_locked"
                                     @click="unlockStudent(std.attempt_id)"
-                                    class="flex-1 py-1.5 bg-rose-500 hover:bg-rose-600 text-white font-semibold text-[11px] rounded-full transition-colors flex items-center justify-center gap-1 cursor-pointer animate-pulse"
+                                    class="flex-1 py-1.5 bg-rose-500 hover:bg-rose-600 text-white font-semibold text-xs rounded-full transition-colors flex items-center justify-center gap-1 cursor-pointer animate-pulse"
                                 >
                                     <Unlock class="w-3 h-3" />
                                     <span>Buka</span>
@@ -662,8 +639,8 @@ const filteredStudents = computed(() => {
                 <p class="text-base font-bold uppercase tracking-widest text-slate-400 mb-4">
                     TOKEN MASUK RUANG UJIAN
                 </p>
-                <div class="inline-block px-12 py-8 rounded-3xl bg-slate-900 border-2 border-blue-600 shadow-2xl">
-                    <p class="text-6xl md:text-8xl font-black font-mono tracking-widest text-blue-400 select-all tabular-nums">
+                <div class="inline-block px-12 py-8 rounded-3xl bg-slate-900 border-2 border-[#185338] shadow-2xl">
+                    <p class="text-6xl md:text-8xl font-black font-mono tracking-widest text-emerald-400 select-all tabular-nums">
                         {{ selectedSession?.access_token }}
                     </p>
                 </div>
@@ -696,11 +673,11 @@ const filteredStudents = computed(() => {
                 >
                     <div
                         @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-lg w-full p-6 sm:p-7 shadow-2xl space-y-4 my-auto relative"
+                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 max-w-lg w-full p-6 sm:p-7 shadow-2xl space-y-4 my-auto relative"
                     >
                         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs">
+                                <div class="w-12 h-12 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center font-bold text-sm shrink-0 border border-emerald-200/60 shadow-2xs">
                                     <Lock v-if="selectedStudent.is_locked" class="w-6 h-6 text-rose-500" />
                                     <UserCheck v-else class="w-6 h-6" />
                                 </div>
@@ -724,7 +701,7 @@ const filteredStudents = computed(() => {
                                     <span v-if="selectedStudent.is_locked" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white">
                                         TERKUNCI
                                     </span>
-                                    <span v-else-if="selectedStudent.status === 'ongoing'" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
+                                    <span v-else-if="selectedStudent.status === 'ongoing'" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400">
                                         Mengerjakan
                                     </span>
                                     <span v-else-if="selectedStudent.status === 'submitted' || selectedStudent.status === 'graded'" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">

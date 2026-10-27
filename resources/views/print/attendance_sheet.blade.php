@@ -89,7 +89,7 @@
         <div>
             <strong>Daftar Hadir Ruang Ujian: {{ $room }}</strong> ({{ count($students) }} Siswa)
         </div>
-        <button onclick="window.print()" style="background: #0f52ba; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+        <button onclick="window.print()" style="background: #185338; color: white; border: none; padding: 8px 18px; border-radius: 9999px; cursor: pointer; font-weight: bold; font-size: 13px;">
             Cetak Daftar Hadir (Print / Simpan PDF)
         </button>
     </div>

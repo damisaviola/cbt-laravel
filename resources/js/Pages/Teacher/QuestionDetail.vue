@@ -157,7 +157,7 @@ const formattedType = (type) => {
             <div class="flex flex-col md:flex-row md:items-center justify-between w-full gap-3">
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                        <span class="px-3 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800">
                             {{ bank.subject?.code }}
                         </span>
                         <h1 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white tracking-tight truncate">{{ bank.title }}</h1>
@@ -170,23 +170,23 @@ const formattedType = (type) => {
                 <div class="flex items-center gap-2 flex-wrap">
                     <button
                         @click="showExcelModal = true"
-                        class="px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98] text-emerald-800 dark:text-emerald-300 font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98] text-[#185338] dark:text-emerald-300 font-semibold text-xs rounded-full shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
                     >
-                        <FileSpreadsheet class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                        <FileSpreadsheet class="w-3.5 h-3.5 text-[#185338] dark:text-emerald-400" />
                         <span>Import Excel</span>
                     </button>
 
                     <button
                         @click="showWordModal = true"
-                        class="px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98] text-blue-800 dark:text-blue-300 font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-[0.98] text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-full shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
                     >
-                        <FileText class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                        <FileText class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                         <span>Import Word</span>
                     </button>
 
                     <button
                         @click="showQuestionModal = true"
-                        class="px-4 py-2 bg-[#0F52BA] hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-5 py-2.5 bg-[#185338] hover:bg-[#12422c] active:scale-[0.98] text-white font-bold text-xs rounded-full shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
                     >
                         <Plus class="w-3.5 h-3.5" />
                         <span>Tambah Soal</span>
@@ -196,15 +196,16 @@ const formattedType = (type) => {
         </template>
 
         <div class="space-y-4">
-            <div v-if="!bank.questions || bank.questions.length === 0" class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-dashed border-slate-200/90 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 shadow-xs">
+            <!-- Empty State -->
+            <div v-if="!bank.questions || bank.questions.length === 0" class="bg-white dark:bg-slate-900 p-12 rounded-3xl border border-dashed border-slate-200/80 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 shadow-xs">
                 Belum ada butir soal pada naskah ujian ini. Klik "Tambah Soal" atau gunakan "Import Excel/Word".
             </div>
 
-            <!-- Questions List -->
+            <!-- Questions List (Rounded-3xl) -->
             <div
                 v-for="(q, idx) in bank.questions"
                 :key="q.id"
-                class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-xs space-y-4"
+                class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-4"
             >
                 <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                     <div class="flex items-center gap-2">
@@ -353,7 +354,7 @@ const formattedType = (type) => {
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Tipe Soal</label>
-                            <select v-model="questionForm.type" @change="changeQuestionType" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all" required>
+                            <select v-model="questionForm.type" @change="changeQuestionType" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all" required>
                                 <option value="single">Pilihan Ganda Biasa (1 Kunci)</option>
                                 <option value="mcma">Pilihan Ganda Kompleks (MCMA)</option>
                                 <option value="true_false">Benar / Salah (Pernyataan)</option>
@@ -364,7 +365,7 @@ const formattedType = (type) => {
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Bobot Poin Soal</label>
-                            <input v-model="questionForm.max_score" type="number" step="0.5" min="1" max="100" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all" required />
+                            <input v-model="questionForm.max_score" type="number" step="0.5" min="1" max="100" class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all" required />
                         </div>
                     </div>
 
@@ -377,7 +378,7 @@ const formattedType = (type) => {
                             v-model="questionForm.reading_passage"
                             rows="3"
                             placeholder="Tuliskan cerita / narasi wacana panjang untuk split view di sini... (Mendukung rumus $formula$)"
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                         ></textarea>
                     </div>
 
@@ -390,7 +391,7 @@ const formattedType = (type) => {
                             v-model="questionForm.content"
                             rows="4"
                             placeholder="Ketikkan teks pertanyaan di sini... Contoh: Diketahui f(x) = $x^2 + 5x$..."
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                             required
                         ></textarea>
                     </div>
@@ -399,7 +400,7 @@ const formattedType = (type) => {
                     <div v-if="questionForm.type === 'single' || questionForm.type === 'mcma'" class="space-y-2">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Pilihan Jawaban</label>
-                            <button type="button" @click="addOptionRow" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer">
+                            <button type="button" @click="addOptionRow" class="text-[11px] text-[#185338] dark:text-emerald-400 font-semibold hover:underline cursor-pointer">
                                 + Tambah Opsi
                             </button>
                         </div>
@@ -409,7 +410,7 @@ const formattedType = (type) => {
                                 type="button"
                                 @click="questionForm.type === 'single' ? questionForm.options.forEach((o, i) => o.is_correct = (i === idx)) : opt.is_correct = !opt.is_correct"
                                 :class="[
-                                    opt.is_correct ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-700',
+                                    opt.is_correct ? 'bg-[#185338] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-700',
                                     'w-7 h-7 rounded-lg text-xs font-mono font-bold flex items-center justify-center shrink-0 cursor-pointer transition-colors'
                                 ]"
                                 :title="opt.is_correct ? 'Kunci Jawaban' : 'Jadikan Kunci'"
@@ -420,7 +421,7 @@ const formattedType = (type) => {
                                 v-model="opt.content"
                                 type="text"
                                 :placeholder="'Teks Opsi ' + opt.option_label"
-                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                                 required
                             />
                             <button
@@ -437,7 +438,7 @@ const formattedType = (type) => {
                     <div v-else-if="questionForm.type === 'true_false'" class="space-y-2">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Tabel Pernyataan & Kunci</label>
-                            <button type="button" @click="addOptionRow" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer">
+                            <button type="button" @click="addOptionRow" class="text-[11px] text-[#185338] dark:text-emerald-400 font-semibold hover:underline cursor-pointer">
                                 + Tambah Baris Pernyataan
                             </button>
                         </div>
@@ -448,10 +449,10 @@ const formattedType = (type) => {
                                 v-model="opt.content"
                                 type="text"
                                 placeholder="Teks pernyataan..."
-                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                                class="flex-1 text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                                 required
                             />
-                            <select v-model="opt.is_correct" class="text-xs px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl font-bold bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all">
+                            <select v-model="opt.is_correct" class="text-xs px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl font-bold bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all">
                                 <option :value="true">BENAR</option>
                                 <option :value="false">SALAH</option>
                             </select>
@@ -469,7 +470,7 @@ const formattedType = (type) => {
                     <div v-else-if="questionForm.type === 'matching'" class="space-y-2">
                         <div class="flex items-center justify-between">
                             <label class="text-xs font-semibold text-slate-700 dark:text-slate-300">Pasangan Menjodohkan</label>
-                            <button type="button" @click="addOptionRow" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline cursor-pointer">
+                            <button type="button" @click="addOptionRow" class="text-[11px] text-[#185338] dark:text-emerald-400 font-semibold hover:underline cursor-pointer">
                                 + Tambah Pasangan
                             </button>
                         </div>
@@ -479,14 +480,14 @@ const formattedType = (type) => {
                                 v-model="opt.content"
                                 type="text"
                                 :placeholder="'Premis ' + (idx + 1)"
-                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                                 required
                             />
                             <input
                                 v-model="opt.matching_pair_text"
                                 type="text"
                                 :placeholder="'Target Pasangan ' + (idx + 1)"
-                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                                class="text-xs px-3.5 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                                 required
                             />
                         </div>
@@ -500,7 +501,7 @@ const formattedType = (type) => {
                             v-model="questionForm.short_answer_key"
                             type="text"
                             placeholder="Contoh: 36 atau Fotosintesis"
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl font-mono bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                             required
                         />
                     </div>
@@ -513,7 +514,7 @@ const formattedType = (type) => {
                             v-model="questionForm.essay_rubric"
                             rows="3"
                             placeholder="Ketikkan poin-poin jawaban yang wajib ada agar siswa mendapat nilai penuh di meja koreksi..."
-                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition-all"
+                            class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] focus:ring-4 focus:ring-[#185338]/10 focus:outline-none transition-all"
                             required
                         ></textarea>
                     </div>
@@ -522,7 +523,7 @@ const formattedType = (type) => {
                         <button type="button" @click="showQuestionModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
                             Batal
                         </button>
-                        <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer">
+                        <button type="submit" class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-xs transition-all cursor-pointer">
                             Simpan Butir Soal
                         </button>
                     </div>
@@ -579,9 +580,9 @@ const formattedType = (type) => {
                             <span class="text-xs font-medium text-slate-700 dark:text-slate-300">Format Template Soal:</span>
                             <a
                                 href="/teacher/template/excel"
-                                class="px-3.5 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-xs font-semibold text-blue-600 dark:text-blue-400 rounded-full flex items-center gap-1.5 shadow-2xs hover:bg-slate-50 dark:hover:bg-slate-700 transition-all"
+                                class="px-3.5 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-[#185338] text-xs font-semibold text-[#185338] dark:text-emerald-400 rounded-full flex items-center gap-1.5 shadow-2xs hover:bg-[#eaf4ef]/40 transition-all"
                             >
-                                <Download class="w-3.5 h-3.5" />
+                                <Download class="w-3.5 h-3.5 text-[#185338] dark:text-emerald-400" />
                                 <span>Template (.xlsx)</span>
                             </a>
                         </div>
@@ -601,7 +602,7 @@ const formattedType = (type) => {
                                 <button type="button" @click="showExcelModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
                                     Batal
                                 </button>
-                                <button type="submit" :disabled="excelForm.processing" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-emerald-600/25 transition-all cursor-pointer">
+                                <button type="submit" :disabled="excelForm.processing" class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] active:scale-[0.98] text-white text-xs font-bold rounded-full shadow-xs transition-all cursor-pointer">
                                     Import Soal
                                 </button>
                             </div>
@@ -628,11 +629,11 @@ const formattedType = (type) => {
                 >
                     <div
                         @click.stop
-                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 max-w-md w-full p-6 sm:p-7 shadow-2xl my-auto transform-gpu"
+                        class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-150 dark:border-slate-800 max-w-md w-full p-6 sm:p-7 shadow-2xl my-auto transform-gpu"
                     >
                         <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-200/60 shadow-2xs">
                                     <FileText class="w-5 h-5" />
                                 </div>
                                 <div>
@@ -664,7 +665,7 @@ const formattedType = (type) => {
                                     type="file"
                                     accept=".docx,.doc"
                                     @change="(e) => wordForm.file = e.target.files[0]"
-                                    class="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 dark:file:bg-blue-500/10 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 focus:outline-none cursor-pointer"
+                                    class="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#eaf4ef] dark:file:bg-emerald-950/60 file:text-[#185338] dark:file:text-emerald-400 hover:file:bg-emerald-100 focus:outline-none cursor-pointer"
                                     required
                                 />
                             </div>
@@ -672,7 +673,7 @@ const formattedType = (type) => {
                                 <button type="button" @click="showWordModal = false" class="px-5 py-2.5 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
                                     Batal
                                 </button>
-                                <button type="submit" :disabled="wordForm.processing" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer">
+                                <button type="submit" :disabled="wordForm.processing" class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] active:scale-[0.98] text-white text-xs font-bold rounded-full shadow-xs transition-all cursor-pointer">
                                     Ekstrak Naskah Word
                                 </button>
                             </div>

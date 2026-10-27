@@ -31,18 +31,18 @@ const form = useForm({
     headmaster_nip: props.school?.headmaster_nip || '',
     active_academic_year: props.school?.active_academic_year || '2026/2027',
     active_semester: props.school?.active_semester || 'Ganjil',
-    primary_color: props.school?.primary_color || '#0F52BA',
+    primary_color: props.school?.primary_color || '#185338',
     seb_required: Boolean(props.school?.seb_required),
     seb_key_hash: props.school?.seb_key_hash || '',
 });
 
 const colorPresets = [
+    { name: 'Forest Green (Modern)', hex: '#185338' },
+    { name: 'Emerald Green', hex: '#059669' },
     { name: 'Royal Blue (EduPro)', hex: '#0F52BA' },
     { name: 'Indigo Blue', hex: '#2563EB' },
-    { name: 'Emerald Green', hex: '#059669' },
     { name: 'Deep Purple', hex: '#7C3AED' },
     { name: 'Rose Red', hex: '#E11D48' },
-    { name: 'Amber Gold', hex: '#D97706' },
 ];
 
 const resetForm = () => {
@@ -52,7 +52,7 @@ const resetForm = () => {
     form.headmaster_nip = props.school?.headmaster_nip || '';
     form.active_academic_year = props.school?.active_academic_year || '2026/2027';
     form.active_semester = props.school?.active_semester || 'Ganjil';
-    form.primary_color = props.school?.primary_color || '#0F52BA';
+    form.primary_color = props.school?.primary_color || '#185338';
     form.seb_required = Boolean(props.school?.seb_required);
     form.seb_key_hash = props.school?.seb_key_hash || '';
 };
@@ -100,12 +100,12 @@ const saveSettings = () => {
                         <span>Reset Form</span>
                     </button>
 
-                    <!-- Save Changes Primary Pill Button matching contoh.jpg -->
+                    <!-- Save Changes Primary Pill Button matching contoh.webp -->
                     <button
                         type="button"
                         @click="saveSettings"
                         :disabled="form.processing"
-                        class="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-xs font-semibold shadow-sm shadow-blue-600/25 transition-all cursor-pointer disabled:opacity-50"
+                        class="inline-flex items-center gap-2 px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white rounded-full text-xs font-bold shadow-xs transition-all cursor-pointer disabled:opacity-50"
                     >
                         <CheckCircle2 v-if="!form.processing" class="w-4 h-4" />
                         <span v-if="form.processing">Menyimpan...</span>
@@ -180,9 +180,9 @@ const saveSettings = () => {
                 <form @submit.prevent="saveSettings" class="lg:col-span-2 space-y-6">
                     
                     <!-- Section 1: Identitas Resmi Sekolah -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-100 dark:border-slate-800 shadow-sm space-y-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5">
                         <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shrink-0">
+                            <div class="w-10 h-10 rounded-2xl bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center font-bold shrink-0">
                                 <School class="w-5 h-5" />
                             </div>
                             <div>
@@ -204,7 +204,7 @@ const saveSettings = () => {
                                     v-model="form.school_name" 
                                     type="text" 
                                     placeholder="Contoh: SMA Negeri 1 Digital"
-                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-blue-600 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
+                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
                                     required 
                                 />
                             </div>
@@ -217,7 +217,7 @@ const saveSettings = () => {
                                     v-model="form.npsn" 
                                     type="text" 
                                     placeholder="Contoh: 10203040"
-                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl font-mono focus:border-blue-600 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
+                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
                                     required 
                                 />
                             </div>
@@ -230,7 +230,7 @@ const saveSettings = () => {
                                     v-model="form.headmaster_name" 
                                     type="text" 
                                     placeholder="Nama beserta gelar..."
-                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-blue-600 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
+                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
                                     required 
                                 />
                             </div>
@@ -243,16 +243,16 @@ const saveSettings = () => {
                                     v-model="form.headmaster_nip" 
                                     type="text" 
                                     placeholder="19750512..."
-                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl font-mono focus:border-blue-600 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
+                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
                                 />
                             </div>
                         </div>
                     </div>
 
                     <!-- Section 2: Kalender & Sesi Akademik -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-100 dark:border-slate-800 shadow-sm space-y-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5">
                         <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold shrink-0">
+                            <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold shrink-0">
                                 <Calendar class="w-5 h-5" />
                             </div>
                             <div>
@@ -274,7 +274,7 @@ const saveSettings = () => {
                                     v-model="form.active_academic_year" 
                                     type="text" 
                                     placeholder="2026/2027" 
-                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl font-mono focus:border-blue-600 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
+                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none transition-all shadow-2xs" 
                                     required 
                                 />
                             </div>
@@ -285,7 +285,7 @@ const saveSettings = () => {
                                 </label>
                                 <select 
                                     v-model="form.active_semester" 
-                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-blue-600 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none font-semibold transition-all shadow-2xs" 
+                                    class="w-full text-xs sm:text-sm px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:bg-white dark:focus:bg-slate-850 focus:outline-none font-semibold transition-all shadow-2xs" 
                                     required
                                 >
                                     <option value="Ganjil">Semester Ganjil</option>
@@ -296,9 +296,9 @@ const saveSettings = () => {
                     </div>
 
                     <!-- Section 3: Branding & Warna Tema -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-100 dark:border-slate-800 shadow-sm space-y-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5">
                         <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold shrink-0">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center font-bold shrink-0">
                                 <Palette class="w-5 h-5" />
                             </div>
                             <div>
@@ -325,7 +325,7 @@ const saveSettings = () => {
                                         :class="[
                                             'px-3 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2.5 transition-all cursor-pointer',
                                             form.primary_color.toUpperCase() === preset.hex.toUpperCase()
-                                                ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/40 text-blue-950 dark:text-blue-200 ring-2 ring-blue-500/20 shadow-2xs'
+                                                ? 'border-[#185338] bg-[#eaf4ef]/60 dark:bg-emerald-950/40 text-[#185338] dark:text-emerald-200 ring-2 ring-emerald-500/20 shadow-2xs font-bold'
                                                 : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300'
                                         ]"
                                     >
@@ -345,8 +345,8 @@ const saveSettings = () => {
                                     <input 
                                         v-model="form.primary_color" 
                                         type="text" 
-                                        placeholder="#0F52BA"
-                                        class="w-32 text-xs font-mono px-3 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-blue-600 focus:outline-none" 
+                                        placeholder="#185338"
+                                        class="w-32 text-xs font-mono px-3 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-[#185338] focus:outline-none" 
                                     />
                                 </div>
                                 <span class="text-xs text-slate-400 dark:text-slate-500">
@@ -357,9 +357,9 @@ const saveSettings = () => {
                     </div>
 
                     <!-- Section 4: Keamanan Safe Exam Browser (SEB) -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 sm:p-7 border border-slate-100 dark:border-slate-800 shadow-sm space-y-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5">
                         <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div class="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold shrink-0">
+                            <div class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold shrink-0">
                                 <ShieldCheck class="w-5 h-5" />
                             </div>
                             <div>
@@ -379,7 +379,7 @@ const saveSettings = () => {
                                     id="seb-toggle"
                                     v-model="form.seb_required" 
                                     type="checkbox" 
-                                    class="w-4.5 h-4.5 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-0 cursor-pointer" 
+                                    class="w-4.5 h-4.5 rounded border-slate-300 dark:border-slate-600 text-[#185338] focus:ring-0 cursor-pointer" 
                                 />
                             </div>
                             <div class="flex-1">
@@ -400,7 +400,7 @@ const saveSettings = () => {
                                 v-model="form.seb_key_hash" 
                                 type="text" 
                                 placeholder="Masukkan 64-karakter SHA-256 Browser Exam Key..."
-                                class="w-full text-xs font-mono px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-blue-600 focus:outline-none transition-all shadow-2xs" 
+                                class="w-full text-xs font-mono px-4 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl focus:border-[#185338] focus:outline-none transition-all shadow-2xs" 
                             />
                             <p class="text-[11px] text-slate-400">
                                 Jika diisi, sistem memvalidasi header X-SafeExamBrowser-RequestHash agar file konfigurasi SEB tidak dapat dimanipulasi siswa.
@@ -420,7 +420,7 @@ const saveSettings = () => {
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="px-7 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-full shadow-sm shadow-blue-600/25 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                            class="px-7 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white font-bold text-xs rounded-full shadow-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                         >
                             <CheckCircle2 v-if="!form.processing" class="w-4 h-4" />
                             <span>{{ form.processing ? 'Menyimpan...' : 'Simpan Semua Pengaturan' }}</span>
@@ -431,14 +431,14 @@ const saveSettings = () => {
                 <!-- Right: Live Preview Card & Server Diagnostics (1 col) -->
                 <div class="space-y-6">
                     
-                    <!-- Live Preview Card matching EduPro style -->
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
+                    <!-- Live Preview Card matching contoh.webp style -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                             <div class="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
-                                <Eye class="w-4 h-4 text-blue-600" />
+                                <Eye class="w-4 h-4 text-[#185338]" />
                                 <span>Pratinjau KOP & Kartu</span>
                             </div>
-                            <span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded-full font-mono">
+                            <span class="text-[10px] uppercase font-bold text-[#185338] bg-[#eaf4ef] dark:bg-emerald-950/60 dark:text-emerald-300 px-2.5 py-0.5 rounded-full font-mono">
                                 Live
                             </span>
                         </div>
@@ -448,7 +448,7 @@ const saveSettings = () => {
                             <div class="flex items-center gap-2.5 pb-2.5 border-b border-slate-200/70 dark:border-slate-700">
                                 <div 
                                     class="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-xs shadow-2xs shrink-0"
-                                    :style="{ backgroundColor: form.primary_color || '#0F52BA' }"
+                                    :style="{ backgroundColor: form.primary_color || '#185338' }"
                                 >
                                     <GraduationCap class="w-4 h-4" />
                                 </div>

@@ -109,7 +109,7 @@ const saveAndNext = () => {
                     <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">Pilih Soal Esai:</span>
                     <select
                         v-model="selectedQuestionId"
-                        class="text-xs px-3 py-1.5 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none transition-colors shadow-2xs"
+                        class="text-xs px-4 py-2 border border-slate-200/80 dark:border-slate-700 rounded-full font-semibold bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none transition-colors shadow-2xs cursor-pointer"
                     >
                         <option v-for="(eq, i) in essayQuestions" :key="eq.id" :value="eq.id">
                             Nomor {{ eq.order_index }} (Max Poin: {{ eq.max_score }})
@@ -119,21 +119,21 @@ const saveAndNext = () => {
             </div>
         </template>
 
-        <div v-if="essayQuestions.length === 0" class="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200/90 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 shadow-xs">
+        <div v-if="essayQuestions.length === 0" class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 shadow-xs">
             Ujian ini tidak memiliki soal esai/uraian. Seluruh nilai objektif telah dikoreksi otomatis oleh sistem.
         </div>
 
         <div v-else class="grid grid-cols-12 gap-4 h-[calc(100vh-140px)]">
             <!-- Left Panel: Student Directory (Col 3) -->
-            <div class="col-span-12 md:col-span-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 flex flex-col overflow-hidden shadow-xs">
-                <div class="p-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40">
+            <div class="col-span-12 md:col-span-3 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 flex flex-col overflow-hidden shadow-xs">
+                <div class="p-3.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40">
                     <div class="relative">
-                        <Search class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 absolute left-3 top-2.5" />
+                        <Search class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                         <input
                             v-model="search"
                             type="text"
                             placeholder="Cari siswa..."
-                            class="w-full pl-8.5 pr-3 py-1.5 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all"
+                            class="w-full pl-9 pr-3.5 py-2 text-xs border border-slate-200/80 dark:border-slate-700 rounded-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-[#185338]/10 transition-all shadow-2xs"
                         />
                     </div>
                 </div>
@@ -144,7 +144,7 @@ const saveAndNext = () => {
                         :key="att.id"
                         @click="selectStudent(idx)"
                         :class="[
-                            idx === selectedIndex ? 'bg-blue-50/80 dark:bg-blue-950/40 border-l-4 border-[#0F52BA] dark:border-blue-500' : 'hover:bg-slate-50/60 dark:hover:bg-slate-800/40',
+                            idx === selectedIndex ? 'bg-[#eaf4ef]/70 dark:bg-emerald-950/40 border-l-4 border-[#185338] dark:border-emerald-500' : 'hover:bg-slate-50/60 dark:hover:bg-slate-800/40',
                             'w-full text-left p-3.5 flex items-center justify-between transition-colors cursor-pointer'
                         ]"
                     >
@@ -158,13 +158,13 @@ const saveAndNext = () => {
                         <div class="text-right shrink-0">
                             <span
                                 v-if="att.answers.find(a => a.question_id === currentQuestion.id)?.is_graded_by_teacher"
-                                class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60"
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#eaf4ef] dark:bg-emerald-950/50 text-[#185338] dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60"
                             >
                                 {{ att.answers.find(a => a.question_id === currentQuestion.id)?.score_obtained }} Poin
                             </span>
                             <span
                                 v-else
-                                class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60"
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60"
                             >
                                 Belum
                             </span>
@@ -174,15 +174,15 @@ const saveAndNext = () => {
             </div>
 
             <!-- Center Panel: Question Rubric & Student Essay Answer (Col 6) -->
-            <div class="col-span-12 md:col-span-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 flex flex-col overflow-hidden shadow-xs">
-                <div class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40">
+            <div class="col-span-12 md:col-span-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 flex flex-col overflow-hidden shadow-xs">
+                <div class="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-1">
                         Pertanyaan Soal Esai #{{ currentQuestion.order_index }} (Max Poin: {{ currentQuestion.max_score }})
                     </span>
                     <div class="text-xs text-slate-900 dark:text-slate-100 font-medium leading-relaxed" v-html="renderMathInText(currentQuestion.content)"></div>
 
                     <!-- Teacher Rubric Box -->
-                    <div class="mt-3 p-3 bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 rounded-xl text-xs text-amber-900 dark:text-amber-200">
+                    <div class="mt-3 p-3.5 bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 rounded-2xl text-xs text-amber-900 dark:text-amber-200">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 block">Kunci / Rubrik Pedoman Penilaian:</span>
                         <p class="text-[11px] leading-relaxed mt-0.5">{{ currentQuestion.options[0]?.content }}</p>
                     </div>
@@ -198,7 +198,7 @@ const saveAndNext = () => {
                         </span>
                     </div>
 
-                    <div class="p-4.5 bg-white dark:bg-slate-800/80 border border-slate-200/90 dark:border-slate-700/80 rounded-xl shadow-2xs min-h-[220px]">
+                    <div class="p-4.5 bg-white dark:bg-slate-800/80 border border-slate-200/90 dark:border-slate-700/80 rounded-2xl shadow-2xs min-h-[220px]">
                         <p v-if="!currentAnswer?.essay_text" class="text-xs text-slate-400 dark:text-slate-500 italic">
                             (Siswa tidak mengisi jawaban esai ini / dikosongkan)
                         </p>
@@ -210,7 +210,7 @@ const saveAndNext = () => {
             </div>
 
             <!-- Right Panel: Rapid Scoring Keypad (Col 3) -->
-            <div class="col-span-12 md:col-span-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-5 flex flex-col justify-between shadow-xs">
+            <div class="col-span-12 md:col-span-3 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 flex flex-col justify-between shadow-xs">
                 <div>
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white mb-4 pb-2.5 border-b border-slate-100 dark:border-slate-800">
                         Input Skor & Koreksi Cepat
@@ -229,7 +229,7 @@ const saveAndNext = () => {
                                 step="1"
                                 min="0"
                                 :max="currentQuestion.max_score"
-                                class="w-full text-2xl font-bold font-mono text-center p-3 border-2 border-[#0F52BA] dark:border-blue-500 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 dark:focus:ring-blue-500/20 transition-all bg-blue-50/10 dark:bg-blue-950/20 text-slate-900 dark:text-white"
+                                class="w-full text-2xl font-bold font-mono text-center p-3 border-2 border-[#185338] dark:border-emerald-500 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#185338]/10 dark:focus:ring-emerald-500/20 transition-all bg-[#eaf4ef]/20 dark:bg-emerald-950/20 text-[#185338] dark:text-emerald-400"
                                 autofocus
                             />
                             <p class="text-[10px] text-slate-400 dark:text-slate-500 text-center mt-1.5">
@@ -243,7 +243,7 @@ const saveAndNext = () => {
                                 v-model="feedbackInput"
                                 rows="3"
                                 placeholder="Komentar koreksi guru..."
-                                class="w-full text-xs p-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all"
+                                class="w-full text-xs p-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-[#185338]/10 transition-all"
                             ></textarea>
                         </div>
                     </div>
@@ -253,7 +253,7 @@ const saveAndNext = () => {
                     <button
                         @click="saveAndNext"
                         type="button"
-                        class="w-full py-2.5 bg-[#0F52BA] hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+                        class="w-full py-3 bg-[#185338] hover:bg-[#12422c] active:scale-[0.98] text-white font-bold text-xs rounded-full shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
                     >
                         <span>Simpan & Siswa Berikutnya</span>
                         <CornerDownLeft class="w-3.5 h-3.5" />

@@ -64,10 +64,10 @@ const selectDemo = (acc, autoSubmit = false) => {
             </div>
 
             <!-- Elevated Split Card -->
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden grid grid-cols-1 lg:grid-cols-12 transition-all">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden grid grid-cols-1 lg:grid-cols-12 transition-all">
                 
                 <!-- Left Panel: Institutional Brand & Academic Info (5 cols on lg) -->
-                <div class="lg:col-span-5 bg-slate-900 text-white p-7 sm:p-9 flex flex-col justify-between relative">
+                <div class="lg:col-span-5 bg-[#0e3725] text-white p-7 sm:p-9 flex flex-col justify-between relative">
                     <!-- School Identity -->
                     <div>
                         <div class="mb-5">
@@ -79,13 +79,13 @@ const selectDemo = (acc, autoSubmit = false) => {
                             />
                             <div
                                 v-else
-                                class="w-11 h-11 rounded-xl bg-blue-600 text-white font-bold text-base flex items-center justify-center tracking-tight shadow-sm select-none"
+                                class="w-11 h-11 rounded-full bg-[#185338] text-white font-bold text-base flex items-center justify-center tracking-tight shadow-sm select-none border border-emerald-500/30"
                             >
                                 {{ schoolInitials }}
                             </div>
                         </div>
 
-                        <span class="text-[11px] font-semibold tracking-wider uppercase text-blue-400 block mb-1">
+                        <span class="text-[11px] font-semibold tracking-wider uppercase text-emerald-300 block mb-1">
                             Portal Ujian Berbasis Komputer
                         </span>
 
@@ -106,8 +106,8 @@ const selectDemo = (acc, autoSubmit = false) => {
 
                     <!-- Middle: Clean Institutional Guidelines (Minimal & Typography-Driven) -->
                     <div class="my-8 space-y-4">
-                        <div class="border-l-2 border-blue-500 pl-3.5 py-0.5">
-                            <p class="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-0.5">
+                        <div class="border-l-2 border-emerald-400 pl-3.5 py-0.5">
+                            <p class="text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-0.5">
                                 Peserta Didik
                             </p>
                             <p class="text-xs text-slate-300 leading-relaxed">
@@ -178,7 +178,7 @@ const selectDemo = (acc, autoSubmit = false) => {
                                     placeholder="Contoh: 2026001 atau guru"
                                     required
                                     autofocus
-                                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-3 focus:ring-blue-500/15 transition-all outline-none"
+                                    class="w-full px-4 py-2.5 text-sm rounded-full bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] dark:focus:border-emerald-500 focus:ring-3 focus:ring-[#185338]/15 transition-all outline-none"
                                 />
                                 <p v-if="form.errors.username" class="text-xs text-rose-600 dark:text-rose-400 font-medium mt-1.5">
                                     {{ form.errors.username }}
@@ -200,7 +200,7 @@ const selectDemo = (acc, autoSubmit = false) => {
                                         autocomplete="current-password"
                                         placeholder="Masukkan kata sandi..."
                                         required
-                                        class="w-full pl-3.5 pr-10 py-2.5 text-sm rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-3 focus:ring-blue-500/15 transition-all outline-none"
+                                        class="w-full pl-4 pr-10 py-2.5 text-sm rounded-full bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:border-[#185338] dark:focus:border-emerald-500 focus:ring-3 focus:ring-[#185338]/15 transition-all outline-none"
                                     />
                                     <button
                                         type="button"
@@ -224,12 +224,12 @@ const selectDemo = (acc, autoSubmit = false) => {
                                     <input
                                         v-model="form.remember"
                                         type="checkbox"
-                                        class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-500/20 dark:bg-slate-800 cursor-pointer"
+                                        class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-[#185338] focus:ring-[#185338]/20 dark:bg-slate-800 cursor-pointer"
                                     />
                                     <span>Ingat perangkat ini</span>
                                 </label>
                                 <span class="text-slate-500 dark:text-slate-400 text-[11px]">
-                                    Lupa sandi? <span class="text-blue-600 dark:text-blue-400 font-semibold">Hubungi Proktor</span>
+                                    Lupa sandi? <span class="text-[#185338] dark:text-emerald-400 font-semibold">Hubungi Proktor</span>
                                 </span>
                             </div>
 
@@ -238,7 +238,7 @@ const selectDemo = (acc, autoSubmit = false) => {
                                 <button
                                     type="submit"
                                     :disabled="form.processing"
-                                    class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm rounded-xl shadow-xs transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                                    class="w-full py-2.5 px-4 bg-[#185338] hover:bg-[#12422c] active:bg-[#0c2e1f] text-white font-semibold text-sm rounded-full shadow-xs transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     <Loader2 v-if="form.processing" class="w-4 h-4 animate-spin" />
                                     <span>{{ form.processing ? 'Memverifikasi...' : 'Masuk ke Sistem' }}</span>
@@ -256,7 +256,7 @@ const selectDemo = (acc, autoSubmit = false) => {
                             <button
                                 type="button"
                                 @click="showDemoPanel = !showDemoPanel"
-                                class="text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                                class="text-[11px] font-medium text-[#185338] dark:text-emerald-400 hover:underline cursor-pointer"
                             >
                                 {{ showDemoPanel ? 'Sembunyikan' : 'Tampilkan Pilihan' }}
                             </button>
@@ -269,9 +269,9 @@ const selectDemo = (acc, autoSubmit = false) => {
                                 :key="acc.role"
                                 @click="selectDemo(acc, false)"
                                 type="button"
-                                class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 hover:border-blue-500 dark:hover:border-blue-400 text-left transition-all cursor-pointer group"
+                                class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 hover:border-[#185338] dark:hover:border-emerald-500 text-left transition-all cursor-pointer group"
                             >
-                                <div class="text-[11px] font-semibold text-slate-800 dark:text-slate-200 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                <div class="text-[11px] font-semibold text-slate-800 dark:text-slate-200 truncate group-hover:text-[#185338] dark:group-hover:text-emerald-400">
                                     {{ acc.label.split(' ')[0] }}
                                 </div>
                                 <div class="text-[10px] text-slate-400 dark:text-slate-500 font-mono truncate">

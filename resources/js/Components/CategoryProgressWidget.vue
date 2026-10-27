@@ -16,16 +16,18 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm transition-colors duration-150 flex flex-col justify-between">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-2xs transition-colors duration-150 flex flex-col justify-between">
         <div>
-            <!-- Header -->
-            <div class="mb-5">
-                <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
-                    {{ title }}
-                </h3>
-                <p v-if="subtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    {{ subtitle }}
-                </p>
+            <!-- Header matching contoh.webp -->
+            <div class="mb-5 flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+                        {{ title }}
+                    </h3>
+                    <p v-if="subtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        {{ subtitle }}
+                    </p>
+                </div>
             </div>
 
             <!-- Categories List -->

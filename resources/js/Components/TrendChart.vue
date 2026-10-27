@@ -24,7 +24,7 @@ const props = defineProps({
     },
     strokeColor: {
         type: String,
-        default: '#2563EB', // Vibrant royal blue matching contoh.jpg
+        default: '#185338', // Deep forest green matching contoh.webp
     },
 });
 
@@ -130,9 +130,9 @@ const selectFilter = (opt) => {
 </script>
 
 <template>
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm transition-colors duration-150">
-        <!-- Header with Title and Filter Dropdown -->
-        <div class="flex items-center justify-between mb-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-2xs transition-colors duration-150">
+        <!-- Header with Title and Filter Dropdown matching contoh.webp -->
+        <div class="flex items-center justify-between mb-5">
             <div>
                 <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
                     {{ title }}
@@ -142,12 +142,12 @@ const selectFilter = (opt) => {
                 </p>
             </div>
 
-            <!-- Filter Dropdown Pill -->
+            <!-- Filter Dropdown Pill matching contoh.webp -->
             <div class="relative">
                 <button
                     type="button"
                     @click="showDropdown = !showDropdown"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 border border-slate-200/80 dark:border-slate-700 shadow-2xs transition-colors cursor-pointer"
                 >
                     <span>{{ selectedFilter }}</span>
                     <svg class="w-3.5 h-3.5 text-slate-400 transition-transform" :class="{ 'rotate-180': showDropdown }" viewBox="0 0 20 20" fill="currentColor">
@@ -157,15 +157,15 @@ const selectFilter = (opt) => {
 
                 <div 
                     v-if="showDropdown"
-                    class="absolute right-0 mt-1.5 w-36 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 py-1 z-20 text-xs font-medium"
+                    class="absolute right-0 mt-1.5 w-36 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 py-1.5 z-20 text-xs font-medium"
                 >
                     <button
                         v-for="opt in filterOptions"
                         :key="opt"
                         type="button"
                         @click="selectFilter(opt)"
-                        class="w-full text-left px-3 py-2 text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                        :class="{ 'text-blue-600 dark:text-blue-400 font-bold bg-blue-50/50 dark:bg-blue-950/30': opt === selectedFilter }"
+                        class="w-full text-left px-3.5 py-2 text-slate-700 dark:text-slate-200 hover:bg-[#eaf4ef] dark:hover:bg-emerald-950/50 hover:text-[#185338] dark:hover:text-emerald-400 transition-colors"
+                        :class="{ 'text-[#185338] dark:text-emerald-400 font-bold bg-[#eaf4ef]/60 dark:bg-emerald-950/30': opt === selectedFilter }"
                     >
                         {{ opt }}
                     </button>

@@ -465,7 +465,7 @@ onUnmounted(() => {
         <header class="h-14 bg-white dark:bg-slate-900 border-b border-slate-200/90 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between shrink-0 sticky top-0 z-40 shadow-2xs transition-colors duration-150">
             <!-- Left: Exam Identity & School -->
             <div class="flex items-center gap-3 min-w-0">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0F52BA] to-blue-700 text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
+                <div class="w-8 h-8 rounded-full bg-[#185338] text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
                     CBT
                 </div>
                 <div class="min-w-0">
@@ -655,7 +655,7 @@ onUnmounted(() => {
                                     type="button"
                                     :class="[
                                         answersMap[currentQuestion.id]?.selectedOptions?.includes(opt.option_label)
-                                            ? 'bg-blue-50/70 dark:bg-blue-950/50 border-2 border-[#0F52BA] dark:border-blue-500 text-slate-900 dark:text-white shadow-xs'
+                                            ? 'bg-[#eaf4ef]/70 dark:bg-emerald-950/50 border-2 border-[#185338] dark:border-emerald-500 text-slate-900 dark:text-white shadow-xs'
                                             : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600',
                                         'w-full text-left p-3.5 rounded-2xl border flex items-start gap-3.5 transition-all cursor-pointer active:scale-[0.99]'
                                     ]"
@@ -664,7 +664,7 @@ onUnmounted(() => {
                                     <span
                                         :class="[
                                             answersMap[currentQuestion.id]?.selectedOptions?.includes(opt.option_label)
-                                                ? 'bg-[#0F52BA] dark:bg-blue-600 text-white border-[#0F52BA] dark:border-blue-600 shadow-xs'
+                                                ? 'bg-[#185338] text-white border-[#185338] shadow-xs'
                                                 : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600',
                                             'w-7 h-7 rounded-xl font-mono font-bold text-xs flex items-center justify-center shrink-0 border transition-colors'
                                         ]"
@@ -677,8 +677,8 @@ onUnmounted(() => {
 
                             <!-- 2. MCMA: Complex Multiple Choice (Checkboxes) -->
                             <div v-else-if="currentQuestion.type === 'mcma'" class="space-y-2.5">
-                                <p class="text-xs text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/50 p-2.5 rounded-xl border border-blue-200/60 dark:border-blue-800/60 font-medium flex items-center gap-1.5">
-                                    <Sparkles class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                                <p class="text-xs text-[#185338] dark:text-emerald-300 bg-[#eaf4ef] dark:bg-emerald-950/50 p-2.5 rounded-xl border border-emerald-200/60 dark:border-emerald-800/60 font-medium flex items-center gap-1.5">
+                                    <Sparkles class="w-3.5 h-3.5 text-[#185338] dark:text-emerald-400 shrink-0" />
                                     <span>Pilihan Ganda Kompleks: Anda dapat memilih lebih dari satu jawaban benar.</span>
                                 </p>
                                 <button
@@ -688,7 +688,7 @@ onUnmounted(() => {
                                     type="button"
                                     :class="[
                                         answersMap[currentQuestion.id]?.selectedOptions?.includes(opt.option_label)
-                                            ? 'bg-blue-50/70 dark:bg-blue-950/50 border-2 border-[#0F52BA] dark:border-blue-500 text-slate-900 dark:text-white shadow-xs'
+                                            ? 'bg-[#eaf4ef]/70 dark:bg-emerald-950/50 border-2 border-[#185338] dark:border-emerald-500 text-slate-900 dark:text-white shadow-xs'
                                             : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600',
                                         'w-full text-left p-3.5 rounded-2xl border flex items-start gap-3.5 transition-all cursor-pointer active:scale-[0.99]'
                                     ]"
@@ -696,7 +696,7 @@ onUnmounted(() => {
                                     <span
                                         :class="[
                                             answersMap[currentQuestion.id]?.selectedOptions?.includes(opt.option_label)
-                                                ? 'bg-[#0F52BA] dark:bg-blue-600 text-white border-[#0F52BA] dark:border-blue-600'
+                                                ? 'bg-[#185338] text-white border-[#185338]'
                                                 : 'bg-white dark:bg-slate-700 text-transparent border-slate-300 dark:border-slate-600',
                                             'w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-colors shadow-2xs'
                                         ]"
@@ -789,7 +789,7 @@ onUnmounted(() => {
                                         saveCurrentAnswer();
                                     }"
                                     :placeholder="currentQuestion.type === 'short_answer' ? 'Contoh: 42 atau Fotosintesis...' : 'Tuliskan penjelasan dan argumen jawaban Anda secara lengkap di sini...'"
-                                    class="w-full text-xs p-3.5 border border-slate-200 dark:border-slate-700 rounded-2xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 focus:outline-none leading-relaxed bg-white dark:bg-slate-800/90 shadow-2xs font-sans text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 select-text cursor-text caret-[#0F52BA]"
+                                    class="w-full text-xs p-3.5 border border-slate-200 dark:border-slate-700 rounded-2xl focus:border-[#185338] dark:focus:border-emerald-500 focus:ring-2 focus:ring-[#185338]/10 focus:outline-none leading-relaxed bg-white dark:bg-slate-800/90 shadow-2xs font-sans text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 select-text cursor-text caret-[#185338]"
                                 ></textarea>
                                 <p class="text-[11px] text-slate-400 dark:text-slate-500 text-right">
                                     * Jawaban tersimpan otomatis saat Anda mengetik.
@@ -823,7 +823,7 @@ onUnmounted(() => {
                                 v-if="currentIndex < questions.length - 1"
                                 type="button"
                                 @click="jumpToQuestion(currentIndex + 1)"
-                                class="px-5 py-2 bg-[#0F52BA] hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                                class="px-5 py-2 bg-[#185338] hover:bg-[#12422c] active:scale-[0.98] text-white font-semibold text-xs rounded-full shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
                             >
                                 <span>Selanjutnya (→)</span>
                                 <ChevronRight class="w-4 h-4" />
@@ -864,7 +864,7 @@ onUnmounted(() => {
                             @click="jumpToQuestion(idx)"
                             type="button"
                             :class="[
-                                idx === currentIndex ? 'ring-2 ring-[#0F52BA] dark:ring-blue-500 ring-offset-2 dark:ring-offset-slate-900 font-black' : '',
+                                idx === currentIndex ? 'ring-2 ring-[#185338] dark:ring-emerald-400 ring-offset-2 dark:ring-offset-slate-900 font-black' : '',
                                 getQuestionStatus(q.id) === 'answered'
                                     ? 'bg-emerald-600 text-white border-emerald-600 shadow-2xs'
                                     : getQuestionStatus(q.id) === 'doubt'
@@ -949,7 +949,7 @@ onUnmounted(() => {
                             @click="jumpToQuestion(idx)"
                             type="button"
                             :class="[
-                                idx === currentIndex ? 'ring-2 ring-[#0F52BA] dark:ring-blue-500 ring-offset-1 dark:ring-offset-slate-900 font-black' : '',
+                                idx === currentIndex ? 'ring-2 ring-[#185338] dark:ring-emerald-400 ring-offset-1 dark:ring-offset-slate-900 font-black' : '',
                                 getQuestionStatus(q.id) === 'answered'
                                     ? 'bg-emerald-600 text-white border-emerald-600'
                                     : getQuestionStatus(q.id) === 'doubt'
@@ -1005,7 +1005,7 @@ onUnmounted(() => {
                 <button
                     type="button"
                     @click="showWarningStrike = false"
-                    class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                    class="w-full py-2.5 px-4 bg-[#185338] hover:bg-[#12422c] active:scale-[0.98] text-white text-xs font-semibold rounded-full shadow-xs transition-all cursor-pointer"
                 >
                     Saya Mengerti & Lanjutkan Ujian
                 </button>

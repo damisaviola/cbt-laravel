@@ -205,7 +205,7 @@ const formatTimeRange = (start, end) => {
                     <h1 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight truncate">
                         Jadwal Ujian & Sesi Ruang
                     </h1>
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 shrink-0">
+                    <span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-[10px] font-bold bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800 shrink-0">
                         {{ schedules.length }} Jadwal
                     </span>
                 </div>
@@ -217,7 +217,7 @@ const formatTimeRange = (start, end) => {
 
         <div class="space-y-6">
             <!-- Toolbar for View Mode & Create Action -->
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                         Daftar Jadwal Ujian Aktif
@@ -226,14 +226,14 @@ const formatTimeRange = (start, end) => {
 
                 <div class="flex items-center gap-2.5 self-end sm:self-auto">
                     <!-- View Mode Switcher -->
-                    <div class="flex items-center p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-xl">
+                    <div class="flex items-center p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 rounded-full">
                         <button
                             type="button"
                             @click="sessionViewMode = 'grid'"
                             :class="[
-                                'px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer',
+                                'px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer',
                                 sessionViewMode === 'grid'
-                                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
+                                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs font-bold'
                                     : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                             ]"
                             title="Tampilan Kartu Sesi"
@@ -245,9 +245,9 @@ const formatTimeRange = (start, end) => {
                             type="button"
                             @click="sessionViewMode = 'table'"
                             :class="[
-                                'px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer',
+                                'px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer',
                                 sessionViewMode === 'table'
-                                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
+                                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs font-bold'
                                     : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                             ]"
                             title="Tampilan Tabel Sesi"
@@ -259,7 +259,7 @@ const formatTimeRange = (start, end) => {
 
                     <button
                         @click="openCreateSchedule"
-                        class="px-4 py-2 bg-gradient-to-r from-[#0F52BA] to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold text-xs rounded-xl shadow-xs hover:shadow flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-5 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white font-bold text-xs rounded-full shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
                     >
                         <Plus class="w-3.5 h-3.5" />
                         <span>Buat Jadwal Ujian</span>
@@ -268,15 +268,15 @@ const formatTimeRange = (start, end) => {
             </div>
 
             <!-- Empty State -->
-            <div v-if="schedules.length === 0" class="bg-white dark:bg-slate-900 p-12 rounded-2xl border border-dashed border-slate-200/90 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 shadow-xs">
+            <div v-if="schedules.length === 0" class="bg-white dark:bg-slate-900 p-12 rounded-3xl border border-dashed border-slate-200/80 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 shadow-xs">
                 Belum ada jadwal ujian. Klik tombol di atas untuk menjadwalkan ujian pertama.
             </div>
 
-            <!-- Schedules Cards (Rounded-2xl) -->
+            <!-- Schedules Cards (Rounded-3xl) -->
             <div
                 v-for="sch in schedules"
                 :key="sch.id"
-                class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs overflow-hidden hover:shadow-sm transition-all duration-150"
+                class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs overflow-hidden hover:shadow-sm transition-all duration-150"
             >
                 <!-- Schedule Header Card -->
                 <div class="p-5 bg-slate-50/70 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -305,7 +305,7 @@ const formatTimeRange = (start, end) => {
                         <div class="flex items-center gap-2">
                             <button
                                 @click="openAddSession(sch)"
-                                class="px-3 py-1.5 bg-[#0F52BA] hover:bg-blue-700 text-white font-semibold text-[11px] rounded-xl shadow-xs flex items-center gap-1 transition-all cursor-pointer"
+                                class="px-4 py-2 bg-[#185338] hover:bg-[#12422c] text-white font-bold text-[11px] rounded-full shadow-xs flex items-center gap-1 transition-all cursor-pointer"
                             >
                                 <Plus class="w-3.5 h-3.5" />
                                 <span>Tambah Ruang / Sesi</span>
@@ -356,16 +356,16 @@ const formatTimeRange = (start, end) => {
                                 </p>
 
                                 <!-- Token Display Card -->
-                                <div class="p-3 bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-center mb-3 shadow-2xs relative group">
+                                <div class="p-3.5 bg-[#eaf4ef]/40 dark:bg-emerald-950/20 border border-dashed border-emerald-300 dark:border-emerald-800/60 rounded-2xl text-center mb-3 shadow-2xs relative group">
                                     <p class="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-wider">Token Ruang Ujian</p>
                                     <div class="flex items-center justify-center gap-2 mt-1">
-                                        <p class="text-xl font-black font-mono tracking-widest text-[#0F52BA] dark:text-blue-400 tabular-nums select-all">
+                                        <p class="text-xl font-black font-mono tracking-widest text-[#185338] dark:text-emerald-400 tabular-nums select-all">
                                             {{ sess.access_token }}
                                         </p>
                                         <button
                                             type="button"
                                             @click="copyToken(sess.access_token)"
-                                            class="p-1 rounded-md text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                                            class="p-1 rounded-md text-slate-400 hover:text-[#185338] dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                                             :title="copiedToken === sess.access_token ? 'Disalin!' : 'Salin Token'"
                                         >
                                             <Check v-if="copiedToken === sess.access_token" class="w-3.5 h-3.5 text-emerald-500" />
@@ -432,14 +432,14 @@ const formatTimeRange = (start, end) => {
                                         {{ formatTimeRange(sess.start_time, sess.end_time) }}
                                     </td>
                                     <td class="px-5 py-3.5 text-center">
-                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200/70 dark:border-blue-800/60">
-                                            <span class="font-mono font-bold tracking-wider text-xs text-blue-600 dark:text-blue-400 select-all">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/50 border border-emerald-200/70 dark:border-emerald-800/60">
+                                            <span class="font-mono font-bold tracking-wider text-xs text-[#185338] dark:text-emerald-400 select-all">
                                                 {{ sess.access_token }}
                                             </span>
                                             <button
                                                 type="button"
                                                 @click="copyToken(sess.access_token)"
-                                                class="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 p-0.5 rounded cursor-pointer transition-colors"
+                                                class="text-slate-400 hover:text-[#185338] dark:hover:text-emerald-400 p-0.5 rounded cursor-pointer transition-colors"
                                                 :title="copiedToken === sess.access_token ? 'Disalin!' : 'Salin Token'"
                                             >
                                                 <Check v-if="copiedToken === sess.access_token" class="w-3 h-3 text-emerald-500" />
@@ -501,7 +501,7 @@ const formatTimeRange = (start, end) => {
                                     v-model="scheduleForm.title"
                                     type="text"
                                     placeholder="Contoh: SAS Ganjil Matematika Kelas X"
-                                    class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none transition-all"
+                                    class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none transition-all"
                                     required
                                 />
                             </div>
@@ -511,7 +511,7 @@ const formatTimeRange = (start, end) => {
                                     <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Mata Pelajaran</label>
                                     <select
                                         v-model="scheduleForm.subject_id"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none font-medium"
+                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none font-medium"
                                         required
                                     >
                                         <option v-for="s in subjects" :key="s.id" :value="s.id">{{ s.name }} ({{ s.code }})</option>
@@ -522,7 +522,7 @@ const formatTimeRange = (start, end) => {
                                     <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Naskah Soal Ujian</label>
                                     <select
                                         v-model="scheduleForm.question_bank_id"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none font-medium"
+                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none font-medium"
                                         required
                                     >
                                         <option v-for="b in questionBanks" :key="b.id" :value="b.id">{{ b.title }}</option>
@@ -538,7 +538,7 @@ const formatTimeRange = (start, end) => {
                                         type="number"
                                         min="5"
                                         max="360"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                         required
                                     />
                                 </div>
@@ -549,7 +549,7 @@ const formatTimeRange = (start, end) => {
                                         type="number"
                                         min="0"
                                         max="360"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                         required
                                     />
                                 </div>
@@ -560,7 +560,7 @@ const formatTimeRange = (start, end) => {
                                         type="number"
                                         min="1"
                                         max="10"
-                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                         required
                                     />
                                 </div>
@@ -575,7 +575,7 @@ const formatTimeRange = (start, end) => {
                                             type="checkbox"
                                             :value="c.id"
                                             v-model="scheduleForm.target_class_ids_json"
-                                            class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#0F52BA] dark:text-blue-500 focus:ring-0"
+                                            class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#185338] dark:text-emerald-500 focus:ring-0"
                                         />
                                         <span>{{ c.name }}</span>
                                     </label>
@@ -585,43 +585,43 @@ const formatTimeRange = (start, end) => {
                             <!-- Toggles -->
                             <div class="space-y-2.5 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
                                 <label class="flex items-center gap-2.5 cursor-pointer text-slate-700 dark:text-slate-300">
-                                    <input v-model="scheduleForm.shuffle_questions" type="checkbox" class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#0F52BA] dark:text-blue-500 focus:ring-0" />
+                                    <input v-model="scheduleForm.shuffle_questions" type="checkbox" class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#185338] dark:text-emerald-500 focus:ring-0" />
                                     <span>Acak Urutan Soal (Shuffle Questions)</span>
                                 </label>
                                 <label class="flex items-center gap-2.5 cursor-pointer text-slate-700 dark:text-slate-300">
-                                    <input v-model="scheduleForm.shuffle_options" type="checkbox" class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#0F52BA] dark:text-blue-500 focus:ring-0" />
+                                    <input v-model="scheduleForm.shuffle_options" type="checkbox" class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#185338] dark:text-emerald-500 focus:ring-0" />
                                     <span>Acak Opsi Pilihan Ganda (Shuffle Options)</span>
                                 </label>
                                 <label class="flex items-center gap-2.5 cursor-pointer text-slate-700 dark:text-slate-300">
-                                    <input v-model="scheduleForm.show_score_to_student" type="checkbox" class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#0F52BA] dark:text-blue-500 focus:ring-0" />
+                                    <input v-model="scheduleForm.show_score_to_student" type="checkbox" class="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-700 text-[#185338] dark:text-emerald-500 focus:ring-0" />
                                     <span>Tampilkan Nilai Akhir ke Siswa setelah selesai</span>
                                 </label>
                             </div>
 
                             <!-- Quick Session Setup (Simplified Mode) -->
-                            <div v-if="!editingSchedule" class="p-4 bg-blue-50/70 dark:bg-blue-950/40 rounded-xl border border-blue-200/80 dark:border-blue-800/60 space-y-3">
+                            <div v-if="!editingSchedule" class="p-4 bg-[#eaf4ef]/70 dark:bg-[#185338]/20 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/60 space-y-3">
                                 <div class="flex items-center justify-between">
                                     <label class="flex items-center gap-2 cursor-pointer">
                                         <input
                                             v-model="scheduleForm.auto_create_session"
                                             type="checkbox"
-                                            class="rounded border-blue-300 dark:border-blue-700 text-[#0F52BA] focus:ring-0"
+                                            class="rounded border-emerald-300 dark:border-emerald-700 text-[#185338] focus:ring-0"
                                         />
-                                        <span class="text-xs font-bold text-blue-950 dark:text-blue-100 flex items-center gap-1.5">
-                                            <Sparkles class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                                        <span class="text-xs font-bold text-[#185338] dark:text-emerald-300 flex items-center gap-1.5">
+                                            <Sparkles class="w-3.5 h-3.5 text-[#185338] dark:text-emerald-400" />
                                             Otomatis Buat Sesi 1 & Rilis Token
                                         </span>
                                     </label>
-                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+                                    <span class="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-[#185338] text-white">
                                         Sekali Klik
                                     </span>
                                 </div>
 
-                                <p class="text-[11px] text-blue-800/80 dark:text-blue-300/80 leading-relaxed">
+                                <p class="text-[11px] text-[#185338]/80 dark:text-emerald-300/80 leading-relaxed">
                                     Sesi 1 dan token ujian langsung dibuat aktif otomatis. Siswa bisa langsung masuk ujian tanpa perlu tambah sesi manual.
                                 </p>
 
-                                <div v-if="scheduleForm.auto_create_session" class="space-y-3 pt-2.5 border-t border-blue-200/60 dark:border-blue-800/40">
+                                <div v-if="scheduleForm.auto_create_session" class="space-y-3 pt-2.5 border-t border-emerald-200/60 dark:border-emerald-800/40">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                         <div>
                                             <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Nama Sesi</label>
@@ -629,7 +629,7 @@ const formatTimeRange = (start, end) => {
                                                 v-model="scheduleForm.session_name"
                                                 type="text"
                                                 placeholder="Sesi 1 (Utama)"
-                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#0F52BA]"
+                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#185338]"
                                             />
                                         </div>
                                         <div>
@@ -638,7 +638,7 @@ const formatTimeRange = (start, end) => {
                                                 v-model="scheduleForm.room_name"
                                                 type="text"
                                                 placeholder="Lab Komputer 1 / Semua Ruangan"
-                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#0F52BA]"
+                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#185338]"
                                             />
                                         </div>
                                     </div>
@@ -649,7 +649,7 @@ const formatTimeRange = (start, end) => {
                                             <input
                                                 v-model="scheduleForm.start_time"
                                                 type="datetime-local"
-                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#0F52BA] font-mono"
+                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#185338] font-mono"
                                             />
                                         </div>
                                         <div>
@@ -657,7 +657,7 @@ const formatTimeRange = (start, end) => {
                                             <input
                                                 v-model="scheduleForm.end_time"
                                                 type="datetime-local"
-                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#0F52BA] font-mono"
+                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#185338] font-mono"
                                             />
                                         </div>
                                     </div>
@@ -667,7 +667,7 @@ const formatTimeRange = (start, end) => {
                                             <label class="block text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-1">Pengawas Ruang (Opsional)</label>
                                             <select
                                                 v-model="scheduleForm.proctor_id"
-                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#0F52BA]"
+                                                class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-[#185338]"
                                             >
                                                 <option value="">Tanpa Penugasan Pengawas</option>
                                                 <option v-for="p in proctors" :key="p.id" :value="p.id">{{ p.name }}</option>
@@ -681,12 +681,12 @@ const formatTimeRange = (start, end) => {
                                                     type="text"
                                                     placeholder="Token 6 Karakter"
                                                     maxlength="10"
-                                                    class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono font-bold tracking-widest uppercase focus:outline-none focus:border-[#0F52BA]"
+                                                    class="w-full text-xs px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono font-bold tracking-widest uppercase focus:outline-none focus:border-[#185338]"
                                                 />
                                                 <button
                                                     type="button"
                                                     @click="scheduleForm.access_token = generateRandomToken()"
-                                                    class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors cursor-pointer shrink-0"
+                                                    class="p-2 border border-slate-200 dark:border-slate-700 rounded-full bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-[#185338] transition-colors cursor-pointer shrink-0"
                                                     title="Acak Token Baru"
                                                 >
                                                     <RefreshCw class="w-3.5 h-3.5" />
@@ -711,7 +711,7 @@ const formatTimeRange = (start, end) => {
                     <button
                         type="submit"
                         form="scheduleForm"
-                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                        class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white text-xs font-semibold rounded-full shadow-xs transition-all cursor-pointer"
                     >
                         Simpan Jadwal
                     </button>
@@ -730,7 +730,7 @@ const formatTimeRange = (start, end) => {
             max-width="md"
         >
             <template #icon>
-                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                <div class="w-10 h-10 rounded-2xl bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center shrink-0">
                     <Clock class="w-5 h-5" />
                 </div>
             </template>
@@ -816,7 +816,7 @@ const formatTimeRange = (start, end) => {
                     <button
                         type="submit"
                         form="sessionForm"
-                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                        class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white text-xs font-semibold rounded-full shadow-xs transition-all cursor-pointer"
                     >
                         Rilis Sesi & Token
                     </button>

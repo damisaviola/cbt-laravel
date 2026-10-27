@@ -82,7 +82,7 @@
         <div>
             <strong>Berita Acara Pelaksanaan Ujian</strong> - {{ $session->session_name }} ({{ $session->room_name }})
         </div>
-        <button onclick="window.print()" style="background: #0f52ba; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+        <button onclick="window.print()" style="background: #185338; color: white; border: none; padding: 8px 18px; border-radius: 9999px; cursor: pointer; font-weight: bold; font-size: 13px;">
             Cetak Berita Acara (Print / PDF)
         </button>
     </div>

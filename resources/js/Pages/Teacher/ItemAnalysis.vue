@@ -44,17 +44,17 @@ const columns = [
         </template>
 
         <div class="space-y-4">
-            <!-- Summary Banner Card -->
-            <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/90 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+            <!-- Summary Banner Card (Rounded-3xl) -->
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
                 <div class="flex flex-wrap items-center gap-y-2 text-xs text-slate-600 dark:text-slate-300">
-                    <strong class="text-slate-800 dark:text-slate-100">Kriteria Indeks Kesukaran (P):</strong>
-                    <span class="ml-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/50 font-medium text-[11px]">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Mudah (&gt; 0.70)
+                    <strong class="text-slate-800 dark:text-slate-100 font-bold">Kriteria Indeks Kesukaran (P):</strong>
+                    <span class="ml-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/40 text-[#185338] dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/50 font-semibold text-[11px]">
+                        <span class="w-2 h-2 rounded-full bg-[#185338] dark:bg-emerald-400"></span> Mudah (&gt; 0.70)
                     </span>
-                    <span class="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/50 font-medium text-[11px]">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span> Sedang (0.30 - 0.70)
+                    <span class="ml-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-semibold text-[11px]">
+                        <span class="w-2 h-2 rounded-full bg-slate-500"></span> Sedang (0.30 - 0.70)
                     </span>
-                    <span class="ml-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border border-rose-200/60 dark:border-rose-800/50 font-medium text-[11px]">
+                    <span class="ml-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 border border-rose-200/60 dark:border-rose-800/50 font-semibold text-[11px]">
                         <span class="w-2 h-2 rounded-full bg-rose-500"></span> Sukar (&lt; 0.30)
                     </span>
                 </div>
@@ -73,9 +73,9 @@ const columns = [
                 :per-page="15"
             >
                 <template #header-left>
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-[#0F52BA] dark:text-blue-400 flex items-center justify-center shrink-0">
-                            <BarChart3 class="w-4 h-4" />
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-2xl bg-[#eaf4ef] dark:bg-emerald-950/40 text-[#185338] dark:text-emerald-400 flex items-center justify-center shrink-0">
+                            <BarChart3 class="w-4.5 h-4.5" />
                         </div>
                         <div>
                             <h3 class="text-sm font-bold text-slate-900 dark:text-white">Tabel Daya Pembeda & Distribusi Respons Siswa</h3>

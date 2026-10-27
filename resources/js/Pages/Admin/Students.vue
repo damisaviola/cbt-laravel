@@ -317,7 +317,7 @@ const openPrintAttendance = () => {
                     <h1 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight truncate">
                         Data Siswa & Kartu Peserta Ujian
                     </h1>
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 shrink-0">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800 shrink-0">
                         {{ totalStudents }} Siswa
                     </span>
                 </div>
@@ -328,12 +328,12 @@ const openPrintAttendance = () => {
         </template>
 
         <div class="space-y-4">
-            <!-- Student Management & Action Bar -->
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-4 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3.5">
+            <!-- Student Management & Action Bar matching contoh.webp -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <!-- Filter Section -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
                     <div class="flex items-center gap-2 shrink-0">
-                        <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-[#0F52BA] dark:text-blue-400 flex items-center justify-center shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800 text-[#185338] dark:text-emerald-400 flex items-center justify-center shrink-0">
                             <Filter class="w-4 h-4" />
                         </div>
                         <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
@@ -345,7 +345,7 @@ const openPrintAttendance = () => {
                         <select
                             v-model="selectedClass"
                             @change="filterData"
-                            class="w-full text-xs font-semibold py-2 pl-3.5 pr-8 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-200 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none shadow-2xs cursor-pointer transition-all"
+                            class="w-full text-xs font-semibold py-2 pl-4 pr-8 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-800 dark:text-slate-200 focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none shadow-2xs cursor-pointer transition-all"
                         >
                             <option value="">Semua Kelas ({{ classes.length }} Rombel)</option>
                             <option v-for="c in classes" :key="c.id" :value="c.id">{{ c.name }}</option>
@@ -353,11 +353,11 @@ const openPrintAttendance = () => {
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="flex flex-wrap items-center gap-2 self-start md:self-auto shrink-0">
+                <!-- Action Buttons matching contoh.webp pill buttons -->
+                <div class="flex flex-wrap items-center gap-2.5 self-start md:self-auto shrink-0">
                     <button
                         @click="openPrintCards"
-                        class="px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/50 dark:hover:bg-blue-950/40 text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-400 font-semibold text-xs rounded-xl shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-full shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
                         title="Cetak Kartu Ujian (PDF/Print)"
                     >
                         <Printer class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
@@ -366,7 +366,7 @@ const openPrintAttendance = () => {
 
                     <button
                         @click="openPrintAttendance"
-                        class="px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/50 dark:hover:bg-blue-950/40 text-slate-700 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-400 font-semibold text-xs rounded-xl shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-full shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
                         title="Cetak Daftar Hadir Ruang"
                     >
                         <Printer class="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
@@ -375,7 +375,7 @@ const openPrintAttendance = () => {
 
                     <button
                         @click="openCreate('excel')"
-                        class="px-3.5 py-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-semibold text-xs rounded-xl shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-full shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
                         title="Import massal file Excel (.xlsx)"
                     >
                         <FileSpreadsheet class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -384,7 +384,7 @@ const openPrintAttendance = () => {
 
                     <button
                         @click="openCreate('paste')"
-                        class="px-4 py-2 bg-gradient-to-r from-[#0F52BA] to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold text-xs rounded-xl shadow-xs hover:shadow flex items-center gap-1.5 transition-all cursor-pointer"
+                        class="px-5 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white font-semibold text-xs rounded-full shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
                     >
                         <Plus class="w-3.5 h-3.5" />
                         <span>Tambah Siswa</span>
@@ -415,7 +415,7 @@ const openPrintAttendance = () => {
                 </template>
                 <template #header-left>
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-[#0F52BA] dark:text-blue-400 flex items-center justify-center shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center shrink-0">
                             <GraduationCap class="w-4 h-4" />
                         </div>
                         <div>
@@ -482,7 +482,7 @@ const openPrintAttendance = () => {
                             <h3 class="text-base font-bold text-slate-900 dark:text-white tracking-tight">
                                 {{ editingStudent ? 'Edit Data Siswa' : 'Tambah Data Siswa Peserta Ujian' }}
                             </h3>
-                            <span v-if="!editingStudent" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800">
+                            <span v-if="!editingStudent" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800">
                                 Otomatis & Manual
                             </span>
                         </div>
@@ -507,14 +507,14 @@ const openPrintAttendance = () => {
                             @click="activeTab = 'paste'"
                             :class="[
                                 activeTab === 'paste'
-                                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
+                                    ? 'bg-white dark:bg-slate-800 text-[#185338] dark:text-emerald-400 shadow-xs border-[#185338]/30 dark:border-emerald-500/30 font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 border-transparent',
                                 'px-4 py-2 rounded-full text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
                             ]"
                         >
-                            <ClipboardPaste class="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                            <ClipboardPaste class="w-4 h-4 text-[#185338] dark:text-emerald-400" />
                             <span>Salin dari Excel (Tabel Grid)</span>
-                            <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400">
+                            <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-[#eaf4ef] dark:bg-emerald-950/80 text-[#185338] dark:text-emerald-400">
                                 Praktis
                             </span>
                         </button>
@@ -524,12 +524,12 @@ const openPrintAttendance = () => {
                             @click="activeTab = 'excel'"
                             :class="[
                                 activeTab === 'excel'
-                                    ? 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
+                                    ? 'bg-white dark:bg-slate-800 text-[#185338] dark:text-emerald-400 shadow-xs border-[#185338]/30 dark:border-emerald-500/30 font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 border-transparent',
                                 'px-4 py-2 rounded-full text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
                             ]"
                         >
-                            <FileSpreadsheet class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                            <FileSpreadsheet class="w-4 h-4 text-[#185338] dark:text-emerald-400" />
                             <span>Upload File Excel (.xlsx)</span>
                         </button>
 
@@ -555,7 +555,7 @@ const openPrintAttendance = () => {
                             @click="activeTab = 'manual'"
                             :class="[
                                 activeTab === 'manual'
-                                    ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-xs border-slate-200 dark:border-slate-700 font-bold'
+                                    ? 'bg-white dark:bg-slate-800 text-[#185338] dark:text-emerald-400 shadow-xs border-[#185338]/30 dark:border-emerald-500/30 font-bold'
                                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/50 border-transparent',
                                 'px-4 py-2 rounded-full text-xs border flex items-center gap-2 transition-all cursor-pointer shrink-0'
                             ]"
@@ -571,10 +571,10 @@ const openPrintAttendance = () => {
                     
                     <!-- TAB 1: Salin dari Excel (Quick Paste & Dynamic Table Grid) -->
                     <div v-if="!editingStudent && activeTab === 'paste'" class="space-y-4">
-                        <div class="bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/60 rounded-xl p-3.5 flex items-start gap-3">
-                            <Info class="w-4 h-4 text-[#0F52BA] dark:text-blue-400 shrink-0 mt-0.5" />
-                            <div class="text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
-                                <span class="font-bold">Cara Cepat dari Excel:</span> Buka file data siswa di Microsoft Excel atau Google Sheets Anda, seleksi (blok) kolom <span class="font-semibold underline">NISN & Nama</span> (opsional: Kelas, Ruang, Password), lalu tekan <kbd class="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-blue-300 dark:border-blue-800 rounded text-[10px] font-mono font-bold shadow-2xs">Ctrl + C</kbd>. Tempelkan pada kotak di bawah lalu klik <span class="font-semibold">Konversi ke Tabel</span>.
+                        <div class="bg-[#eaf4ef]/60 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/60 rounded-2xl p-3.5 flex items-start gap-3">
+                            <Info class="w-4 h-4 text-[#185338] dark:text-emerald-400 shrink-0 mt-0.5" />
+                            <div class="text-xs text-slate-700 dark:text-emerald-200 leading-relaxed">
+                                <span class="font-bold text-[#185338] dark:text-emerald-300">Cara Cepat dari Excel:</span> Buka file data siswa di Microsoft Excel atau Google Sheets Anda, seleksi (blok) kolom <span class="font-semibold underline">NISN & Nama</span> (opsional: Kelas, Ruang, Password), lalu tekan <kbd class="px-1.5 py-0.5 bg-white dark:bg-slate-800 border border-emerald-300 dark:border-emerald-800 rounded text-[10px] font-mono font-bold shadow-2xs">Ctrl + C</kbd>. Tempelkan pada kotak di bawah lalu klik <span class="font-semibold text-[#185338] dark:text-emerald-300">Konversi ke Tabel</span>.
                             </div>
                         </div>
 
@@ -582,7 +582,7 @@ const openPrintAttendance = () => {
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
                                 <label class="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                                    <ClipboardPaste class="w-3.5 h-3.5 text-[#0F52BA] dark:text-blue-400" />
+                                    <ClipboardPaste class="w-3.5 h-3.5 text-[#185338] dark:text-emerald-400" />
                                     <span>Area Tempel (Paste) dari Excel / Spreadsheet</span>
                                 </label>
                                 <span class="text-[11px] text-slate-400 dark:text-slate-500">
@@ -594,7 +594,7 @@ const openPrintAttendance = () => {
                                 v-model="pasteText"
                                 rows="3"
                                 placeholder="Klik di sini lalu tekan Ctrl + V...&#10;Contoh data dari Excel:&#10;2026101&#x9;Ahmad Pratama&#x9;X-MIPA-1&#x9;Lab 1&#10;2026102&#x9;Dewi Anggraini&#x9;X-MIPA-1&#x9;Lab 1"
-                                class="w-full text-xs font-mono p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 transition-colors resize-y"
+                                class="w-full text-xs font-mono p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 transition-colors resize-y"
                             ></textarea>
 
                             <div class="flex items-center justify-between pt-1">
@@ -615,7 +615,7 @@ const openPrintAttendance = () => {
                                         type="button"
                                         @click="parsePastedText"
                                         :disabled="!pasteText.trim()"
-                                        class="px-3.5 py-1.5 bg-[#0F52BA] hover:bg-blue-700 disabled:opacity-40 text-white text-xs font-semibold rounded-lg shadow-2xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                                        class="px-4 py-2 bg-[#185338] hover:bg-[#12422c] disabled:opacity-40 text-white text-xs font-semibold rounded-full shadow-2xs flex items-center gap-1.5 transition-colors cursor-pointer"
                                     >
                                         <Layers class="w-3.5 h-3.5" />
                                         <span>Konversi ke Tabel Siswa</span>
@@ -657,7 +657,7 @@ const openPrintAttendance = () => {
                                     <button
                                         type="button"
                                         @click="addBatchRow"
-                                        class="px-2.5 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 text-xs font-semibold text-[#0F52BA] dark:text-blue-400 rounded-lg flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
+                                        class="px-2.5 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-[#185338] dark:hover:border-emerald-700 text-xs font-semibold text-[#185338] dark:text-emerald-400 rounded-lg flex items-center gap-1 shadow-2xs transition-colors cursor-pointer"
                                     >
                                         <Plus class="w-3.5 h-3.5" />
                                         <span>Baris</span>
@@ -688,7 +688,7 @@ const openPrintAttendance = () => {
                                                     v-model="row.username"
                                                     type="text"
                                                     placeholder="2026..."
-                                                    class="w-full text-xs font-mono px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                                    class="w-full text-xs font-mono px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                                 />
                                             </td>
                                             <td class="py-1 px-1.5">
@@ -696,13 +696,13 @@ const openPrintAttendance = () => {
                                                     v-model="row.name"
                                                     type="text"
                                                     placeholder="Nama Siswa..."
-                                                    class="w-full text-xs px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                                    class="w-full text-xs px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                                 />
                                             </td>
                                             <td class="py-1 px-1.5">
                                                 <select
                                                     v-model="row.class_room_id"
-                                                    class="w-full text-xs px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                                    class="w-full text-xs px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                                 >
                                                     <option value="">-- Kelas --</option>
                                                     <option v-for="c in classes" :key="c.id" :value="c.id">{{ c.name }}</option>
@@ -713,7 +713,7 @@ const openPrintAttendance = () => {
                                                     v-model="row.exam_room_name"
                                                     type="text"
                                                     placeholder="Lab 1"
-                                                    class="w-full text-xs px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                                    class="w-full text-xs px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                                 />
                                             </td>
                                             <td class="py-1 px-1.5">
@@ -721,7 +721,7 @@ const openPrintAttendance = () => {
                                                     v-model="row.password"
                                                     type="text"
                                                     placeholder="siswa123"
-                                                    class="w-full text-xs font-mono px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                                    class="w-full text-xs font-mono px-2 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                                 />
                                             </td>
                                             <td class="py-1 px-1.5 text-center">
@@ -743,7 +743,7 @@ const openPrintAttendance = () => {
                                     <button
                                         type="button"
                                         @click="maxPreviewLimit = batchRows.length"
-                                        class="ml-2 font-bold text-[#0F52BA] dark:text-blue-400 underline cursor-pointer"
+                                        class="ml-2 font-bold text-[#185338] dark:text-emerald-400 underline cursor-pointer"
                                     >
                                         Buka Semua ({{ batchRows.length }})
                                     </button>
@@ -760,7 +760,7 @@ const openPrintAttendance = () => {
                                 <button
                                     type="button"
                                     @click="showModal = false"
-                                    class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                                    class="px-4 py-2 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
                                 >
                                     Batal
                                 </button>
@@ -768,7 +768,7 @@ const openPrintAttendance = () => {
                                     type="button"
                                     @click="submitBatch"
                                     :disabled="validBatchCount === 0 || isSavingBatch"
-                                    class="px-5 py-2 bg-[#0F52BA] hover:bg-blue-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl shadow-xs hover:shadow flex items-center gap-1.5 transition-colors cursor-pointer"
+                                    class="px-5 py-2.5 bg-[#185338] hover:bg-[#12422c] disabled:opacity-40 text-white text-xs font-semibold rounded-full shadow-xs hover:shadow flex items-center gap-1.5 transition-colors cursor-pointer"
                                 >
                                     <Check class="w-3.5 h-3.5" />
                                     <span>{{ isSavingBatch ? 'Menyimpan Siswa...' : `Simpan ${validBatchCount} Siswa Sekaligus` }}</span>
@@ -885,7 +885,7 @@ const openPrintAttendance = () => {
                                     </label>
                                     <select
                                         v-model="generateForm.class_room_id"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                         required
                                     >
                                         <option v-for="c in classes" :key="c.id" :value="c.id">{{ c.name }}</option>
@@ -901,7 +901,7 @@ const openPrintAttendance = () => {
                                         type="number"
                                         min="1"
                                         max="100"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none font-bold"
+                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none font-bold"
                                         required
                                     />
                                 </div>
@@ -914,7 +914,7 @@ const openPrintAttendance = () => {
                                         v-model="generateForm.nisn_prefix"
                                         type="text"
                                         placeholder="Contoh: 202610"
-                                        class="w-full text-xs font-mono px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs font-mono px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                         required
                                     />
                                     <span class="text-[10px] text-slate-400 mt-1 block">Contoh hasil: 202610001, 202610002...</span>
@@ -928,7 +928,7 @@ const openPrintAttendance = () => {
                                         v-model.number="generateForm.nisn_start"
                                         type="number"
                                         min="1"
-                                        class="w-full text-xs font-mono px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs font-mono px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                         required
                                     />
                                 </div>
@@ -941,7 +941,7 @@ const openPrintAttendance = () => {
                                         v-model="generateForm.name_prefix"
                                         type="text"
                                         placeholder="Contoh: Siswa atau Peserta"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                     />
                                     <span class="text-[10px] text-slate-400 mt-1 block">Contoh: Siswa 01, Siswa 02...</span>
                                 </div>
@@ -954,7 +954,7 @@ const openPrintAttendance = () => {
                                         v-model="generateForm.exam_room_name"
                                         type="text"
                                         placeholder="Lab Komputer 1"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -963,12 +963,12 @@ const openPrintAttendance = () => {
                             <div class="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-3.5 space-y-2">
                                 <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center justify-between">
                                     <span>Pratinjau Akun yang Akan Terbentuk (3 Pertama):</span>
-                                    <span class="text-blue-600 dark:text-blue-400 font-normal">Password: {{ generateForm.password || 'siswa123' }}</span>
+                                    <span class="text-[#185338] dark:text-emerald-400 font-normal">Password: {{ generateForm.password || 'siswa123' }}</span>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div v-for="(p, i) in generatePreview" :key="i" class="p-2.5 bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-700/80 rounded-lg text-xs">
                                         <div class="font-bold text-slate-900 dark:text-slate-100">{{ p.name }}</div>
-                                        <div class="font-mono text-[11px] text-blue-600 dark:text-blue-400 font-semibold">{{ p.username }}</div>
+                                        <div class="font-mono text-[11px] text-[#185338] dark:text-emerald-400 font-semibold">{{ p.username }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -1004,7 +1004,7 @@ const openPrintAttendance = () => {
                                     v-model="form.name"
                                     type="text"
                                     placeholder="Contoh: Ahmad Pratama"
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                     required
                                 />
                             </div>
@@ -1017,7 +1017,7 @@ const openPrintAttendance = () => {
                                     v-model="form.username"
                                     type="text"
                                     placeholder="Contoh: 2026001"
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl font-mono focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                     required
                                 />
                             </div>
@@ -1029,7 +1029,7 @@ const openPrintAttendance = () => {
                                     </label>
                                     <select
                                         v-model="form.class_room_id"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                         required
                                     >
                                         <option v-for="c in classes" :key="c.id" :value="c.id">{{ c.name }}</option>
@@ -1044,7 +1044,7 @@ const openPrintAttendance = () => {
                                         v-model="form.exam_room_name"
                                         type="text"
                                         placeholder="Lab Komputer 1"
-                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                        class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                     />
                                 </div>
                             </div>
@@ -1057,7 +1057,7 @@ const openPrintAttendance = () => {
                                     v-model="form.password"
                                     type="text"
                                     placeholder="Default: siswa123"
-                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl font-mono focus:border-[#0F52BA] dark:focus:border-blue-500 focus:outline-none"
+                                    class="w-full text-xs px-3.5 py-2.5 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl font-mono focus:border-[#185338] dark:focus:border-emerald-500 focus:outline-none"
                                     :required="!editingStudent"
                                 />
                             </div>
@@ -1067,7 +1067,7 @@ const openPrintAttendance = () => {
                                     <input
                                         type="checkbox"
                                         v-model="form.is_active"
-                                        class="rounded text-[#0F52BA] focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-700"
+                                        class="rounded text-[#185338] focus:ring-[#185338] dark:bg-slate-800 dark:border-slate-700"
                                     />
                                     <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
                                         Akun Siswa Aktif (Bisa Mengikuti Ujian)
@@ -1086,7 +1086,7 @@ const openPrintAttendance = () => {
                                 <button
                                     type="submit"
                                     :disabled="form.processing"
-                                    class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 flex items-center gap-1.5 transition-all cursor-pointer"
+                                    class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] disabled:opacity-50 text-white text-xs font-semibold rounded-full shadow-sm shadow-emerald-950/20 flex items-center gap-1.5 transition-all cursor-pointer"
                                 >
                                     <Check class="w-3.5 h-3.5" />
                                     <span>{{ form.processing ? 'Menyimpan...' : (editingStudent ? 'Simpan Perubahan' : 'Simpan Siswa') }}</span>

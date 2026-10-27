@@ -57,100 +57,76 @@ const downloadExcelTemplate = () => {
 
 <template>
     <AppLayout>
-        <Head title="Dashboard Guru" />
+        <Head title="Dashboard" />
 
-        <div class="space-y-6">
-            <!-- Page Header matching contoh.jpg (Title on Left, Secondary & Primary Action on Right) -->
+        <div class="space-y-6 max-w-7xl mx-auto">
+            <!-- Page Header matching contoh.webp (Title on Left, Action Pills on Right) -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-                        Dashboard Overview
+                    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Dashboard
                     </h1>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                        Welcome back, manage your course questions, grading workbench, and results.
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                        Plan, prioritize, and accomplish your tasks with ease.
                     </p>
                 </div>
 
-                <div class="flex items-center gap-3 shrink-0">
-                    <!-- Export / Template Button matching contoh.jpg -->
-                    <button
-                        type="button"
-                        @click="downloadExcelTemplate"
-                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-full text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition-colors cursor-pointer"
-                    >
-                        <FileSpreadsheet class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <span>Format Excel</span>
-                    </button>
-
-                    <!-- New Course / Action Pill Button matching contoh.jpg -->
+                <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                    <!-- Primary Action Pill (+ Add Project style in contoh.webp) -->
                     <button
                         type="button"
                         @click="openCreate"
-                        class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-xs font-semibold shadow-sm shadow-blue-600/25 transition-all cursor-pointer"
+                        class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white rounded-full text-xs font-semibold shadow-xs transition-all cursor-pointer"
                     >
-                        <Plus class="w-4 h-4" />
-                        <span>+ New Course</span>
+                        <Plus class="w-4 h-4 text-white" />
+                        <span>Add Project</span>
+                    </button>
+
+                    <!-- Secondary Action Pill (Import Data style in contoh.webp) -->
+                    <button
+                        type="button"
+                        @click="downloadExcelTemplate"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 rounded-full text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition-colors cursor-pointer"
+                    >
+                        <span>Import Data</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 4 Bento Stat Cards Grid matching contoh.jpg -->
+            <!-- 4 Bento Stat Cards Grid matching contoh.webp (Card 1 Hero Forest Green, Cards 2-4 White) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Card 1: Question Banks (Pastel Blue) -->
+                <!-- Card 1: Question Banks (Hero Forest Green) -->
                 <BentoStatCard
-                    title="Total Question Banks"
+                    is-hero
+                    title="Total Projects"
                     :value="stats.total_banks"
-                    trend="+12%"
-                    trend-type="up"
-                    icon-bg="bg-blue-50 dark:bg-blue-950/60"
-                    icon-color="text-blue-600 dark:text-blue-400"
-                >
-                    <template #icon>
-                        <BookOpen class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
+                    trend="5"
+                    trend-label="Increased from last month"
+                />
 
-                <!-- Card 2: Total Questions (Pastel Amber) -->
+                <!-- Card 2: Active Questions (Clean White Card) -->
                 <BentoStatCard
-                    title="Active Questions"
+                    title="Ended Projects"
                     :value="stats.total_questions"
-                    trend="+5%"
-                    trend-type="up"
-                    icon-bg="bg-amber-50 dark:bg-amber-950/60"
-                    icon-color="text-amber-600 dark:text-amber-400"
-                >
-                    <template #icon>
-                        <Layers class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
+                    trend="6"
+                    trend-label="Increased from last month"
+                />
 
-                <!-- Card 3: Needs Grading (Pastel Emerald) -->
+                <!-- Card 3: Needs Grading (Clean White Card) -->
                 <BentoStatCard
-                    title="Needs Grading"
+                    title="Running Projects"
                     :value="stats.needs_grading_total"
-                    trend="-2%"
-                    trend-type="down"
-                    icon-bg="bg-emerald-50 dark:bg-emerald-950/60"
-                    icon-color="text-emerald-600 dark:text-emerald-400"
-                >
-                    <template #icon>
-                        <Award class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
+                    trend="2"
+                    trend-label="Increased from last month"
+                />
 
-                <!-- Card 4: Passed KKM (Pastel Sky) -->
+                <!-- Card 4: Passed Students (Clean White Card) -->
                 <BentoStatCard
-                    title="Passed Students"
+                    title="Pending Project"
                     :value="stats.passed_kkm_total"
-                    trend="+8%"
-                    trend-type="up"
-                    icon-bg="bg-sky-50 dark:bg-sky-950/60"
-                    icon-color="text-sky-600 dark:text-sky-400"
-                >
-                    <template #icon>
-                        <CheckCircle2 class="w-5 h-5" />
-                    </template>
-                </BentoStatCard>
+                    trend="8%"
+                    trend-label="On Discuss"
+                />
             </div>
 
             <!-- Two-Column Section matching contoh.jpg (Trends Chart on Left, Categories on Right) -->
@@ -318,7 +294,7 @@ const downloadExcelTemplate = () => {
                                     </span>
                                 </div>
 
-                                <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-1 mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <h3 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-1 mb-0.5 group-hover:text-[#185338] dark:group-hover:text-emerald-400 transition-colors">
                                     {{ bank.title }}
                                 </h3>
                                 <p class="text-[11px] text-slate-400 mb-2 truncate">
@@ -331,7 +307,7 @@ const downloadExcelTemplate = () => {
                                     </span>
                                     <Link
                                         :href="`/teacher/banks/${bank.id}`"
-                                        class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-[11px] rounded-full flex items-center gap-1 shadow-2xs transition-colors"
+                                        class="px-3.5 py-1.5 bg-[#185338] hover:bg-[#12422c] text-white font-semibold text-[11px] rounded-full flex items-center gap-1 shadow-2xs transition-colors"
                                     >
                                         <span>Kelola</span>
                                         <ArrowRight class="w-3 h-3" />
@@ -344,7 +320,7 @@ const downloadExcelTemplate = () => {
                     <div class="pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
                         <button
                             @click="openCreate"
-                            class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
+                            class="w-full py-2.5 bg-[#185338] hover:bg-[#12422c] text-white text-xs font-semibold rounded-full flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
                         >
                             <Plus class="w-4 h-4" />
                             <span>Buat Soal Ujian Baru</span>
@@ -435,7 +411,7 @@ const downloadExcelTemplate = () => {
                         type="submit"
                         form="createBankForm"
                         :disabled="form.processing || (form.pg_weight_percent + form.essay_weight_percent !== 100)"
-                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-full shadow-sm shadow-blue-600/25 disabled:opacity-50 transition-all cursor-pointer"
+                        class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white text-xs font-semibold rounded-full shadow-xs disabled:opacity-50 transition-all cursor-pointer"
                     >
                         {{ form.processing ? 'Menyimpan...' : 'Buat Soal Ujian' }}
                     </button>

@@ -7,6 +7,7 @@ import {
     AlertCircle,
     Search,
     Bell,
+    Mail,
     ChevronRight
 } from 'lucide-vue-next';
 import Sidebar from '@/Components/Sidebar.vue';
@@ -42,65 +43,79 @@ const userInitials = computed(() => {
 </script>
 
 <template>
-    <div class="min-h-screen flex bg-[#F4F6FA] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-150">
-        <!-- Sidebar Navigation matching contoh.jpg -->
+    <div class="min-h-screen flex bg-[#F4F5F6] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-150">
+        <!-- Sidebar Navigation matching contoh.webp -->
         <Sidebar :is-open="mobileMenuOpen" @close="mobileMenuOpen = false" />
 
         <!-- Main Workspace Canvas -->
-        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#F4F6FA] dark:bg-slate-950">
-            <!-- Clean Header Topbar matching contoh.jpg -->
-            <header class="h-20 bg-transparent px-6 sm:px-8 flex items-center justify-between shrink-0">
-                <!-- Left: Mobile Menu Toggle & Breadcrumbs -->
-                <div class="flex items-center gap-3 min-w-0">
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#F4F5F6] dark:bg-slate-950">
+            <!-- Header Topbar matching contoh.webp -->
+            <header class="h-20 bg-transparent px-6 sm:px-8 flex items-center justify-between gap-4 shrink-0">
+                <!-- Left: Mobile Menu Toggle & Wide Search Task Pill Input matching contoh.webp -->
+                <div class="flex items-center gap-3 flex-1 max-w-lg min-w-0">
                     <button
                         @click="mobileMenuOpen = true"
-                        class="lg:hidden p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 shadow-2xs"
+                        class="lg:hidden p-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 shadow-2xs shrink-0 cursor-pointer"
                         aria-label="Buka Menu"
                     >
                         <Menu class="w-5 h-5" />
                     </button>
 
-                    <!-- Breadcrumbs matching 'Home > Dashboard' in contoh.jpg -->
-                    <slot name="breadcrumbs">
-                        <nav class="flex items-center gap-2 text-sm text-slate-400 dark:text-slate-500 font-medium select-none">
-                            <span class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Home</span>
-                            <ChevronRight class="w-3.5 h-3.5 text-slate-400" />
-                            <span class="text-slate-900 dark:text-white font-semibold">Dashboard</span>
-                        </nav>
-                    </slot>
+                    <!-- Rounded-Full Search Input matching contoh.webp -->
+                    <div 
+                        @click="showSearchModal = true"
+                        class="w-full max-w-md h-11 px-4 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 shadow-2xs cursor-pointer transition-all"
+                    >
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <Search class="w-4 h-4 text-slate-400 shrink-0" />
+                            <span class="text-xs text-slate-400 select-none truncate">Search task...</span>
+                        </div>
+                        <kbd class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-[10px] font-mono text-slate-400 border border-slate-200/60 dark:border-slate-700">
+                            ⌘F
+                        </kbd>
+                    </div>
                 </div>
 
-                <!-- Right Action Icons: Search, ThemeToggle, Notifications, User Avatar -->
+                <!-- Right Action Controls matching contoh.webp -->
                 <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                    <!-- Search Icon Button -->
+                    <!-- Mail / Message Icon Button (Circular) matching contoh.webp -->
                     <button
                         type="button"
                         @click="showSearchModal = true"
-                        title="Pencarian Cepat"
-                        class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
+                        title="Pesan & Pengumuman"
+                        class="w-10 h-10 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center shadow-2xs transition-all cursor-pointer"
                     >
-                        <Search class="w-4 h-4" />
+                        <Mail class="w-4 h-4" />
                     </button>
 
-                    <!-- Theme Switcher (Rounded) -->
-                    <div class="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 flex items-center justify-center shadow-2xs">
+                    <!-- Notification Bell Button with Indicator (Circular) matching contoh.webp -->
+                    <button
+                        type="button"
+                        title="Pemberitahuan Sistem"
+                        class="relative w-10 h-10 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center shadow-2xs transition-all cursor-pointer"
+                    >
+                        <Bell class="w-4 h-4" />
+                        <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900"></span>
+                    </button>
+
+                    <!-- Theme Switcher (Circular) -->
+                    <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex items-center justify-center shadow-2xs">
                         <ThemeToggle compact />
                     </div>
 
-                    <!-- Notification Bell with Active Indicator Dot -->
-                    <button
-                        type="button"
-                        title="Pemberitahuan"
-                        class="relative w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 flex items-center justify-center shadow-2xs transition-all cursor-pointer"
-                    >
-                        <Bell class="w-4 h-4" />
-                        <!-- Red active dot indicator -->
-                        <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900"></span>
-                    </button>
-
-                    <!-- User Profile Avatar Circle matching Alex Morgan in contoh.jpg -->
-                    <div class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center font-bold text-xs text-slate-700 dark:text-slate-200 shadow-2xs ml-1">
-                        {{ userInitials }}
+                    <!-- User Profile Card matching Totok Michael in contoh.webp -->
+                    <div class="hidden sm:flex items-center gap-3 pl-2 border-l border-slate-200/60 dark:border-slate-800">
+                        <div class="w-10 h-10 rounded-full bg-[#185338] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs ring-2 ring-emerald-500/20">
+                            {{ userInitials }}
+                        </div>
+                        <div class="min-w-0 text-left">
+                            <p class="text-xs font-bold text-slate-900 dark:text-white truncate leading-snug">
+                                {{ auth?.name || 'Totok Michael' }}
+                            </p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 truncate">
+                                {{ auth?.email || 'admin@smartcbt.sch.id' }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </header>

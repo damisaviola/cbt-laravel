@@ -14,15 +14,23 @@
 }
 
 :root {
-    --brand-primary: #0F52BA;
-    --paper-bg: #F8FAFC;
+    --brand-primary: #185338;
+    --brand-forest: #185338;
+    --brand-forest-dark: #0e3725;
+    --brand-forest-light: #247550;
+    --brand-sage: #e8f3ed;
+    --paper-bg: #F4F5F6;
     --deep-ink: #0F172A;
     --slate-border: #E2E8F0;
     --card-bg: #FFFFFF;
 }
 
 .dark {
-    --brand-primary: #3B82F6;
+    --brand-primary: #34d399;
+    --brand-forest: #185338;
+    --brand-forest-dark: #0e3725;
+    --brand-forest-light: #247550;
+    --brand-sage: #064e3b;
     --paper-bg: #090D16;
     --deep-ink: #F8FAFC;
     --slate-border: #1E293B;
@@ -90,7 +98,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Subtle enterprise focus rings & universal cursor/caret visibility */
 input, textarea {
     cursor: text;
-    caret-color: var(--brand-primary, #0F52BA);
+    caret-color: var(--brand-primary, #185338);
     color: var(--deep-ink, #0F172A);
     user-select: text;
     -webkit-user-select: text;
@@ -100,7 +108,7 @@ input, textarea {
 }
 
 .dark input, .dark textarea {
-    caret-color: var(--brand-primary, #3B82F6);
+    caret-color: var(--brand-primary, #34d399);
     color: var(--deep-ink, #F8FAFC);
 }
 
@@ -124,11 +132,11 @@ input[type="button"], input[type="submit"], input[type="reset"], input[type="che
 
 input:focus, select:focus, textarea:focus {
     outline: none;
-    caret-color: var(--brand-primary, #0F52BA);
+    caret-color: var(--brand-primary, #185338);
 }
 
 .dark input:focus, .dark select:focus, .dark textarea:focus {
-    caret-color: var(--brand-primary, #3B82F6);
+    caret-color: var(--brand-primary, #34d399);
 }
 
 /* KaTeX mathematical equations dark mode fidelity */

@@ -154,7 +154,7 @@ onUnmounted(() => {
                                     ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/80 dark:border-rose-900/60'
                                     : modalType === 'warning'
                                     ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200/80 dark:border-amber-900/60'
-                                    : 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/80 dark:border-blue-900/60'
+                                    : 'bg-[#eaf4ef] dark:bg-[#185338]/20 text-[#185338] dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800/40'
                             ]"
                         >
                             <Trash2 v-if="modalType === 'danger'" class="w-5 h-5" />
@@ -191,7 +191,7 @@ onUnmounted(() => {
                                     ? 'bg-rose-600 hover:bg-rose-700 shadow-rose-600/25'
                                     : modalType === 'warning'
                                     ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/25'
-                                    : 'bg-blue-600 hover:bg-blue-700 shadow-blue-600/25'
+                                    : 'bg-[#185338] hover:bg-[#12422c] shadow-emerald-950/20'
                             ]"
                         >
                             <span>{{ modalConfirmText }}</span>

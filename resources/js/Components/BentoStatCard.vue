@@ -1,4 +1,6 @@
 <script setup>
+import { ArrowUpRight } from 'lucide-vue-next';
+
 const props = defineProps({
     title: {
         type: String,
@@ -18,65 +20,89 @@ const props = defineProps({
     },
     trendLabel: {
         type: String,
-        default: '',
+        default: 'Increased from last month',
+    },
+    isHero: {
+        type: Boolean,
+        default: false,
     },
     iconBg: {
         type: String,
-        default: 'bg-blue-50 dark:bg-blue-950/60',
+        default: '',
     },
     iconColor: {
         type: String,
-        default: 'text-blue-600 dark:text-blue-400',
+        default: '',
     },
 });
 </script>
 
 <template>
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all duration-150 flex flex-col justify-between">
-        <!-- Top Row: Icon Container on Left, Trend Badge Pill on Right -->
-        <div class="flex items-center justify-between mb-4">
-            <!-- Pastel Rounded Icon Box -->
-            <div :class="['w-10 h-10 rounded-xl flex items-center justify-center shrink-0', iconBg, iconColor]">
-                <slot name="icon">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                </slot>
-            </div>
-
-            <!-- Trend Badge Pill matching contoh.jpg -->
-            <div 
-                v-if="trend" 
+    <!-- Card Root Container matching contoh.webp -->
+    <div 
+        :class="[
+            'rounded-3xl p-5 sm:p-6 transition-all duration-200 flex flex-col justify-between shadow-2xs hover:shadow-xs',
+            isHero
+                ? 'bg-gradient-to-br from-[#12422c] to-[#185338] text-white border-transparent'
+                : 'bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-white'
+        ]"
+    >
+        <!-- Top Row: Title on Left, Circular Diagonal Arrow Button on Right matching contoh.webp -->
+        <div class="flex items-center justify-between gap-2">
+            <span 
                 :class="[
-                    'px-2.5 py-0.5 rounded-full text-xs font-semibold flex items-center gap-1',
-                    trendType === 'down' 
-                        ? 'bg-rose-50 text-rose-500 dark:bg-rose-950/50 dark:text-rose-400' 
-                        : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400'
+                    'text-xs sm:text-sm font-semibold truncate',
+                    isHero ? 'text-emerald-100/90' : 'text-slate-800 dark:text-slate-200'
                 ]"
             >
-                <!-- Upward Arrow -->
-                <svg v-if="trendType !== 'down'" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                </svg>
-                <!-- Downward Arrow -->
-                <svg v-else class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 4.5l-15 15m0 0h11.25m-11.25 0V8.25" />
-                </svg>
-                <span>{{ trend }}</span>
-                <span v-if="trendLabel" class="font-normal opacity-80 text-[10px] hidden sm:inline">{{ trendLabel }}</span>
+                {{ title }}
+            </span>
+
+            <!-- Circular Arrow Up-Right ↗ Button matching contoh.webp -->
+            <div 
+                :class="[
+                    'w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-transform hover:scale-105',
+                    isHero 
+                        ? 'border border-white/20 bg-white/10 text-white' 
+                        : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                ]"
+            >
+                <ArrowUpRight class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
         </div>
 
-        <!-- Bottom: Label and Large Bold Value -->
-        <div>
-            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 truncate">
-                {{ title }}
-            </p>
-            <div class="flex items-baseline justify-between gap-2">
-                <h3 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-                    {{ value }}
-                </h3>
-                <slot name="extra" />
+        <!-- Middle: Large Bold Value matching contoh.webp -->
+        <div class="my-2 sm:my-3">
+            <h3 
+                :class="[
+                    'text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight',
+                    isHero ? 'text-white' : 'text-slate-900 dark:text-white'
+                ]"
+            >
+                {{ value }}
+            </h3>
+        </div>
+
+        <!-- Bottom: Trend or Status Badge Pill matching contoh.webp -->
+        <div class="flex items-center gap-2 pt-1">
+            <div 
+                :class="[
+                    'px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] font-medium inline-flex items-center gap-1.5',
+                    isHero 
+                        ? 'bg-white/15 text-white' 
+                        : 'border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 bg-slate-50/60 dark:bg-slate-800/40'
+                ]"
+            >
+                <!-- Small status / trend icon -->
+                <span 
+                    :class="[
+                        'w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold',
+                        isHero ? 'bg-white/20 text-white' : 'bg-slate-200/80 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                    ]"
+                >
+                    {{ trend || '↗' }}
+                </span>
+                <span class="truncate">{{ trendLabel || 'Updated live' }}</span>
             </div>
         </div>
     </div>
