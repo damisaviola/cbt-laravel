@@ -8,7 +8,9 @@ import {
     Search,
     Bell,
     Mail,
-    ChevronRight
+    ChevronRight,
+    PanelLeftClose,
+    PanelLeftOpen
 } from 'lucide-vue-next';
 import Sidebar from '@/Components/Sidebar.vue';
 import ConfirmModal from '@/Components/ConfirmModal.vue';
@@ -27,9 +29,71 @@ const props = defineProps({
 const page = usePage();
 const auth = computed(() => page.props.auth?.user);
 
-const mobileMenuOpen = ref(false);
+const sidebarOpen = ref(true);
 const showSearchModal = ref(false);
 const searchQuery = ref('');
+
+let lastIsMobile = false;
+
+const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value;
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+        try {
+            localStorage.setItem('smartcbt_sidebar_open', String(sidebarOpen.value));
+        } catch (e) {}
+    }
+};
+
+const handleKeyDown = (e) => {
+    // Ctrl+B or Cmd+B to toggle sidebar
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+        e.preventDefault();
+        toggleSidebar();
+    }
+};
+
+const handleResize = () => {
+    if (typeof window === 'undefined') return;
+    const isMobile = window.innerWidth < 1024;
+    if (isMobile !== lastIsMobile) {
+        lastIsMobile = isMobile;
+        if (isMobile) {
+            sidebarOpen.value = false;
+        } else {
+            try {
+                const saved = localStorage.getItem('smartcbt_sidebar_open');
+                sidebarOpen.value = saved !== null ? saved === 'true' : true;
+            } catch (e) {
+                sidebarOpen.value = true;
+            }
+        }
+    }
+};
+
+onMounted(() => {
+    if (typeof window !== 'undefined') {
+        lastIsMobile = window.innerWidth < 1024;
+        if (lastIsMobile) {
+            sidebarOpen.value = false;
+        } else {
+            try {
+                const saved = localStorage.getItem('smartcbt_sidebar_open');
+                sidebarOpen.value = saved !== null ? saved === 'true' : true;
+            } catch (e) {
+                sidebarOpen.value = true;
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('resize', handleResize);
+    }
+});
+
+onUnmounted(() => {
+    if (typeof window !== 'undefined') {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('resize', handleResize);
+    }
+});
 
 const userInitials = computed(() => {
     if (!auth.value?.name) return 'U';
@@ -45,20 +109,27 @@ const userInitials = computed(() => {
 <template>
     <div class="min-h-screen flex bg-[#F4F5F6] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-150">
         <!-- Sidebar Navigation matching contoh.webp -->
-        <Sidebar :is-open="mobileMenuOpen" @close="mobileMenuOpen = false" />
+        <Sidebar 
+            :is-open="sidebarOpen" 
+            @close="sidebarOpen = false" 
+            @update:is-open="val => sidebarOpen = val" 
+        />
 
         <!-- Main Workspace Canvas -->
-        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#F4F5F6] dark:bg-slate-950">
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#F4F5F6] dark:bg-slate-950 transition-all duration-300">
             <!-- Header Topbar matching contoh.webp -->
             <header class="h-20 bg-transparent px-6 sm:px-8 flex items-center justify-between gap-4 shrink-0">
-                <!-- Left: Mobile Menu Toggle & Wide Search Task Pill Input matching contoh.webp -->
+                <!-- Left: Sidebar Toggle & Wide Search Task Pill Input matching contoh.webp -->
                 <div class="flex items-center gap-3 flex-1 max-w-lg min-w-0">
                     <button
-                        @click="mobileMenuOpen = true"
-                        class="lg:hidden p-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 shadow-2xs shrink-0 cursor-pointer"
-                        aria-label="Buka Menu"
+                        @click="toggleSidebar"
+                        class="p-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white shadow-2xs shrink-0 cursor-pointer transition-all hover:scale-105 active:scale-95"
+                        :title="sidebarOpen ? 'Tutup Sidebar (Ctrl+B)' : 'Buka Sidebar (Ctrl+B)'"
+                        :aria-label="sidebarOpen ? 'Tutup Sidebar' : 'Buka Sidebar'"
                     >
-                        <Menu class="w-5 h-5" />
+                        <PanelLeftClose v-if="sidebarOpen" class="w-5 h-5 hidden lg:block" />
+                        <PanelLeftOpen v-if="!sidebarOpen" class="w-5 h-5 hidden lg:block" />
+                        <Menu class="w-5 h-5 lg:hidden" />
                     </button>
 
                     <!-- Rounded-Full Search Input matching contoh.webp -->

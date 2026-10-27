@@ -15,7 +15,8 @@ import {
     Settings,
     HelpCircle,
     X,
-    ChevronRight
+    ChevronRight,
+    PanelLeftClose
 } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -147,10 +148,21 @@ const closeSidebar = () => {
     emit('close');
     emit('update:isOpen', false);
 };
+
+const handleNavClick = () => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        closeSidebar();
+    }
+};
 </script>
 
 <template>
-    <div class="sidebar-root shrink-0 lg:w-64 lg:sticky lg:top-0 lg:h-screen">
+    <div 
+        :class="[
+            'sidebar-root shrink-0 lg:sticky lg:top-0 lg:h-screen transition-[width] duration-300 ease-in-out',
+            isOpen ? 'lg:w-64' : 'lg:w-20'
+        ]"
+    >
         <!-- Mobile Sidebar Backdrop -->
         <div 
             v-if="isOpen" 
@@ -161,15 +173,26 @@ const closeSidebar = () => {
         <!-- Modern Clean Sidebar matching contoh.webp -->
         <aside 
             :class="[
-                'fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-150/80 dark:border-slate-800 flex flex-col justify-between shrink-0 select-none shadow-[2px_0_15px_rgba(0,0,0,0.02)] transition-transform duration-200 lg:static lg:translate-x-0 h-full',
-                isOpen ? 'translate-x-0' : '-translate-x-full'
+                'fixed inset-y-0 left-0 z-50 bg-white dark:bg-slate-900 dark:border-r dark:border-slate-800/80 flex flex-col justify-between shrink-0 select-none shadow-[2px_0_15px_rgba(0,0,0,0.02)] transition-all duration-300 ease-in-out lg:static lg:translate-x-0 h-full',
+                isOpen 
+                    ? 'w-64 translate-x-0 lg:w-64' 
+                    : 'w-64 -translate-x-full lg:w-20 lg:translate-x-0'
             ]"
         >
             <!-- Top Section: Brand + Navigation -->
-            <div class="flex-1 flex flex-col min-h-0 overflow-y-auto">
+            <div class="flex-1 flex flex-col min-h-0 overflow-y-auto overflow-x-hidden">
                 <!-- Brand Logo & Header matching Donezo logo in contoh.webp -->
-                <div class="h-20 flex items-center justify-between px-6">
-                    <Link href="/" class="flex items-center gap-3 min-w-0 group">
+                <div 
+                    :class="[
+                        'h-20 flex items-center shrink-0 transition-all duration-300',
+                        isOpen ? 'justify-between px-6' : 'justify-center px-2'
+                    ]"
+                >
+                    <Link 
+                        href="/" 
+                        :class="['flex items-center min-w-0 group', isOpen ? 'gap-3' : 'justify-center']"
+                        :title="school?.school_name || 'SmartCBT'"
+                    >
                         <!-- Forest Green loop logo mark matching contoh.webp -->
                         <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-[#185338] dark:text-emerald-400 transition-transform group-hover:scale-105">
                             <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -178,86 +201,135 @@ const closeSidebar = () => {
                                 <circle cx="16" cy="16" r="3" fill="currentColor" />
                             </svg>
                         </div>
-                        <div class="min-w-0">
+                        <div v-if="isOpen" class="min-w-0">
                             <span class="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight truncate block">
                                 {{ school?.school_name ? school.school_name.split(' ')[0] : 'SmartCBT' }}
                             </span>
                         </div>
                     </Link>
 
-                    <!-- Mobile Close Button -->
+                    <!-- Close/Collapse Button (when expanded) -->
                     <button 
+                        v-if="isOpen"
                         type="button"
                         @click="closeSidebar" 
-                        class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
-                        aria-label="Tutup Menu"
+                        class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                        title="Tutup Sidebar (Ctrl+B)"
+                        aria-label="Tutup Sidebar"
                     >
-                        <X class="w-5 h-5" />
+                        <PanelLeftClose class="w-5 h-5 hidden lg:block" />
+                        <X class="w-5 h-5 lg:hidden" />
                     </button>
                 </div>
 
                 <!-- Navigation Sections (MENU & GENERAL matching contoh.webp) -->
-                <div class="px-3 py-2 space-y-6 flex-1">
+                <div 
+                    :class="[
+                        'py-2 flex-1 overflow-y-auto overflow-x-hidden transition-all duration-300',
+                        isOpen ? 'px-3 space-y-6' : 'px-2 space-y-4'
+                    ]"
+                >
                     <div 
                         v-for="(section, sIdx) in menuSections" 
                         :key="sIdx"
                         class="space-y-1"
                     >
-                        <!-- Section Header (e.g. MENU, GENERAL) -->
-                        <div class="px-4 pb-1">
+                        <!-- Section Header (Expanded) -->
+                        <div v-if="isOpen" class="px-4 pb-1">
                             <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                                 {{ section.heading === 'SYSTEM' ? 'GENERAL' : section.heading }}
                             </span>
                         </div>
+                        <!-- Section Divider (Collapsed) -->
+                        <div v-else-if="sIdx > 0" class="my-2 mx-2 border-t border-slate-100 dark:border-slate-800" />
 
                         <!-- Menu Items -->
-                        <div class="space-y-0.5">
+                        <div class="space-y-1">
                             <Link
                                 v-for="item in section.items"
                                 :key="item.name"
                                 :href="item.href"
-                                @click="closeSidebar"
+                                @click="handleNavClick"
+                                :title="!isOpen ? item.name : undefined"
                                 :class="[
-                                    isNavActive(item.href)
-                                        ? 'text-slate-900 dark:text-white font-bold'
-                                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium',
-                                    'relative flex items-center justify-between px-4 py-2.5 text-sm rounded-xl transition-all duration-150 cursor-pointer group'
+                                    'relative flex items-center rounded-xl transition-all duration-150 cursor-pointer group',
+                                    isOpen 
+                                        ? (isNavActive(item.href)
+                                            ? 'justify-between px-4 py-2.5 text-sm text-slate-900 dark:text-white font-bold'
+                                            : 'justify-between px-4 py-2.5 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium')
+                                        : (isNavActive(item.href)
+                                            ? 'justify-center w-11 h-11 mx-auto bg-[#eaf4ef] dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 font-bold shadow-2xs'
+                                            : 'justify-center w-11 h-11 mx-auto text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/60 font-medium')
                                 ]"
                             >
-                                <div class="flex items-center gap-3.5 min-w-0">
-                                    <!-- Left Active Vertical Pill Bar Indicator matching contoh.webp -->
-                                    <span 
-                                        v-if="isNavActive(item.href)" 
-                                        class="absolute left-0 top-1/2 -translate-y-1/2 w-1.25 h-6 rounded-r-full bg-[#185338] dark:bg-emerald-400"
-                                    />
+                                <!-- Expanded item layout -->
+                                <template v-if="isOpen">
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <!-- Left Active Vertical Pill Bar Indicator matching contoh.webp -->
+                                        <span 
+                                            v-if="isNavActive(item.href)" 
+                                            class="absolute left-0 top-1/2 -translate-y-1/2 w-1.25 h-6 rounded-r-full bg-[#185338] dark:bg-emerald-400"
+                                        />
 
+                                        <component 
+                                            :is="item.icon" 
+                                            :class="[
+                                                'w-5 h-5 shrink-0 transition-colors',
+                                                isNavActive(item.href) 
+                                                    ? 'text-[#185338] dark:text-emerald-400' 
+                                                    : 'text-slate-400 group-hover:text-slate-700 dark:text-slate-400'
+                                            ]" 
+                                        />
+                                        <span class="truncate">{{ item.name }}</span>
+                                    </div>
+
+                                    <!-- Pill Badge for Tasks/Exams matching 12+ badge in contoh.webp -->
+                                    <span 
+                                        v-if="item.name === 'Jadwal Ujian' || item.name === 'Tasks'" 
+                                        class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900 text-white dark:bg-slate-800 dark:text-slate-300 shrink-0"
+                                    >
+                                        Live
+                                    </span>
+                                </template>
+
+                                <!-- Collapsed icon-only layout -->
+                                <template v-else>
                                     <component 
                                         :is="item.icon" 
                                         :class="[
                                             'w-5 h-5 shrink-0 transition-colors',
                                             isNavActive(item.href) 
                                                 ? 'text-[#185338] dark:text-emerald-400' 
-                                                : 'text-slate-400 group-hover:text-slate-700 dark:text-slate-400'
+                                                : 'text-slate-500 group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-white'
                                         ]" 
                                     />
-                                    <span class="truncate">{{ item.name }}</span>
-                                </div>
 
-                                <!-- Pill Badge for Tasks/Exams matching 12+ badge in contoh.webp -->
-                                <span 
-                                    v-if="item.name === 'Jadwal Ujian' || item.name === 'Tasks'" 
-                                    class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900 text-white dark:bg-slate-800 dark:text-slate-300 shrink-0"
-                                >
-                                    Live
-                                </span>
+                                    <!-- Left Active Indicator Pill in Collapsed Mode -->
+                                    <span 
+                                        v-if="isNavActive(item.href)" 
+                                        class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r-full bg-[#185338] dark:bg-emerald-400"
+                                    />
+
+                                    <!-- Pulsing Live Dot on Collapsed Item -->
+                                    <span 
+                                        v-if="item.name === 'Jadwal Ujian' || item.name === 'Tasks'" 
+                                        class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900 animate-pulse"
+                                    />
+
+                                    <!-- Floating Tooltip Flyout on Hover -->
+                                    <span class="fixed left-20 ml-2 px-2.5 py-1 bg-slate-900 text-white text-xs font-semibold rounded-lg shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap hidden lg:block">
+                                        {{ item.name }}
+                                    </span>
+                                </template>
                             </Link>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bottom Forest Green Mobile App Card matching contoh.webp -->
-                <div class="p-4">
-                    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c2e1f] via-[#103a27] to-[#185338] p-4 text-white shadow-sm border border-emerald-950/20">
+                <!-- Bottom Forest Green Mobile App Card -->
+                <div :class="['shrink-0 transition-all duration-300', isOpen ? 'p-4' : 'p-2 flex justify-center']">
+                    <!-- Expanded Card -->
+                    <div v-if="isOpen" class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c2e1f] via-[#103a27] to-[#185338] p-4 text-white shadow-sm border border-emerald-950/20">
                         <!-- Organic wave lines overlay -->
                         <div class="absolute -right-4 -bottom-6 w-28 h-28 rounded-full border border-white/10 pointer-events-none"></div>
                         <div class="absolute -right-8 -bottom-10 w-36 h-36 rounded-full border border-white/5 pointer-events-none"></div>
@@ -286,12 +358,26 @@ const closeSidebar = () => {
                             Download
                         </a>
                     </div>
+
+                    <!-- Collapsed Icon View -->
+                    <a
+                        v-else
+                        href="/proctor/dashboard"
+                        title="Download our Mobile App"
+                        class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#0c2e1f] via-[#103a27] to-[#185338] text-white flex items-center justify-center shadow-xs hover:scale-105 transition-transform"
+                    >
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <rect x="5" y="2" width="14" height="20" rx="3" />
+                            <circle cx="12" cy="18" r="1" fill="currentColor" />
+                        </svg>
+                    </a>
                 </div>
             </div>
 
             <!-- User Profile Row at bottom with Logout Option -->
-            <div class="p-4 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
-                <div class="flex items-center justify-between p-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+            <div :class="['border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 transition-all duration-300', isOpen ? 'p-4' : 'p-3 flex flex-col items-center gap-2']">
+                <!-- Expanded User Profile -->
+                <div v-if="isOpen" class="flex items-center justify-between p-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <div class="flex items-center gap-3 min-w-0">
                         <!-- Round Avatar matching Totok Michael avatar in contoh.webp -->
                         <div class="w-9 h-9 rounded-full bg-[#eaf4ef] dark:bg-emerald-950 text-[#185338] dark:text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0 border border-emerald-200/60 dark:border-emerald-800 shadow-2xs">
@@ -317,6 +403,24 @@ const closeSidebar = () => {
                         <LogOut class="w-4 h-4" />
                     </button>
                 </div>
+
+                <!-- Collapsed User Profile -->
+                <template v-else>
+                    <div 
+                        :title="auth?.name ? `${auth.name} (${roleLabel})` : 'Profil Pengguna'" 
+                        class="w-9 h-9 rounded-full bg-[#eaf4ef] dark:bg-emerald-950 text-[#185338] dark:text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0 border border-emerald-200/60 dark:border-emerald-800 shadow-2xs cursor-default"
+                    >
+                        {{ userInitials }}
+                    </div>
+                    <button
+                        type="button"
+                        @click="handleLogout"
+                        title="Keluar dari sistem"
+                        class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition-colors cursor-pointer"
+                    >
+                        <LogOut class="w-4 h-4" />
+                    </button>
+                </template>
             </div>
         </aside>
     </div>
