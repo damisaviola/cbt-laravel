@@ -15,6 +15,7 @@ import {
 import Sidebar from '@/Components/Sidebar.vue';
 import ConfirmModal from '@/Components/ConfirmModal.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
+import { useSidebar } from '@/Composables/useSidebar';
 
 const props = defineProps({
     breadcrumbs: {
@@ -29,20 +30,11 @@ const props = defineProps({
 const page = usePage();
 const auth = computed(() => page.props.auth?.user);
 
-const sidebarOpen = ref(true);
+const { sidebarOpen, toggleSidebar, setSidebarOpen } = useSidebar();
 const showSearchModal = ref(false);
 const searchQuery = ref('');
 
 let lastIsMobile = false;
-
-const toggleSidebar = () => {
-    sidebarOpen.value = !sidebarOpen.value;
-    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
-        try {
-            localStorage.setItem('smartcbt_sidebar_open', String(sidebarOpen.value));
-        } catch (e) {}
-    }
-};
 
 const handleKeyDown = (e) => {
     // Ctrl+B or Cmd+B to toggle sidebar
@@ -58,13 +50,13 @@ const handleResize = () => {
     if (isMobile !== lastIsMobile) {
         lastIsMobile = isMobile;
         if (isMobile) {
-            sidebarOpen.value = false;
+            setSidebarOpen(false);
         } else {
             try {
                 const saved = localStorage.getItem('smartcbt_sidebar_open');
-                sidebarOpen.value = saved !== null ? saved === 'true' : true;
+                setSidebarOpen(saved !== null ? saved === 'true' : true);
             } catch (e) {
-                sidebarOpen.value = true;
+                setSidebarOpen(true);
             }
         }
     }
@@ -73,16 +65,6 @@ const handleResize = () => {
 onMounted(() => {
     if (typeof window !== 'undefined') {
         lastIsMobile = window.innerWidth < 1024;
-        if (lastIsMobile) {
-            sidebarOpen.value = false;
-        } else {
-            try {
-                const saved = localStorage.getItem('smartcbt_sidebar_open');
-                sidebarOpen.value = saved !== null ? saved === 'true' : true;
-            } catch (e) {
-                sidebarOpen.value = true;
-            }
-        }
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('resize', handleResize);
     }
@@ -111,8 +93,8 @@ const userInitials = computed(() => {
         <!-- Sidebar Navigation matching contoh.webp -->
         <Sidebar 
             :is-open="sidebarOpen" 
-            @close="sidebarOpen = false" 
-            @update:is-open="val => sidebarOpen = val" 
+            @close="setSidebarOpen(false)" 
+            @update:is-open="val => setSidebarOpen(val)" 
         />
 
         <!-- Main Workspace Canvas -->
