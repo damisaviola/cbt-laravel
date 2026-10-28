@@ -52,8 +52,26 @@ class QuestionBankController extends Controller
             });
 
         $totalSchedules = ExamSchedule::count();
-        $needsGradingTotal = $schedules->sum('needs_grading_count');
-        $passedKkmTotal = $schedules->sum('passed_kkm_count');
+
+        $needsGradingTotal = ExamAttempt::where('status', 'submitted')
+            ->when($teacher->role === 'teacher', function ($q) use ($teacher) {
+                $q->whereHas('examSession.examSchedule.questionBank', fn ($qb) => $qb->where('teacher_id', $teacher->id));
+            })
+            ->count();
+        $schedulesNeedsGrading = $schedules->sum('needs_grading_count');
+        if ($needsGradingTotal === 0 && $schedulesNeedsGrading > 0) {
+            $needsGradingTotal = $schedulesNeedsGrading;
+        }
+
+        $passedKkmTotal = ExamAttempt::where('is_passed_kkm', true)
+            ->when($teacher->role === 'teacher', function ($q) use ($teacher) {
+                $q->whereHas('examSession.examSchedule.questionBank', fn ($qb) => $qb->where('teacher_id', $teacher->id));
+            })
+            ->count();
+        $schedulesPassed = $schedules->sum('passed_kkm_count');
+        if ($passedKkmTotal === 0 && $schedulesPassed > 0) {
+            $passedKkmTotal = $schedulesPassed;
+        }
 
         $subjects = Subject::orderBy('name')->get(['id', 'name', 'code']);
 

@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import { ArrowUpRight } from 'lucide-vue-next';
 
 const props = defineProps({
@@ -34,14 +35,21 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    href: {
+        type: String,
+        default: null,
+    },
 });
 </script>
 
 <template>
     <!-- Card Root Container matching contoh.webp -->
-    <div 
+    <component
+        :is="href ? Link : 'div'"
+        :href="href"
         :class="[
-            'rounded-3xl p-5 sm:p-6 transition-all duration-200 flex flex-col justify-between shadow-2xs hover:shadow-xs',
+            'rounded-3xl p-5 sm:p-6 transition-all duration-200 flex flex-col justify-between shadow-2xs hover:shadow-xs group',
+            href ? 'cursor-pointer hover:border-[#185338]/30 dark:hover:border-emerald-700/50' : '',
             isHero
                 ? 'bg-gradient-to-br from-[#12422c] to-[#185338] text-white border-transparent'
                 : 'bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-900 dark:text-white'
@@ -61,7 +69,7 @@ const props = defineProps({
             <!-- Circular Arrow Up-Right ↗ Button matching contoh.webp -->
             <div 
                 :class="[
-                    'w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-transform hover:scale-105',
+                    'w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 group-hover:translate-x-0.5 group-hover:-translate-y-0.5',
                     isHero 
                         ? 'border border-white/20 bg-white/10 text-white' 
                         : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
@@ -96,7 +104,7 @@ const props = defineProps({
                 <!-- Small status / trend icon -->
                 <span 
                     :class="[
-                        'w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold',
+                        'min-w-4 h-4 px-1 rounded flex items-center justify-center text-[10px] font-bold shrink-0',
                         isHero ? 'bg-white/20 text-white' : 'bg-slate-200/80 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                     ]"
                 >
@@ -105,5 +113,5 @@ const props = defineProps({
                 <span class="truncate">{{ trendLabel || 'Updated live' }}</span>
             </div>
         </div>
-    </div>
+    </component>
 </template>

@@ -9,11 +9,9 @@ import Modal from '@/Components/Modal.vue';
 import { 
     BookOpen, 
     Plus, 
-    Layers, 
     ArrowRight, 
     Award, 
     FileSpreadsheet, 
-    CheckCircle2, 
     Calendar,
     BarChart3
 } from 'lucide-vue-next';
@@ -57,95 +55,100 @@ const downloadExcelTemplate = () => {
 
 <template>
     <AppLayout>
-        <Head title="Dashboard" />
+        <Head title="Dashboard Guru" />
 
         <div class="space-y-6 w-full">
-            <!-- Page Header matching contoh.webp (Title on Left, Action Pills on Right) -->
+            <!-- Page Header (Title on Left, Teacher Action Pills on Right) -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                        Dashboard
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Dashboard Guru
                     </h1>
                     <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                        Plan, prioritize, and accomplish your tasks with ease.
+                        Kelola bank soal ujian, pantau progres pengerjaan, dan koreksi esai siswa secara terpusat.
                     </p>
                 </div>
 
                 <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                    <!-- Primary Action Pill (+ Add Project style in contoh.webp) -->
+                    <!-- Primary Action Pill (+ Buat Bank Soal) -->
                     <button
                         type="button"
                         @click="openCreate"
                         class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white rounded-full text-xs font-semibold shadow-xs transition-all cursor-pointer"
                     >
                         <Plus class="w-4 h-4 text-white" />
-                        <span>Add Project</span>
+                        <span>Buat Bank Soal</span>
                     </button>
 
-                    <!-- Secondary Action Pill (Import Data style in contoh.webp) -->
+                    <!-- Secondary Action Pill (Unduh Template Excel) -->
                     <button
                         type="button"
                         @click="downloadExcelTemplate"
                         class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 rounded-full text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition-colors cursor-pointer"
                     >
-                        <span>Import Data</span>
+                        <FileSpreadsheet class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        <span>Unduh Template Soal</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 4 Bento Stat Cards Grid matching contoh.webp (Card 1 Hero Forest Green, Cards 2-4 White) -->
+            <!-- 4 Bento Stat Cards Grid (Card 1 Hero Forest Green, Cards 2-4 Clean Bordered) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Card 1: Question Banks (Hero Forest Green) -->
+                <!-- Card 1: Total Bank Soal (Hero Forest Green) -->
                 <BentoStatCard
                     is-hero
-                    title="Total Projects"
+                    title="Total Bank Soal"
                     :value="stats.total_banks"
-                    trend="5"
-                    trend-label="Increased from last month"
+                    trend="Paket"
+                    trend-label="Naskah Soal Terdaftar"
+                    href="/teacher/banks"
                 />
 
-                <!-- Card 2: Active Questions (Clean White Card) -->
+                <!-- Card 2: Total Butir Soal (Clean Card) -->
                 <BentoStatCard
-                    title="Ended Projects"
+                    title="Total Butir Soal"
                     :value="stats.total_questions"
-                    trend="6"
-                    trend-label="Increased from last month"
+                    trend="Butir"
+                    trend-label="Pilihan Ganda & Esai"
+                    href="/teacher/banks"
                 />
 
-                <!-- Card 3: Needs Grading (Clean White Card) -->
+                <!-- Card 3: Perlu Koreksi Esai (Clean Card) -->
                 <BentoStatCard
-                    title="Running Projects"
+                    title="Perlu Koreksi Esai"
                     :value="stats.needs_grading_total"
-                    trend="2"
-                    trend-label="Increased from last month"
+                    :trend="stats.needs_grading_total > 0 ? 'Antrean' : 'Tuntas'"
+                    :trend-label="stats.needs_grading_total > 0 ? 'Jawaban Siswa Menunggu' : 'Semua Esai Terkoreksi'"
+                    href="/teacher/grading"
                 />
 
-                <!-- Card 4: Passed Students (Clean White Card) -->
+                <!-- Card 4: Siswa Tuntas KKM (Clean Card) -->
                 <BentoStatCard
-                    title="Pending Project"
+                    title="Siswa Tuntas KKM"
                     :value="stats.passed_kkm_total"
-                    trend="8%"
-                    trend-label="On Discuss"
+                    trend="Siswa"
+                    trend-label="Memenuhi Target KKM"
+                    href="/teacher/grading"
                 />
             </div>
 
-            <!-- Two-Column Section matching contoh.jpg (Trends Chart on Left, Categories on Right) -->
+            <!-- Two-Column Analytics Section (Trends Chart on Left, Subject Categories on Right) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                 <!-- Left: Evaluation Trends Chart (approx 65% width) -->
                 <div class="lg:col-span-2">
                     <TrendChart 
-                        title="Enrollment & Submission Trends"
+                        title="Tren Partisipasi & Penyelesaian Ujian"
                         subtitle="Grafik penyelesaian ujian dan akumulasi jawaban siswa"
                         :filter-options="['This Year', 'Last 6 Months', 'This Month']"
                         :data-sets="chartData"
                     />
                 </div>
 
-                <!-- Right: Top Performing Categories (approx 35% width) -->
+                <!-- Right: Subject KKM Categories (approx 35% width) -->
                 <div class="lg:col-span-1">
                     <CategoryProgressWidget 
-                        title="Top Performing Categories"
-                        subtitle="Distribusi ketuntasan KKM mata pelajaran binaan"
+                        title="Ketuntasan Mata Pelajaran"
+                        subtitle="Distribusi pencapaian KKM mata pelajaran binaan"
                         :categories="categoryData"
                     />
                 </div>
@@ -154,7 +157,7 @@ const downloadExcelTemplate = () => {
             <!-- Two-Column Workspace Layout (Recent Schedules & Question Banks) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Left: Recent Exam Schedules Evaluation (2 cols) -->
-                <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 shadow-sm">
+                <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm">
                     <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-5">
                         <div class="flex items-center gap-2.5">
                             <div class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
@@ -197,6 +200,7 @@ const downloadExcelTemplate = () => {
                                     </div>
                                     <p class="text-[11px] text-slate-400 mt-1">
                                         Mapel: <strong class="text-slate-700 dark:text-slate-300">{{ sch.subject?.name }}</strong> &bull; KKM: <span class="px-1.5 py-0.5 bg-white dark:bg-slate-700 rounded text-slate-800 dark:text-slate-200 font-bold">{{ sch.subject?.kkm_score }}</span>
+                                        <span v-if="sch.question_bank?.title" class="ml-1 text-slate-400">&bull; Bank: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ sch.question_bank.title }}</span></span>
                                     </p>
                                 </div>
 
@@ -224,18 +228,21 @@ const downloadExcelTemplate = () => {
                             </div>
 
                             <div class="flex flex-wrap items-center justify-between gap-2 pt-0.5">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
                                     <Link
                                         :href="`/teacher/grading/${sch.id}/workbench`"
                                         class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs rounded-full shadow-2xs flex items-center gap-1.5 transition-all cursor-pointer"
                                     >
                                         <Award class="w-3.5 h-3.5" />
                                         <span>Meja Koreksi Esai</span>
+                                        <span v-if="sch.needs_grading_count > 0" class="ml-1 px-1.5 py-0.5 bg-white/25 text-white rounded-full text-[10px] font-mono font-bold">
+                                            {{ sch.needs_grading_count }}
+                                        </span>
                                     </Link>
 
                                     <Link
                                         :href="`/teacher/grading/${sch.id}/analysis`"
-                                        class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-full flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
+                                        class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-full flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer"
                                     >
                                         <BarChart3 class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                                         <span>Analisis Butir</span>
@@ -256,7 +263,7 @@ const downloadExcelTemplate = () => {
                 </div>
 
                 <!-- Right: Recent Question Banks (1 col) -->
-                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-sm flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-4">
                             <div class="flex items-center gap-2">
@@ -265,9 +272,9 @@ const downloadExcelTemplate = () => {
                                 </div>
                                 <div>
                                     <h2 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                                        Soal Ujian Terkini
+                                        Bank Soal Terkini
                                     </h2>
-                                    <p class="text-[11px] text-slate-400">Naskah soal aktif</p>
+                                    <p class="text-[11px] text-slate-400">Paket naskah soal aktif</p>
                                 </div>
                             </div>
                             <Link href="/teacher/banks" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
@@ -276,7 +283,15 @@ const downloadExcelTemplate = () => {
                         </div>
 
                         <div v-if="recentBanks.length === 0" class="text-center py-8 text-xs text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
-                            Belum ada paket soal ujian.
+                            <p>Belum ada paket bank soal ujian.</p>
+                            <button
+                                type="button"
+                                @click="openCreate"
+                                class="mt-3 px-4 py-1.5 bg-[#185338] hover:bg-[#12422c] text-white text-[11px] font-semibold rounded-full shadow-2xs inline-flex items-center gap-1 cursor-pointer"
+                            >
+                                <Plus class="w-3 h-3" />
+                                <span>Buat Bank Soal</span>
+                            </button>
                         </div>
 
                         <div v-else class="space-y-3 overflow-y-auto max-h-[440px] pr-0.5">
@@ -303,7 +318,7 @@ const downloadExcelTemplate = () => {
 
                                 <div class="flex items-center justify-between pt-2 border-t border-slate-200/50 dark:border-slate-700/60 text-xs">
                                     <span class="text-[10px] text-slate-400 font-mono">
-                                        Bobot: <strong class="text-slate-700 dark:text-slate-300">{{ bank.pg_weight_percent }}% / {{ bank.essay_weight_percent }}%</strong>
+                                        Bobot: <strong class="text-slate-700 dark:text-slate-300">{{ bank.pg_weight_percent }}% PG / {{ bank.essay_weight_percent }}% Esai</strong>
                                     </span>
                                     <Link
                                         :href="`/teacher/banks/${bank.id}`"
@@ -323,7 +338,7 @@ const downloadExcelTemplate = () => {
                             class="w-full py-2.5 bg-[#185338] hover:bg-[#12422c] text-white text-xs font-semibold rounded-full flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
                         >
                             <Plus class="w-4 h-4" />
-                            <span>Buat Soal Ujian Baru</span>
+                            <span>Buat Bank Soal Baru</span>
                         </button>
                     </div>
                 </div>
@@ -334,13 +349,13 @@ const downloadExcelTemplate = () => {
         <Modal
             :show="showCreateModal"
             @close="showCreateModal = false"
-            title="Buat Soal Ujian Baru"
-            subtitle="Tentukan mata pelajaran, nama bank soal, dan persentase bobot soal"
+            title="Buat Bank Soal Baru"
+            subtitle="Tentukan mata pelajaran, nama bank soal, dan persentase bobot penilaian"
             max-width="md"
         >
             <template #icon>
-                <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                    <Plus class="w-5 h-5" />
+                <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-[#185338] dark:text-emerald-400 flex items-center justify-center shrink-0">
+                    <BookOpen class="w-5 h-5" />
                 </div>
             </template>
 
@@ -359,7 +374,7 @@ const downloadExcelTemplate = () => {
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Judul / Nama Soal Ujian</label>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Judul / Nama Bank Soal</label>
                     <input
                         v-model="form.title"
                         type="text"
@@ -413,7 +428,7 @@ const downloadExcelTemplate = () => {
                         :disabled="form.processing || (form.pg_weight_percent + form.essay_weight_percent !== 100)"
                         class="px-6 py-2.5 bg-[#185338] hover:bg-[#12422c] text-white text-xs font-semibold rounded-full shadow-xs disabled:opacity-50 transition-all cursor-pointer"
                     >
-                        {{ form.processing ? 'Menyimpan...' : 'Buat Soal Ujian' }}
+                        {{ form.processing ? 'Menyimpan...' : 'Buat Bank Soal' }}
                     </button>
                 </div>
             </template>

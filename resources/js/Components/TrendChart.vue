@@ -32,6 +32,15 @@ const selectedFilter = ref(props.filterOptions[0] || 'This Year');
 const hoveredPoint = ref(null);
 const showDropdown = ref(false);
 
+const filterLabel = (opt) => {
+    const map = {
+        'This Year': 'Tahun Ini',
+        'Last 6 Months': '6 Bulan Terakhir',
+        'This Month': 'Bulan Ini',
+    };
+    return map[opt] || opt;
+};
+
 const currentData = computed(() => {
     if (!props.dataSets || typeof props.dataSets !== 'object') {
         return [];
@@ -149,7 +158,7 @@ const selectFilter = (opt) => {
                     @click="showDropdown = !showDropdown"
                     class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 border border-slate-200/80 dark:border-slate-700 shadow-2xs transition-colors cursor-pointer"
                 >
-                    <span>{{ selectedFilter }}</span>
+                    <span>{{ filterLabel(selectedFilter) }}</span>
                     <svg class="w-3.5 h-3.5 text-slate-400 transition-transform" :class="{ 'rotate-180': showDropdown }" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                     </svg>
@@ -167,7 +176,7 @@ const selectFilter = (opt) => {
                         class="w-full text-left px-3.5 py-2 text-slate-700 dark:text-slate-200 hover:bg-[#eaf4ef] dark:hover:bg-emerald-950/50 hover:text-[#185338] dark:hover:text-emerald-400 transition-colors"
                         :class="{ 'text-[#185338] dark:text-emerald-400 font-bold bg-[#eaf4ef]/60 dark:bg-emerald-950/30': opt === selectedFilter }"
                     >
-                        {{ opt }}
+                        {{ filterLabel(opt) }}
                     </button>
                 </div>
             </div>
